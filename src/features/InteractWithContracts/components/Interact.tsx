@@ -22,8 +22,9 @@ import {
 } from '@types';
 import { COLORS, BREAK_POINTS } from '@theme';
 import { translateRaw } from '@translations';
-import { isValidETHAddress, isCreationAddress } from '@services/EthService/validators';
+import { isValidETHAddress } from '@services/EthService/validators';
 import { getNetworkById, NetworkContext } from '@services';
+import { isValidENSName } from '@services/EthService';
 
 import ContractDropdownOption from './ContractDropdownOption';
 import ContractDropdownValue from './ContractDropdownValue';
@@ -31,7 +32,6 @@ import GeneratedInteractionForm from './GeneratedInteractionForm';
 import { CUSTOM_CONTRACT_ADDRESS } from '../constants';
 import { ABIItem } from '../types';
 import { getParsedQueryString } from '../utils';
-import { isValidENSName } from '@services/EthService';
 
 const { BLUE_BRIGHT, WHITE, BLUE_LIGHT } = COLORS;
 const { SCREEN_SM } = BREAK_POINTS;
@@ -168,7 +168,6 @@ function Interact(props: CombinedProps) {
     contract,
     contracts,
     showGeneratedForm,
-    addressOrDomainInput,
     resolvingDomain,
     handleNetworkSelected,
     handleContractSelected,
@@ -350,17 +349,12 @@ function Interact(props: CombinedProps) {
                     network={network}
                     placeholder={translateRaw('CONTRACT_ADDRESS_PLACEHOLDER')}
                     isLoading={resolvingDomain}
+                    isResolvingName={resolvingDomain}
                     onChange={({ target: { value } }) => handleAddressOrDomainChanged(value)}
                     isError={!isValid}
+                    value={contractAddress}
                   />
                 </InputWrapper>
-                {contractAddress &&
-                  (isValidETHAddress(contractAddress) || isCreationAddress(contractAddress)) &&
-                  !isValidETHAddress(addressOrDomainInput) && (
-                    <div>
-                      {translateRaw('INTERACT_RESOLVED_ADDRESS')} {contractAddress}
-                    </div>
-                  )}
               </FieldWrapper>
             </ContractSelectionWrapper>
             <FieldWrapper>
