@@ -274,10 +274,6 @@ function Interact(props: CombinedProps) {
 
           if (addressFromUrl) {
             handleAddressOrDomainChanged(addressFromUrl);
-            setFieldValue('address', {
-              display: addressFromUrl,
-              value: addressFromUrl
-            });
           }
           setAreFieldsPopulatedFromUrl(true);
         }, [contracts]);
