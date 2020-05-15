@@ -156,7 +156,6 @@ function Interact(props: CombinedProps) {
     contract,
     contracts,
     showGeneratedForm,
-    resolvingDomain,
     handleNetworkSelected,
     handleContractSelected,
     handleAddressOrDomainChanged,
@@ -176,6 +175,7 @@ function Interact(props: CombinedProps) {
   } = props;
 
   const [error, setError] = useState<string | undefined>(undefined);
+  const [isResolvingName, setIsResolvingDomain] = useState(false);
   const [areFieldsPopulatedFromUrl, setAreFieldsPopulatedFromUrl] = useState(false);
   const [wasAbiEditedManually, setWasAbiEditedManually] = useState(false);
   const [wasContractInteracted, setWasContractInteracted] = useState(false);
@@ -306,8 +306,10 @@ function Interact(props: CombinedProps) {
                   contracts={contracts}
                   error={errors && touched.address && errors.address && errors.address.value}
                   network={network}
-                  isResolvingName={resolvingDomain}
+                  isResolvingName={isResolvingName}
+                  setIsResolvingDomain={setIsResolvingDomain}
                   onSelect={(option) => {
+                    // @ts-ignore
                     handleContractSelected(option);
 
                     handleAddressOrDomainChanged(option.value);
