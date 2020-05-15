@@ -1,6 +1,7 @@
 import { parse as parseTransaction } from 'ethers/utils/transaction';
 import { Arrayish, bigNumberify } from 'ethers/utils';
 import { TransactionResponse, TransactionReceipt } from 'ethers/providers';
+import isEmpty from 'ramda/src/isEmpty';
 
 import {
   getNetworkByChainId,
@@ -36,7 +37,6 @@ import {
   ISuccessfulTxReceipt,
   ITxReceipt
 } from '@types';
-import { isEmpty } from 'ramda';
 
 export const constructTxReceiptFromTransactionResponse = (txResponse: TransactionResponse) => (
   txType: ITxType,
