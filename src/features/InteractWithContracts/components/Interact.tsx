@@ -7,10 +7,8 @@ import { Formik } from 'formik';
 import {
   NetworkSelectDropdown,
   InputField,
-  Dropdown,
   InlineMessage,
-  Button,
-  AddressField
+  Button
 } from '@components';
 import {
   Contract,
@@ -26,8 +24,6 @@ import { isValidETHAddress } from '@services/EthService/validators';
 import { getNetworkById, NetworkContext } from '@services';
 import { isValidENSName } from '@services/EthService';
 
-import ContractDropdownOption from './ContractDropdownOption';
-import ContractDropdownValue from './ContractDropdownValue';
 import GeneratedInteractionForm from './GeneratedInteractionForm';
 import { CUSTOM_CONTRACT_ADDRESS } from '../constants';
 import { ABIItem } from '../types';
@@ -59,9 +55,6 @@ const FieldWrapper = styled.div`
   }
 `;
 
-const Separator = styled.div`
-  width: 22px;
-`;
 
 const Label = styled.div`
   line-height: 1;
@@ -109,10 +102,6 @@ const ErrorWrapper = styled.div`
   margin-bottom: 12px;
 `;
 
-const ContractSelectLabelWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
 
 const DeleteLabel = styled(Label)`
   color: ${BLUE_BRIGHT};
@@ -277,7 +266,7 @@ function Interact(props: CombinedProps) {
       validationSchema={FormSchema}
       // Hack as we don't really use Formik for this flow
       onSubmit={() => undefined}
-      render={({ errors, touched, setFieldValue }) => {
+      render={({ values, errors, touched, setFieldValue }) => {
         const isValid =
           Object.values(errors).filter((e) => e !== undefined && e.value !== undefined).length ===
           0;
@@ -314,54 +303,39 @@ function Interact(props: CombinedProps) {
             </NetworkSelectorWrapper>
             <ContractSelectionWrapper>
               <FieldWrapper>
-                <ContractSelectLabelWrapper>
-                  <Label>{translateRaw('CONTRACT_TITLE_2')}</Label>
-                  {contract && contract.isCustom && (
-                    <DeleteLabel onClick={() => handleDeleteContract(contract.uuid)}>
-                      {translateRaw('ACTION_15')}
-                    </DeleteLabel>
-                  )}
-                </ContractSelectLabelWrapper>
-
-                <Dropdown
-                  value={contract}
-                  options={contracts}
-                  onChange={(option) => {
-                    if (option.address !== 'custom') {
-                      setFieldValue('address', {
-                        display: option.address,
-                        value: option.address
-                      });
-                    } else {
-                      setFieldValue('address', initialFormikValues.address);
-                    }
-                    handleContractSelected(option);
-                  }}
-                  optionComponent={ContractDropdownOption}
-                  valueComponent={ContractDropdownValue}
-                  searchable={true}
-                />
-              </FieldWrapper>
-              <Separator />
-              <FieldWrapper>
                 <label htmlFor="address" className="input-group-header">
                   {translateRaw('CONTRACT_TITLE')}
                 </label>
-                <InputWrapper>
-                  <AddressField
-                    fieldName="address"
-                    error={errors && touched.address && errors.address && errors.address.value}
-                    network={network}
-                    placeholder={translateRaw('CONTRACT_ADDRESS_PLACEHOLDER')}
-                    isLoading={resolvingDomain}
-                    isResolvingName={resolvingDomain}
-                    onChange={({ target: { value } }) => handleAddressOrDomainChanged(value)}
-                    isError={!isValid}
-                    resolvedAddress={contractAddress}
-                  />
-                </InputWrapper>
+                <ContactLookupField
+                  name="address"
+                  options={contracts}
+                  error={errors && touched.address && errors.address && errors.address.value}
+                  network={network}
+                  isResolvingName={resolvingDomain}
+                  onSelect={(option) => {
+                    /**if (option.address !== 'custom') {
+                        setFieldValue('address', {
+                          display: option.address,
+                          value: option.address
+                        });
+                      } else {
+                        setFieldValue('address', initialFormikValues.address);
+                      }**/
+                    handleContractSelected(option);
+
+                    handleAddressOrDomainChanged(option.value);
+                  }}
+                  onChange={(address) => handleAddressOrDomainChanged(address)}
+                  isError={!isValid}
+                  value={values.address}
+                />
               </FieldWrapper>
             </ContractSelectionWrapper>
+            {contract && contract.isCustom && (
+              <DeleteLabel onClick={() => handleDeleteContract(contract.uuid)}>
+                {translateRaw('ACTION_15')}
+              </DeleteLabel>
+            )}
             <FieldWrapper>
               <InputWrapper onClick={() => setWasContractInteracted(false)}>
                 <InputField
