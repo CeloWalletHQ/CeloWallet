@@ -17,6 +17,7 @@ import feeIcon from '@assets/images/icn-fee.svg';
 import { ProtectTxContext } from '../ProtectTxProvider';
 import { ProtectTxError } from '..';
 import { ProtectTxMissingInfo } from './ProtectTxMissingInfo';
+import PoweredByNansen from './PoweredByNansen';
 
 const SProtectionThisTransaction = styled(ProtectTxBase)`
   .description-text {
@@ -292,6 +293,7 @@ export const ProtectTxProtection: FC<Props> = ({ sendAssetsValues, handleProtect
       <button type="button" className="cancel" onClick={onProtectMyTransactionCancelClick}>
         {translateRaw('PROTECTED_TX_DONT_PROTECT_MY_TX')}
       </button>
+      <PoweredByNansen />
     </SProtectionThisTransaction>
   );
 };

@@ -16,6 +16,7 @@ import { truncate, useScreenSize } from '@utils';
 import ProtectTxBase from './ProtectTxBase';
 import { ProtectTxContext } from '../ProtectTxProvider';
 import { ProtectTxUtils } from '../utils';
+import PoweredByNansen from './PoweredByNansen';
 
 const formatDate = (date: number): string => moment.unix(date).format('MM/DD/YYYY');
 
@@ -341,6 +342,7 @@ export const ProtectTxReport: FC = () => {
           </p>
         </>
       )}
+      <PoweredByNansen />
     </Wrapper>
   );
 };
