@@ -19,6 +19,8 @@ import { ProtectTxError } from '..';
 import { ProtectTxMissingInfo } from './ProtectTxMissingInfo';
 import PoweredByNansen from './PoweredByNansen';
 
+import bulletIcon from 'assets/images/icn-bullet.svg';
+
 const SProtectionThisTransaction = styled(ProtectTxBase)`
   .description-text {
     max-width: 300px;
@@ -71,7 +73,7 @@ const BulletList = styled.ul`
     padding-left: ${SPACING.SM};
     margin-left: -${SPACING.SM};
     margin-bottom: 15px;
-    background-image: url('~assets/images/icn-bullet.svg');
+    background-image: url(${bulletIcon});
     background-position: 0 ${SPACING.SM};
     background-size: 5px 5px;
     background-repeat: no-repeat;

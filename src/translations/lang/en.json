@@ -585,6 +585,7 @@
 		"PROTECTED_TX_THIS_TX_IS_PROTECTED_DESC": "Review the report for the recipient address to verify that it is safe before sending your funds.",
 		"PROTECTED_TX_TIMELINE_COMMENT": "$reporter has the following note about this address: \"$description\"",
 		"PROTECTED_TX_TIMELINE_KNOWN_ACCOUNT": "KNOWN ACCOUNT:",
+		"PROTECTED_TX_TIMELINE_NANSEN_TAGS": "Nansen has this address labeled as: $tags",
 		"PROTECTED_TX_TIMELINE_MALICIOUS": "Malicious: This account has been marked as $tags",
 		"PROTECTED_TX_TIMELINE_NOT_SURE_ABOUT_ADDRESS": "We are not sure what is going on with this address.",
 		"PROTECTED_TX_TIMELINE_UNKNOWN_ACCOUNT": "UNKNOWN ACCOUNT:",
