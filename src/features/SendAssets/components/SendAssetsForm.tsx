@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { Field, FieldProps, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { Button } from '@mycrypto/ui';
@@ -12,78 +12,79 @@ import { ValuesType } from 'utility-types';
 
 import translate, { translateRaw } from '@translations';
 import {
-  InlineMessage,
   AccountDropdown,
   AmountInput,
   AssetDropdown,
-  WhenQueryExists,
   Checkbox,
   ContactLookupField,
-  Tooltip
+  InlineMessage,
+  Tooltip,
+  WhenQueryExists
 } from '@components';
 import {
-  getNetworkById,
-  getBaseAssetByNetwork,
-  getAccountsByAsset,
-  StoreContext,
   getAccountBalance,
-  SettingsContext
+  getAccountsByAsset,
+  getBaseAssetByNetwork,
+  getNetworkById,
+  SettingsContext,
+  StoreContext
 } from '@services/Store';
 import {
   Asset,
-  Network,
+  ErrorObject,
   IAccount,
-  StoreAsset,
-  WalletId,
   IFormikFields,
+  InlineMessageType,
   IStepComponentProps,
   ITxConfig,
-  ErrorObject,
+  Network,
   StoreAccount,
-  InlineMessageType
+  StoreAsset,
+  TTicker,
+  WalletId
 } from '@types';
 import {
+  baseToConvertedUnit,
+  bigNumGasPriceToViewableGwei,
+  convertedToBaseUnit,
+  fromTokenBase,
+  gasStringsToMaxGasBN,
   getNonce,
   hexToNumber,
-  isValidETHAddress,
-  gasStringsToMaxGasBN,
-  convertedToBaseUnit,
-  baseToConvertedUnit,
-  isValidPositiveNumber,
-  isTransactionFeeHigh,
   isBurnAddress,
-  bigNumGasPriceToViewableGwei,
-  fromTokenBase,
+  isValidETHAddress,
+  isValidPositiveNumber,
   toTokenBase
 } from '@services/EthService';
 import { fetchGasPriceEstimates, getGasEstimate } from '@services/ApiService';
 import {
+  DEFAULT_ASSET_DECIMAL,
+  DEFAULT_NETWORK,
   GAS_LIMIT_LOWER_BOUND,
   GAS_LIMIT_UPPER_BOUND,
   GAS_PRICE_GWEI_LOWER_BOUND,
-  GAS_PRICE_GWEI_UPPER_BOUND,
-  DEFAULT_ASSET_DECIMAL,
-  DEFAULT_NETWORK
+  GAS_PRICE_GWEI_UPPER_BOUND
 } from '@config';
 import { RatesContext } from '@services/RatesProvider';
 import TransactionFeeDisplay from '@components/TransactionFlow/displays/TransactionFeeDisplay';
-import { formatSupportEmail, isFormValid as checkFormValid, ETHUUID } from '@utils';
+import { ETHUUID, formatSupportEmail, isFormValid as checkFormValid } from '@utils';
 import { ProtectTxUtils } from '@features/ProtectTransaction';
 import { ProtectTxShowError, ProtectTxButton } from '@features/ProtectTransaction/components';
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
 import { useEffectOnce } from '@vendor';
 import { getFiat } from '@config/fiats';
 
-import { GasLimitField, GasPriceField, GasPriceSlider, NonceField, DataField } from './fields';
+import { DataField, GasLimitField, GasPriceField, GasPriceSlider, NonceField } from './fields';
 import './SendAssetsForm.scss';
 import {
+  validateAmountField,
+  validateDataField,
   validateGasLimitField,
   validateGasPriceField,
-  validateNonceField,
-  validateDataField,
-  validateAmountField
+  validateNonceField
 } from './validators';
-import { processFormForEstimateGas, isERC20Tx } from '../helpers';
+import { isERC20Tx, processFormForEstimateGas } from '../helpers';
+import { validateTransactionFee } from '@services/EthService/validators';
 
 export const AdvancedOptionsButton = styled(Button)`
   width: 100%;
@@ -163,7 +164,7 @@ const QueryWarning: React.FC = () => (
 
 const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
   const { accounts, userAssets, networks, getAccount } = useContext(StoreContext);
-  const { getAssetRate } = useContext(RatesContext);
+  const { getAssetRate, getRate } = useContext(RatesContext);
   const { settings } = useContext(SettingsContext);
   const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isEstimatingNonce, setIsEstimatingNonce] = useState(false); // Used to indicate that interface is currently estimating gas.
@@ -268,6 +269,64 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
         }
       )
   });
+
+  const getTxFeeValidation = useCallback(
+    (
+      amount: string,
+      assetRate: number,
+      isERC20: boolean,
+      gasLimit: string,
+      gasPrice: string,
+      ethAssetRate?: number
+    ) => {
+      const { type, amount: $amount, fee: $fee } = validateTransactionFee(
+        amount,
+        assetRate,
+        isERC20,
+        gasLimit,
+        gasPrice,
+        ethAssetRate
+      );
+      switch (type) {
+        case 'Warning':
+          return (
+            <InlineMessage
+              type={InlineMessageType.WARNING}
+              value={translateRaw('WARNING_TRANSACTION_FEE', {
+                $amount: `$${$amount}`,
+                $fee: `$${$fee}`
+              })}
+            />
+          );
+        case 'Error-Use-Lower':
+          return (
+            <InlineMessage
+              type={InlineMessageType.ERROR}
+              value={translateRaw('ERROR_TRANSACTION_FEE_USE_LOWER', { $fee: `$${$fee}` })}
+            />
+          );
+        case 'Error-High-Tx-Fee':
+          return (
+            <InlineMessage
+              type={InlineMessageType.ERROR}
+              value={translateRaw('ERROR_HIGH_TRANSACTION_FEE_HIGH', { $fee: `$${$fee}` })}
+            />
+          );
+        case 'Error-Very-High-Tx-Fee':
+          return (
+            <InlineMessage
+              type={InlineMessageType.ERROR}
+              value={translateRaw('ERROR_HIGH_TRANSACTION_FEE_VERY_HIGH', { $fee: `$${$fee}` })}
+            />
+          );
+        case 'Invalid':
+        case 'None':
+        default:
+          return <></>;
+      }
+    },
+    []
+  );
 
   const validAccounts = accounts.filter((account) => account.wallet !== WalletId.VIEW_ONLY);
   const userAccountEthAsset = userAssets.find((a) => a.uuid === ETHUUID);
@@ -537,15 +596,16 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                     gasEstimates={values.gasEstimates}
                   />
                 )}
-                {isTransactionFeeHigh(
+                {getTxFeeValidation(
                   values.amount,
                   getAssetRate(baseAsset || undefined) || 0,
                   isERC20Tx(values.asset),
                   values.gasLimitField.toString(),
                   values.advancedTransaction
                     ? values.gasPriceField.toString()
-                    : values.gasPriceSlider.toString()
-                ) && <InlineMessage value={translate('HIGH_TRANSACTION_FEE')} />}
+                    : values.gasPriceSlider.toString(),
+                  getRate('ETH' as TTicker)
+                )}
               </fieldset>
               {/* Advanced Options */}
               <div className="SendAssetsForm-advancedOptions">
