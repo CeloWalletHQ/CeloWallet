@@ -6,9 +6,8 @@ import { Network } from 'ethers/utils/networks';
 import { WALLETS_CONFIG } from '@config';
 import { ISignComponentProps, TAddress } from '@types';
 import translate, { translateRaw } from '@translations';
-import { withContext, getWeb3Config } from '@utils';
+import { withContext, getWeb3Config, isSameAddress } from '@utils';
 import { getNetworkByChainId, INetworkContext, NetworkContext } from '@services/Store';
-import { isSameAddress } from '@services/Store/helpers';
 
 import './Web3.scss';
 
