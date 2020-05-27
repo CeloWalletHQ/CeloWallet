@@ -585,8 +585,8 @@
     "PROTECTED_TX_THIS_TX_IS_PROTECTED": "This Transaction is Protected!",
     "PROTECTED_TX_THIS_TX_IS_PROTECTED_DESC": "Review the report for the recipient address to verify that it is safe before sending your funds.",
     "PROTECTED_TX_TIMELINE_COMMENT": "$reporter has the following note about this address: \"$description\"",
-	"PROTECTED_TX_TIMELINE_KNOWN_ACCOUNT": "KNOWN ACCOUNT:",
-	"PROTECTED_TX_TIMELINE_TAGS": "The labels for this address are: $tags",
+    "PROTECTED_TX_TIMELINE_KNOWN_ACCOUNT": "KNOWN ACCOUNT:",
+    "PROTECTED_TX_TIMELINE_TAGS": "The labels for this address are: $tags",
     "PROTECTED_TX_TIMELINE_MALICIOUS": "Malicious: This account has been marked as $tags",
     "PROTECTED_TX_TIMELINE_NOT_SURE_ABOUT_ADDRESS": "We are not sure what is going on with this address.",
     "PROTECTED_TX_TIMELINE_UNKNOWN_ACCOUNT": "UNKNOWN ACCOUNT:",
@@ -972,7 +972,7 @@
     "ZAP_SETH_UNIPOOL_NAME": "sETH Unipool",
     "ZAP_SETH_UNIPOOL_TITLE": "Everyday ETH Fund",
     "ZAP_START_EARNING": "Start Earning Now!",
-	"ZAP_UNISWAP_TOOLTIP": "This zap stores funds in the Uniswap exchange protocol",
-	"POWERED_BY": "Powered By"
+    "ZAP_UNISWAP_TOOLTIP": "This zap stores funds in the Uniswap exchange protocol",
+    "POWERED_BY": "Powered By"
   }
 }
