@@ -78,3 +78,4 @@ export {
 export { default as UndoDeleteOverlay } from './UndoDeleteOverlay';
 export { default as MobileNavBar } from './MobileNavBar';
 export { default as FixedSizeCollapsibleTable } from './FixedSizeCollapsibleTable';
+export { default as PoweredByText } from './PoweredByText';
