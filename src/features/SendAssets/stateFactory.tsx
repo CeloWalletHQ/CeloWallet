@@ -3,11 +3,7 @@ import { Arrayish, hexlify } from 'ethers/utils/bytes';
 import { bigNumberify } from 'ethers/utils/bignumber';
 import { TransactionResponse } from 'ethers/providers';
 
-import {
-  TUseStateReducerFactory,
-  constructPendingTxReceipt,
-  makeTxConfigFromSignedTx
-} from '@utils';
+import { TUseStateReducerFactory, makePendingTxReceipt, makeTxConfigFromSignedTx } from '@utils';
 import {
   Asset,
   ITxReceipt,
@@ -109,7 +105,7 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
     const provider = new ProviderHandler(state.txConfig.network);
 
     provider.sendRawTx(signedTx).then((retrievedTxResponse) => {
-      const pendingTxReceipt = constructPendingTxReceipt(retrievedTxResponse)(
+      const pendingTxReceipt = makePendingTxReceipt(retrievedTxResponse)(
         ITxType.STANDARD,
         state.txConfig,
         assets
@@ -144,7 +140,7 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
     provider
       .getTransactionByHash(payload)
       .then((retrievedTransactionResponse) => {
-        const pendingTxReceipt = constructPendingTxReceipt(retrievedTransactionResponse)(
+        const pendingTxReceipt = makePendingTxReceipt(retrievedTransactionResponse)(
           ITxType.STANDARD,
           state.txConfig,
           assets,

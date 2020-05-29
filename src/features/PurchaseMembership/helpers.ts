@@ -1,18 +1,7 @@
 import { AddressZero } from 'ethers/constants';
 import { ethers } from 'ethers';
-import { bigNumberify } from 'ethers/utils/bignumber';
 
-import {
-  ITxObject,
-  StoreAccount,
-  ITxConfig,
-  TxParcel,
-  ITxType,
-  ITxHash,
-  TAddress,
-  IPendingTxReceipt,
-  ITxStatus
-} from '@types';
+import { ITxObject, StoreAccount, ITxConfig } from '@types';
 import {
   inputValueToHex,
   inputGasPriceToHex,
@@ -93,33 +82,4 @@ export const makePurchaseMembershipTxConfig = (
   };
 
   return txConfig;
-};
-
-export const makePendingTxReceiptFromTransaction = (
-  tx: TxParcel,
-  hash: ITxHash,
-  account: StoreAccount,
-  membershipSelected: IMembershipConfig,
-  txType: ITxType
-): IPendingTxReceipt => {
-  const txConfig = makePurchaseMembershipTxConfig(tx.txRaw, account, membershipSelected);
-  return {
-    receiverAddress: txConfig.receiverAddress as TAddress,
-    amount: txConfig.amount,
-    data: tx.txRaw.data,
-
-    gasPrice: bigNumberify(tx.txRaw.gasPrice),
-    gasLimit: bigNumberify(tx.txRaw.gasLimit),
-    to: tx.txRaw.to as TAddress,
-    from: tx.txRaw.from as TAddress,
-    value: bigNumberify(tx.txRaw.value || txConfig.value),
-    nonce: txConfig.nonce,
-
-    asset: txConfig.asset,
-    baseAsset: txConfig.baseAsset,
-
-    hash,
-    txType,
-    status: ITxStatus.PENDING
-  };
 };
