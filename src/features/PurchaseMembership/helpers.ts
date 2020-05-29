@@ -66,7 +66,7 @@ export const createPurchaseTx = (payload: MembershipSimpleTxFormFull): Partial<I
   };
 };
 
-export const makeTxConfigFromTransaction = (
+export const makePurchaseMembershipTxConfig = (
   rawTransaction: ITxObject,
   account: StoreAccount,
   membershipSelected: IMembershipConfig
@@ -102,7 +102,7 @@ export const makePendingTxReceiptFromTransaction = (
   membershipSelected: IMembershipConfig,
   txType: ITxType
 ): IPendingTxReceipt => {
-  const txConfig = makeTxConfigFromTransaction(tx.txRaw, account, membershipSelected);
+  const txConfig = makePurchaseMembershipTxConfig(tx.txRaw, account, membershipSelected);
   return {
     receiverAddress: txConfig.receiverAddress as TAddress,
     amount: txConfig.amount,
