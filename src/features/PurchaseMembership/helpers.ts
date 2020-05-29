@@ -1,5 +1,4 @@
 import { AddressZero } from 'ethers/constants';
-import { ethers } from 'ethers';
 
 import { ITxObject, StoreAccount, ITxConfig } from '@types';
 import {

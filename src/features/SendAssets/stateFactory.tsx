@@ -1,7 +1,6 @@
 import { useContext } from 'react';
 import { Arrayish, hexlify } from 'ethers/utils/bytes';
 import { bigNumberify } from 'ethers/utils/bignumber';
-import { TransactionResponse } from 'ethers/providers';
 
 import { TUseStateReducerFactory, makePendingTxReceipt, makeTxConfigFromSignedTx } from '@utils';
 import {
