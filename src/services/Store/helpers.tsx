@@ -9,7 +9,8 @@ import {
   StoreAccount,
   ITxStatus,
   ITxReceipt,
-  ExtendedAddressBook
+  ExtendedAddressBook,
+  TUuid
 } from '@types';
 
 import { getLabelByAccount } from './AddressBook';
@@ -58,3 +59,6 @@ export const getTxsFromAccount = (accounts: StoreAccount[]): ITxReceipt[] => {
 
 export const getPendingTransactionsFromAccounts = (accounts: StoreAccount[]): ITxReceipt[] =>
   getTxsFromAccount(accounts).filter(txIsPending);
+
+export const isExcludedAsset = (excludedAssetUuids: TUuid[]) => (asset: StoreAsset): boolean =>
+  !(excludedAssetUuids || []).includes(asset.uuid);
