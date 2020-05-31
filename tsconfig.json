@@ -5,9 +5,10 @@
     "strictNullChecks": true,
     "module": "esnext",
     "jsx": "react",
-    "target": "es2015",
+    "target": "es5",
     "allowJs": true,
     "baseUrl": "./src",
+    "downlevelIteration": true,
     "paths": {
       "shared*": ["../shared*"],
       "types*": ["../shared/types*"],

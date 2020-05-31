@@ -1,7 +1,7 @@
 import ethers from 'ethers';
 import { TransactionReceipt, TransactionResponse, Block } from 'ethers/providers/abstract-provider';
 import { BaseProvider } from 'ethers/providers/base-provider';
-
+import { Web3Provider } from 'ethers/providers/web3-provider';
 import { formatEther } from 'ethers/utils/units';
 import { BigNumber } from 'ethers/utils/bignumber';
 
@@ -16,8 +16,7 @@ export class ProviderHandler {
   public static fetchProvider(network: Network): BaseProvider {
     const contractKitProvider = ContractKitProvider.getContractKitInstance(network);
     const web3Provider = contractKitProvider.web3.currentProvider;
-    const ethersJsProvider = new ethers.providers.Web3Provider(web3Provider as any);
-    console.debug(ethersJsProvider);
+    const ethersJsProvider = new Web3Provider(web3Provider as any);
     return ethersJsProvider;
   }
 
@@ -25,7 +24,6 @@ export class ProviderHandler {
     const contractKitProvider = createCustomNodeProvider(network);
     const web3Provider = contractKitProvider.web3.currentProvider;
     const ethersJsProvider = new ethers.providers.Web3Provider(web3Provider as any);
-    console.debug(ethersJsProvider);
     return ethersJsProvider;
   }
 
@@ -51,12 +49,7 @@ export class ProviderHandler {
   }
 
   public getRawBalance(address: string): Promise<BigNumber> {
-    return this.injectClient((client) => {
-      const z = client.getBalance(address);
-      console.debug('[address to fetch rawbalance]: ', address);
-      console.debug(client);
-      return z;
-    });
+    return this.injectClient((client) => client.getBalance(address));
   }
 
   /* Tested*/

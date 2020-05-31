@@ -241,7 +241,6 @@ export default function AddOrEditNetworkNode({
         initialValues={initialState()}
         onSubmit={async (values: NetworkNodeFields, { setSubmitting }) => {
           const { url, username, password, name, auth, networkId: selectedNetworkId } = values;
-          console.debug('[0]');
           const node = Object.assign(
             {
               url,
@@ -252,16 +251,11 @@ export default function AddOrEditNetworkNode({
             },
             auth ? { auth: { username, password } } : {}
           ) as CustomNodeConfig;
-          console.debug('[1]');
           try {
             const network = getNetworkById(selectedNetworkId);
-            console.debug('[2] network: ', network);
             const provider = new ProviderHandler({ ...network, nodes: [node] }, false);
-            console.debug('[3]');
             await provider.getCurrentBlock();
-            console.debug('[4]');
             if (editNode) {
-              console.debug('[5]');
               updateNode(node, selectedNetworkId, editNode.name);
             } else {
               addNodeToNetwork(node, selectedNetworkId);

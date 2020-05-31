@@ -64,6 +64,11 @@ module.exports =  merge.smart(common, {
       }
     ]
   },
+  node: {
+    fs: 'empty',
+    net: 'empty',
+    child_process: 'empty'
+  },
 
   plugins: [
     new FriendlyErrorsPlugin({

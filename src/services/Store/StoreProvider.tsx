@@ -384,7 +384,6 @@ export const StoreProvider: React.FC = ({ children }) => {
     ) => {
       const network: Network | undefined = getNetworkById(networkId, networks);
       if (!network || !address || !!getAccountByAddressAndNetworkName(address, networkId)) return;
-
       const walletType =
         accountType! === WalletId.WEB3 ? WalletId[getWeb3Config().id] : accountType!;
       const newAsset: Asset = getNewDefaultAssetTemplateByNetwork(assets)(network);
@@ -399,7 +398,6 @@ export const StoreProvider: React.FC = ({ children }) => {
         favorite: false,
         mtime: 0
       };
-
       const existingContact = getContactByAddressAndNetworkId(account.address, networkId);
       if (existingContact) {
         updateContact(existingContact.uuid, {

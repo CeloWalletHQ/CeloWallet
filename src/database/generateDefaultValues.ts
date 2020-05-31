@@ -162,13 +162,7 @@ const addTokensToAssets = add(LSKeys.ASSETS)(
     return pipe(
       map(({ id, tokens }) => ({ id, tokens })),
       filter(({ tokens }) => tokens),
-      chain(({ id, tokens }): ExtendedAsset[] =>
-        tokens.map((token: AssetLegacy) => {
-          const z = formatToken(id)(token);
-          console.debug(z);
-          return z;
-        })
-      ),
+      chain(({ id, tokens }): ExtendedAsset[] => tokens.map(formatToken(id))),
       reduce(toObject('uuid'), {} as any),
       mergeRight(store.assets)
     )(toArray(networks));

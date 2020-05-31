@@ -49,6 +49,7 @@ module.exports = {
       {
         node: {
           fs: 'empty',
+          net: 'empty',
           child_process: 'empty'
         }
       }

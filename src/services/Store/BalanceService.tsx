@@ -110,15 +110,13 @@ const getAccountAssetsBalancesWithJsonRPC = async (
   const { address, assets, network } = account;
   const provider = new ProviderHandler(network);
   const tokens = assets.filter((a: StoreAsset) => a.type === 'erc20');
-  console.debug('here?', account);
   return Promise.all([
     provider
       .getRawBalance(account.address)
       // @ts-ignore The types mismatch due to versioning of ContractKitProvider
       .then(convertBNToBigNumberJS)
       // @ts-ignore The types mismatch due to versioning of ContractKitProvider
-      .then((balance) => ({ [address]: balance }))
-      .catch((err: any) => console.debug('[err fetching balance]: ', err)),
+      .then((balance) => ({ [address]: balance })),
     getTokenBalances(provider, address, tokens)
   ])
     .then(addBalancesToAccount(account))
@@ -128,19 +126,16 @@ const getAccountAssetsBalancesWithJsonRPC = async (
 export const getAccountsAssetsBalances = async (accounts: StoreAccount[]) => {
   // for the moment EthScan is only deployed on Celo, so we use JSON_RPC to get the
   // balance for the accounts on the other networks.
-  console.debug('here1');
   /* @todo: figure this ethscan stuff out */
   // const [ethScanCompatibleAccounts, jsonRPCAccounts] = partition(accounts, (account) =>
   //   ETHSCAN_NETWORKS.some((supportedNetwork) => account && account.networkId === supportedNetwork)
   // );
-  console.debug('here2');
   // ...ethScanCompatibleAccounts.map(getAccountAssetsBalancesWithEthScan),
   const updatedAccounts = await Promise.all(
-    accounts
-      .map(getAccountAssetsBalancesWithJsonRPC)
-      .map((p) => p.catch((e) => console.debug('[error fetching balances]: ', e))) // convert Promise.all ie. into allSettled https://dev.to/vitalets/what-s-wrong-with-promise-allsettled-and-promise-any-5e6o
+    [...accounts.map(getAccountAssetsBalancesWithJsonRPC)].map((p) =>
+      p.catch((e) => console.debug(e))
+    ) // convert Promise.all ie. into allSettled https://dev.to/vitalets/what-s-wrong-with-promise-allsettled-and-promise-any-5e6o
   );
-  console.debug('Updated Accounts: ', updatedAccounts);
 
   const filterZeroBN = (n: TBN) => n.isZero();
 
