@@ -15,7 +15,7 @@ export const ADDRESS_MESSAGES: { [key: string]: AddressMessage } = {
       'This address has been associated with an issue with the Ledger Chrome App. Do not send to this address. Monitor [their Twitter account](https://twitter.com/LedgerHQ) for updates.'
   },
   '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520': {
-    msg: 'Thank you for donating to MyCrypto. TO THE MOON!'
+    msg: 'Thank you for donating to CeloWallet. TO THE MOON!'
   },
   '0x75aa7b0d02532f3833b66c7f0ad35376d373ddf8': {
     gasLimit: 300000,
@@ -151,7 +151,7 @@ export const ADDRESS_MESSAGES: { [key: string]: AddressMessage } = {
   '0xd5e3036d5ce7ec222379d16f6ffc38c38c55bf7f': {
     gasLimit: 200000,
     msg:
-      'Ethereum High HIG is a robust and feather-light cryptocurrency designed to hedge the risk of your portfolio'
+      'Celo High HIG is a robust and feather-light cryptocurrency designed to hedge the risk of your portfolio'
   },
   '0x2a3aa9eca41e720ed46b5a70d6c37efa47f768ac': {
     gasLimit: 200000,

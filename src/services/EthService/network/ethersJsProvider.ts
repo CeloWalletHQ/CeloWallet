@@ -1,26 +1,27 @@
-import { FallbackProvider } from 'ethers/providers/fallback-provider';
+import { ContractKit } from '@celo/contractkit';
 
 import { Network } from '@types';
-import { createFallbackNetworkProviders } from './helpers';
+
+import { createCustomNodeProvider } from './helpers';
 
 interface InstancesObject {
-  [key: string]: FallbackProvider;
+  [key: string]: ContractKit;
 }
 
 // Singleton that handles all our network requests
 // Generates FallbackProviders depending on the network.
 // Should only be used through `ProviderHandler`
-export class EthersJS {
-  public static getEthersInstance(network: Network): FallbackProvider {
-    if (!EthersJS.instances[network.id]) {
-      EthersJS.instances[network.id] = createFallbackNetworkProviders(network);
+export class ContractKitProvider {
+  public static getContractKitInstance(network: Network): ContractKit {
+    if (!ContractKitProvider.instances[network.id]) {
+      ContractKitProvider.instances[network.id] = createCustomNodeProvider(network);
     }
-    return EthersJS.instances[network.id];
+    return ContractKitProvider.instances[network.id];
   }
 
-  public static updateEthersInstance(network: Network): FallbackProvider {
-    EthersJS.instances[network.id] = createFallbackNetworkProviders(network);
-    return EthersJS.instances[network.id];
+  public static updateContractKitInstance(network: Network): ContractKit {
+    ContractKitProvider.instances[network.id] = createCustomNodeProvider(network);
+    return ContractKitProvider.instances[network.id];
   }
 
   private static instances: InstancesObject = {};

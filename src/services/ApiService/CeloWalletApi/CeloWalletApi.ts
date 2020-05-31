@@ -7,8 +7,8 @@ import { default as ApiService } from '../ApiService';
 
 let instantiated: boolean = false;
 
-export default class MyCryptoApiService {
-  public static instance = new MyCryptoApiService();
+export default class CeloWalletApiService {
+  public static instance = new CeloWalletApiService();
 
   private service: AxiosInstance = ApiService.generateInstance({
     baseURL: MYC_API
@@ -16,7 +16,7 @@ export default class MyCryptoApiService {
 
   constructor() {
     if (instantiated) {
-      throw new Error(`MyCryptoApiService has already been instantiated.`);
+      throw new Error(`CeloWalletApiService has already been instantiated.`);
     } else {
       instantiated = true;
     }
@@ -27,7 +27,7 @@ export default class MyCryptoApiService {
       const { data } = await this.service.get('assets.json');
       return data;
     } catch (e) {
-      console.debug('[MyCryptoApiService]: Fetching assets failed: ', e);
+      console.debug('[CeloWalletApiService]: Fetching assets failed: ', e);
       return {};
     }
   };

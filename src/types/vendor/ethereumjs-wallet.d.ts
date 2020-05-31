@@ -214,7 +214,7 @@ declare module 'ethereumjs-wallet' {
     /**
      * @description return the public key
      */
-    getPublicKey(): Buffer; //only returns uncompressed Ethereum-style public keys.
+    getPublicKey(): Buffer; //only returns uncompressed Celo-style public keys.
 
     /**
      * @description return the public key
@@ -256,7 +256,7 @@ declare module 'ethereumjs-wallet' {
     getPrivateKeyString(): string;
 
     /**
-     * @description return the wallet as a JSON string (Version 3 of the Ethereum wallet format)
+     * @description return the wallet as a JSON string (Version 3 of the Celo wallet format)
      */
     toV3(password: string, options?: IV3Options): IV3Wallet;
   }
@@ -302,14 +302,14 @@ declare module 'ethereumjs-wallet' {
   function fromExtendedPublicKey(input: string): IPublicKeyOnlyWallet;
 
   /**
-   * @description import a wallet (Version 1 of the Ethereum wallet format)
+   * @description import a wallet (Version 1 of the Celo wallet format)
    * @param input
    * @param password
    */
   function fromV1(input: IV1Wallet | string, password: string): IFullWallet;
 
   /**
-   * @description import a wallet (Version 3 of the Ethereum wallet format). Set nonStrict true to accept files with mixed-caps.
+   * @description import a wallet (Version 3 of the Celo wallet format). Set nonStrict true to accept files with mixed-caps.
    * @param input
    * @param password
    * @param nonStrict
@@ -317,7 +317,7 @@ declare module 'ethereumjs-wallet' {
   function fromV3(input: IV3Wallet | string, password: string, nonStrict: boolean): IFullWallet;
 
   /**
-   * @description import an Ethereum Pre Sale wallet
+   * @description import an Celo Pre Sale wallet
    * @param input
    * @param password
    */

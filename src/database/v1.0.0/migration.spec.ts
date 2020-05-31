@@ -16,7 +16,7 @@ describe('Migrate to v1.0.0', () => {
         newUUID: {
           ticker: 'GOA',
           uuid: 'newUUID',
-          networkId: 'Ropsten'
+          networkId: 'Baklava'
         }
       })
     } as unknown) as LocalStorage);
@@ -62,14 +62,14 @@ describe('Migrate to v1.0.0', () => {
         '0x01': {
           uuid: '0x01',
           assets: [{ balance: 3, uuid: 'oldUuid' }],
-          networkId: 'Ropsten'
+          networkId: 'Baklava'
         }
       },
       assets: {
         oldUuid: {
           ticker: 'GOA',
           uuid: 'oldUuid',
-          networkId: 'Ropsten'
+          networkId: 'Baklava'
         }
       }
     });

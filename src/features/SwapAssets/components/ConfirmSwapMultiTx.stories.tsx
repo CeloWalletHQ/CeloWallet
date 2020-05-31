@@ -12,7 +12,7 @@ const DAI: ISwapAsset = {
   symbol: 'DAI' as TSymbol,
   uuid: DAIUUID as TUuid
 };
-const ETH: ISwapAsset = { name: 'Ethereum', symbol: 'ETH' as TSymbol, uuid: ETHUUID as TUuid };
+const ETH: ISwapAsset = { name: 'Celo', symbol: 'ETH' as TSymbol, uuid: ETHUUID as TUuid };
 const daiAmount = bigify('100');
 const ethAmount = bigify('0.5');
 const assetPair = {

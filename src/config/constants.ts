@@ -6,7 +6,7 @@ export const MYC_API_MAINNET = 'https://api.mycryptoapi.com/eth';
 
 export const DEFI_RESERVE_MAPPING_URL = 'https://defi.mycryptoapi.com';
 
-export const GITHUB_RELEASE_NOTES_URL = 'https://github.com/MyCryptoHQ/MyCrypto/releases/latest' as TURL;
+export const GITHUB_RELEASE_NOTES_URL = 'https://github.com/CeloWalletHQ/CeloWallet/releases/latest' as TURL;
 
 // The URL for Token Info API requests.
 export const TOKEN_INFO_URL = 'https://api.mycryptoapi.com/tokens';
@@ -17,11 +17,11 @@ export const MYC_API = 'https://mycryptoapi.com/api/v1';
 export const ENS_MANAGER_URL = 'https://app.ens.domains';
 
 // this will be changed when we figure out networks
-export const DEFAULT_NETWORK_FOR_FALLBACK = 'ropsten';
+export const DEFAULT_NETWORK_FOR_FALLBACK = 'Baklava';
 
-export const DEFAULT_NETWORK: NetworkId = 'Ethereum';
+export const DEFAULT_NETWORK: NetworkId = 'Celo';
 
-export const DEFAULT_NETWORK_SYMBOL = 'ETH';
+export const DEFAULT_NETWORK_SYMBOL = 'CGLD';
 
 export const DEFAULT_ASSET_DECIMAL = 18;
 

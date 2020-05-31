@@ -5,7 +5,7 @@ import { fAsset } from './assets';
 
 export const fAccount: StoreAccount = {
   address: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c' as TAddress,
-  networkId: 'Ropsten',
+  networkId: 'Baklava',
   wallet: 'WALLETCONNECT' as WalletId,
   dPath: '',
   assets: [fAsset],

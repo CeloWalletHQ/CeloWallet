@@ -45,7 +45,7 @@ export class LedgerWallet extends HardwareWallet {
   }
 
   public async signRawTransaction(t: EthTx): Promise<Buffer> {
-    // Disable EIP155 in Ethereumjs-tx since it conflicts with Ledger
+    // Disable EIP155 in Celojs-tx since it conflicts with Ledger
     const transaction = new EthTx(t, { chain: t.getChainId(), hardfork: 'tangerineWhistle' });
     const txFields = getTransactionFields(transaction);
     transaction.v = toBuffer(transaction.getChainId());

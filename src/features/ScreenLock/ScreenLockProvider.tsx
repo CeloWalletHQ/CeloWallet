@@ -86,7 +86,7 @@ class ScreenLockProvider extends Component<
     const { destroyEncryptedCache, encryptedDbState, importStorage } = this.props;
     try {
       const passwordHash = hashPassword(password);
-      // Decrypt the data and store it to the MyCryptoCache
+      // Decrypt the data and store it to the CeloWalletCache
       const decryptedData = decrypt(encryptedDbState.data as string, passwordHash);
       importStorage(decryptedData);
 

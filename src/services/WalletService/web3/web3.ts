@@ -11,7 +11,7 @@ export const unlockWeb3 = (onSuccess: (data: any) => void) => async (networks: N
     const network: Network | undefined = getNetworkByChainId(parseInt(chainId, 10), networks);
 
     if (!network) {
-      throw new Error(`MyCrypto doesn’t support the network with chain ID '${chainId}'`);
+      throw new Error(`CeloWallet doesn’t support the network with chain ID '${chainId}'`);
     }
 
     if (!isWeb3Node(nodeLib)) {

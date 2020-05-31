@@ -11,7 +11,7 @@ export default class EtherscanService {
 
   constructor() {
     if (instantiated) {
-      throw new Error(`Ethereum service has already been instantiated.`);
+      throw new Error(`Celo service has already been instantiated.`);
     } else {
       instantiated = true;
     }
@@ -38,7 +38,7 @@ export default class EtherscanService {
 
   public getBalance = async (
     address: string,
-    networkId: NetworkId = 'Ethereum'
+    networkId: NetworkId = 'Celo'
   ): Promise<GetBalanceResponse | null> => {
     if (!Object.keys(ETHERSCAN_API_URLS).includes(networkId)) {
       throw new Error(
@@ -68,7 +68,7 @@ export default class EtherscanService {
 
   public getLastTx = async (
     address: string,
-    networkId: NetworkId = 'Ethereum'
+    networkId: NetworkId = 'Celo'
   ): Promise<GetLastTxResponse | null> => {
     if (!Object.keys(ETHERSCAN_API_URLS).includes(networkId)) {
       throw new Error(

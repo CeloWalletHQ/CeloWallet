@@ -94,7 +94,7 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>) {
     customDetails,
     resetFlow
   }: Props) {
-    const { isMyCryptoMember } = useContext(StoreContext);
+    const { isCeloWalletMember } = useContext(StoreContext);
     const [protectTx, setProtectTx] = useState<ITxObject | null>(null);
     const { state, initWith, prepareTx, sendTx } = useTxMulti();
     const { transactions, _currentTxIdx, account, network } = state;
@@ -127,7 +127,7 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>) {
       component: ProtectTxReport
     };
 
-    const protectTxStepperSteps = isMyCryptoMember
+    const protectTxStepperSteps = isCeloWalletMember
       ? [
           {
             component: ProtectTxProtection,

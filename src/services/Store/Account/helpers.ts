@@ -29,7 +29,7 @@ export const getAccountsByAsset = (
 export const getBaseAsset = (account: StoreAccount) =>
   account.assets.find((a) => a.type === 'base');
 
-export const isEthereumAccount = (account: StoreAccount | IAccount) =>
+export const isCeloAccount = (account: StoreAccount | IAccount) =>
   account.networkId === DEFAULT_NETWORK;
 
 export const isAccountInNetwork = (account: StoreAccount | IAccount, networkIdToFilter: string) =>

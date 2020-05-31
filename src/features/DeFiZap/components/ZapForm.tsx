@@ -11,8 +11,8 @@ import { SPACING } from '@theme';
 import { IAccount, Network, StoreAccount, Asset } from '@types';
 import { AccountDropdown, InlineMessage, AmountInput } from '@components';
 import { validateAmountField } from '@features/SendAssets/components/validators/validators';
-import { isEthereumAccount } from '@services/Store/Account/helpers';
-import { ETHUUID } from '@utils';
+import { isCeloAccount } from '@services/Store/Account/helpers';
+import { CGLDUUID } from '@utils';
 
 import { ZapInteractionState, ISimpleTxFormFull } from '../types';
 import ZapSelectedBanner from './ZapSelectedBanner';
@@ -67,9 +67,9 @@ const ZapForm = ({ onComplete, zapSelected }: Props) => {
   const { accounts } = useContext(StoreContext);
   const { assets } = useContext(AssetContext);
   const { networks } = useContext(NetworkContext);
-  const ethAsset = assets.find((asset) => asset.uuid === ETHUUID) as Asset;
-  const network = networks.find((n) => n.baseAsset === ETHUUID) as Network;
-  const relevantAccounts = accounts.filter(isEthereumAccount);
+  const ethAsset = assets.find((asset) => asset.uuid === CGLDUUID) as Asset;
+  const network = networks.find((n) => n.baseAsset === CGLDUUID) as Network;
+  const relevantAccounts = accounts.filter(isCeloAccount);
 
   return (
     <ZapFormUI

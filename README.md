@@ -1,21 +1,15 @@
-# MyCrypto Beta Web App
+# CeloWallet Web App
 
-[![Build](https://github.com/MyCryptoHQ/MyCrypto/workflows/GitHub%20CI/badge.svg?branch=master)](https://github.com/MyCryptoHQ/MyCrypto/actions)
-[![Coverage Status](https://coveralls.io/repos/github/MyCryptoHQ/MyCrypto/badge.svg?branch=master)](https://coveralls.io/github/MyCryptoHQ/MyCrypto?branch=develop)
+This repo stores both the beta and production versions of the CeloWallet codebase.
 
-This repo stores both the beta and production versions of the MyCrypto codebase.
+#### The default `master` branch represents the beta code hosted on [celowallet.io](https://celowallet.io)
 
-#### The default `master` branch represents the beta code hosted on [beta.mycrypto.com](https://beta.mycrypto.com)
+#### Documentation can be found in [our wiki](https://github.com/celowallet/celowallet/wiki)
 
-#### The `legacy` branch represents the production code hosted on [mycrypto.com](https://mycrypto.com)
-
-#### Documentation can be found in [our wiki](https://github.com/MyCryptoHQ/MyCrypto/wiki)
-
-- [Getting your token added to MyCrypto](https://github.com/MyCryptoHQ/MyCrypto/wiki/Contributing-%E2%80%90-Adding-Tokens)
-- [Adding your Network or Node](https://github.com/MyCryptoHQ/MyCrypto/wiki/Contributing-%E2%80%90-Network-or-Node)
-- [Adding your Web3 Wallet & Logo](https://github.com/MyCryptoHQ/MyCrypto/wiki/Contributing-%E2%80%90-Web3-Wallet)
-- [MyCryptoBuilds](https://github.com/MyCryptoHQ/MyCrypto/wiki/MyCryptoBuilds) - access a build by commithash, PR number, or branch name without building it yourself!
-- [Enabling or disabling experimental features](https://github.com/MyCryptoHQ/MyCrypto/wiki/Feature-flags)
+- [Getting your token added to Celo Wallet](https://github.com/celowallet/celowallet/wiki/Contributing-%E2%80%90-Adding-Tokens)
+- [Adding your Network or Node](https://github.com/celowallet/celowallet/wiki/Contributing-%E2%80%90-Network-or-Node)
+- [Adding your Web3 Wallet & Logo](https://github.com/celowallet/celowallet/wiki/Contributing-%E2%80%90-Web3-Wallet)
+- [Enabling or disabling experimental features](https://github.com/celowallet/celowallet/wiki/Feature-flags)
 
 ## Development / Build Requirements
 

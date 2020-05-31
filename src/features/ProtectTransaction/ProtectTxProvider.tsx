@@ -66,7 +66,7 @@ const numOfSteps = 3;
 export const ProtectTxContext = createContext({} as ProtectTxContext);
 
 const ProtectTxProvider: React.FC = ({ children }) => {
-  const { isMyCryptoMember } = useContext(StoreContext);
+  const { isCeloWalletMember } = useContext(StoreContext);
   const { assets } = useContext(AssetContext);
   const [state, setState] = useState<ProtectTxState>({ ...protectTxProviderInitialState });
   const { isMdScreen } = useScreenSize();
@@ -147,7 +147,7 @@ const ProtectTxProvider: React.FC = ({ children }) => {
 
   const goToInitialStepOrFetchReport = useCallback(
     (receiverAddress?: string, network?: Network) => {
-      if (state.protectTxEnabled || isMyCryptoMember) {
+      if (state.protectTxEnabled || isCeloWalletMember) {
         setState((prevState) => ({
           ...prevState,
           cryptoScamAddressReport: null,

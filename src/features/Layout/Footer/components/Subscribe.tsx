@@ -24,7 +24,7 @@ const Subscribe: FC = () => {
       subscribeToMailingList(emailValue).catch(() => setSubmitted(true));
 
       trackSubscribed({
-        actionName: 'Subscribed to MyCrypto'
+        actionName: 'Subscribed to CeloWallet'
       });
     },
     [emailValue, setSubmitted]

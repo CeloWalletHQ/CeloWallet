@@ -18,6 +18,6 @@ storiesOf('ProtectTransaction', module)
     design: {
       type: 'figma',
       url:
-        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BMyCrypto%5D-GAU-Master?node-id=5137%3A5310'
+        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BCeloWallet%5D-GAU-Master?node-id=5137%3A5310'
     }
   });

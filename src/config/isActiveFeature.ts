@@ -1,5 +1,3 @@
-import { IS_DEV } from '@utils';
-
 export enum FEATURE_LIST {
   DASHBOARD = 'DASHBOARD',
   BUY = 'BUY',
@@ -21,7 +19,8 @@ export enum FEATURE_LIST {
   DEFIZAP = 'DEFIZAP',
   MYC_MEMBERSHIP = 'MYC_MEMBERSHIP',
   PROTECT_TX = 'PROTECT_TX',
-  ENS = 'ENS'
+  ENS = 'ENS',
+  MAINBANNER = 'MAINBANNER'
 }
 
 export type IIS_ACTIVE_FEATURE = {
@@ -30,7 +29,7 @@ export type IIS_ACTIVE_FEATURE = {
 
 export const IS_ACTIVE_FEATURE: IIS_ACTIVE_FEATURE = {
   DASHBOARD: true,
-  BUY: true,
+  BUY: false,
   SEND_ASSETS: true,
   BROADCAST_TX: true,
   ADD_ACCOUNT: true,
@@ -41,13 +40,14 @@ export const IS_ACTIVE_FEATURE: IIS_ACTIVE_FEATURE = {
   TX_HISTORY: true,
   REQUEST_ASSETS: true,
   CREATE_WALLET: true,
-  SCREEN_LOCK: true,
+  SCREEN_LOCK: false,
   SETTINGS: true,
-  SWAP: true,
-  DOWNLOAD_DESKTOP_APP: true,
+  SWAP: false,
+  DOWNLOAD_DESKTOP_APP: false,
   PRIVATE_TAGS: true,
-  DEFIZAP: true,
-  MYC_MEMBERSHIP: IS_DEV,
-  PROTECT_TX: IS_DEV,
-  ENS: true
+  DEFIZAP: false,
+  MYC_MEMBERSHIP: false,
+  PROTECT_TX: false,
+  ENS: false,
+  MAINBANNER: false
 };

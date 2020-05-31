@@ -5,7 +5,7 @@ export { getDefaultEstimates, fetchGasPriceEstimates, getGasEstimate } from './G
 export { DeFiReserveMapService } from './DeFiReserveMap';
 export { GithubService } from './Github';
 export { DexService } from './Dex';
-export { MyCryptoApiService } from './MyCryptoApi';
+export { CeloWalletApiService } from './CeloWalletApi';
 export { GetBalanceResponse, GetLastTxResponse, EtherscanService } from './Etherscan';
 export {
   CryptoScamDBNoInfoResponse,

@@ -26,7 +26,7 @@ export function makeEnclaveWallet(walletType: WalletTypes) {
     }
 
     public async signRawTransaction(tx: EthTx): Promise<Buffer> {
-      // Disable EIP155 in Ethereumjs-tx since it conflicts with Ledger
+      // Disable EIP155 in Celojs-tx since it conflicts with Ledger
       const t =
         walletType === WalletTypes.LEDGER
           ? new EthTx(tx, { chain: tx.getChainId(), hardfork: 'tangerineWhistle' })

@@ -18,7 +18,7 @@ describe('Schema', () => {
   beforeAll(() => {
     // add one token to networks, to test adding tokens from localstorage
     const customNetworkConfig = { ...NETWORKS_CONFIG };
-    customNetworkConfig.Ethereum.tokens.push(DAI);
+    customNetworkConfig.Celo.tokens.push(DAI);
 
     defaultData = createDefaultValues(SCHEMA_BASE, customNetworkConfig);
   });
@@ -37,19 +37,19 @@ describe('Schema', () => {
   describe('Seed: Contracts', () => {
     it('add Contracts to Store', () => {
       const contracts = toArray(defaultData[LSKeys.CONTRACTS]);
-      expect(contracts.length).toBeGreaterThanOrEqual(40);
+      expect(contracts.length).toBeGreaterThanOrEqual(3);
     });
   });
 
   describe('Seed: Networks', () => {
     it('adds Contracts to Networks', () => {
       const contracts = toArray(defaultData[LSKeys.NETWORKS]).flatMap((n) => n.contracts);
-      expect(contracts.length).toBeGreaterThanOrEqual(42);
+      expect(contracts.length).toBeGreaterThanOrEqual(3);
     });
 
     it('adds Nodes to each Network', () => {
       const nodes = toArray(defaultData[LSKeys.NETWORKS]).flatMap((n) => n.nodes);
-      expect(nodes.length).toBe(40);
+      expect(nodes.length).toBe(3);
     });
 
     it('adds BaseAssets to Networks', () => {

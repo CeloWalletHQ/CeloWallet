@@ -9,7 +9,7 @@ import { noOp } from '@utils';
 import { ProtectTxSign } from './ProtectTxSign';
 import ProtectTxProvider from '../ProtectTxProvider';
 
-const ropstenId: NetworkId = 'Ropsten';
+const ropstenId: NetworkId = 'Baklava';
 const network: Network = {
   ...NETWORKS_CONFIG[ropstenId],
   nodes: NODES_CONFIG[ropstenId]
@@ -17,7 +17,7 @@ const network: Network = {
 
 const account = {
   address: '0x8fe684ae26557DfFF70ceE9a4Ff5ee7251a31AD5',
-  networkId: 'Ropsten',
+  networkId: 'Baklava',
   wallet: WalletId.MNEMONIC_PHRASE
 };
 
@@ -50,6 +50,6 @@ storiesOf('ProtectTransaction', module)
     design: {
       type: 'figma',
       url:
-        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BMyCrypto%5D-GAU-Master?node-id=5137%3A5310'
+        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BCeloWallet%5D-GAU-Master?node-id=5137%3A5310'
     }
   });

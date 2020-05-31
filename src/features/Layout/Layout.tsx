@@ -6,6 +6,8 @@ import { Banner } from '@components';
 import { BREAK_POINTS, MAX_CONTENT_WIDTH, MIN_CONTENT_PADDING, SPACING } from '@theme';
 import { DrawerContext, ErrorContext } from '@features';
 import translate, { translateRaw } from '@translations';
+import { IS_ACTIVE_FEATURE } from '@config';
+
 import Header from './Header';
 import Footer from './Footer';
 
@@ -103,7 +105,9 @@ export default function Layout({ config = {}, className = '', children }: Props)
         {shouldShowError() && error && (
           <Banner type={BannerType.ERROR} value={getErrorMessage(error)} />
         )}
-        <Banner type={BannerType.ANNOUNCEMENT} value={betaAnnouncement} />
+        {IS_ACTIVE_FEATURE.MAINBANNER && (
+          <Banner type={BannerType.ANNOUNCEMENT} value={betaAnnouncement} />
+        )}
         <Header
           drawerVisible={visible}
           toggleDrawerVisible={toggleVisible}

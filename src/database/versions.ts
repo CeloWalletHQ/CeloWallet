@@ -15,8 +15,8 @@ export const dbVersions = {
   },
   'v0.0.1': {
     version: 'v0.0.1',
-    main: 'MyCryptoStorage',
-    vault: 'MyCryptoEncrypted',
+    main: 'CeloWalletStorage',
+    vault: 'CeloWalletEncrypted',
     schema: {},
     migrate: noOp
   }

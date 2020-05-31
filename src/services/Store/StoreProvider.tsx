@@ -60,7 +60,7 @@ import { AccountContext, getDashboardAccounts } from './Account';
 import { SettingsContext } from './Settings';
 import { NetworkContext, getNetworkById } from './Network';
 import { findNextUnusedDefaultLabel, AddressBookContext } from './AddressBook';
-import { MyCryptoApiService, ANALYTICS_CATEGORIES } from '../ApiService';
+import { ANALYTICS_CATEGORIES } from '../ApiService';
 
 export interface CoinGeckoManifest {
   [uuid: string]: string;
@@ -69,7 +69,7 @@ export interface CoinGeckoManifest {
 interface State {
   readonly accounts: StoreAccount[];
   readonly networks: Network[];
-  readonly isMyCryptoMember: boolean;
+  readonly isCeloWalletMember: boolean;
   readonly membershipState: MembershipState;
   readonly memberships?: MembershipStatus[];
   readonly membershipExpirations: BigNumber[];
@@ -119,7 +119,7 @@ export const StoreProvider: React.FC = ({ children }) => {
     deleteAccount,
     createAccountWithID
   } = useContext(AccountContext);
-  const { assets, addAssetsFromAPI } = useContext(AssetContext);
+  const { assets } = useContext(AssetContext);
   const { settings, updateSettingsAccounts } = useContext(SettingsContext);
   const { networks } = useContext(NetworkContext);
   const {
@@ -171,7 +171,7 @@ export const StoreProvider: React.FC = ({ children }) => {
       }
     }
   })();
-  const isMyCryptoMember = membershipState === MembershipState.MEMBER;
+  const isCeloWalletMember = membershipState === MembershipState.MEMBER;
 
   // Naive polling to get the Balances of baseAsset and tokens for each account.
   useInterval(
@@ -251,10 +251,10 @@ export const StoreProvider: React.FC = ({ children }) => {
     setPendingTransactions(getPendingTransactionsFromAccounts(currentAccounts));
   }, [currentAccounts]);
 
-  // fetch assets from api
-  useEffect(() => {
-    MyCryptoApiService.instance.getAssets().then(addAssetsFromAPI);
-  }, [assets.length]);
+  // fetch assets from api // @todo: deploy api.
+  // useEffect(() => {
+  //   CeloWalletApiService.instance.getAssets().then(addAssetsFromAPI);
+  // }, [assets.length]);
 
   // A change to pending txs is detected
   useEffect(() => {
@@ -321,7 +321,7 @@ export const StoreProvider: React.FC = ({ children }) => {
   const state: State = {
     accounts,
     networks,
-    isMyCryptoMember,
+    isCeloWalletMember,
     membershipState,
     memberships,
     membershipExpirations,

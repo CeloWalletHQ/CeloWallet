@@ -20,7 +20,7 @@ const ratesContextMock = {
   getAssetRate: () => 100
 };
 
-const ropstenId: NetworkId = 'Ropsten';
+const ropstenId: NetworkId = 'Baklava';
 const network: Network[] = ([
   {
     ...NETWORKS_CONFIG[ropstenId],
@@ -36,7 +36,7 @@ const formValues = {
   amount: '0.01',
   account: {
     address: '0x8fe684ae26557DfFF70ceE9a4Ff5ee7251a31AD5',
-    networkId: 'Ropsten',
+    networkId: 'Baklava',
     wallet: WalletId.MNEMONIC_PHRASE
   },
   network,
@@ -108,20 +108,20 @@ storiesOf('ProtectTransaction', module)
     design: {
       type: 'figma',
       url:
-        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BMyCrypto%5D-GAU-Master?node-id=5137%3A5310'
+        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BCeloWallet%5D-GAU-Master?node-id=5137%3A5310'
     }
   })
   .add('Step 1 - Web 3', (_) => ProtectTxStep1Web3(), {
     design: {
       type: 'figma',
       url:
-        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BMyCrypto%5D-GAU-Master?node-id=5137%3A5310'
+        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BCeloWallet%5D-GAU-Master?node-id=5137%3A5310'
     }
   })
   .add('Step 1 - Mobile', (_) => ProtectTxStep1Mobile(), {
     design: {
       type: 'figma',
       url:
-        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BMyCrypto%5D-GAU-Master?node-id=5137%3A5310'
+        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BCeloWallet%5D-GAU-Master?node-id=5137%3A5310'
     }
   });

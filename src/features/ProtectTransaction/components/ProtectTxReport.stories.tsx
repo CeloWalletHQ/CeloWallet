@@ -10,7 +10,7 @@ import { ProtectTxReport } from './ProtectTxReport';
 import { ProtectTxState, ProtectTxContext } from '../ProtectTxProvider';
 import { Panel } from '@mycrypto/ui';
 
-const ropstenId: NetworkId = 'Ropsten';
+const ropstenId: NetworkId = 'Baklava';
 const asset = find(assets, { networkId: ropstenId });
 
 const etherscanBalanceReport: GetBalanceResponse = {
@@ -58,7 +58,7 @@ storiesOf('ProtectTransaction', module)
     design: {
       type: 'figma',
       url:
-        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BMyCrypto%5D-GAU-Master?node-id=5137%3A5310'
+        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BCeloWallet%5D-GAU-Master?node-id=5137%3A5310'
     }
   });
 
@@ -148,7 +148,7 @@ storiesOf('ProtectTransaction', module)
     design: {
       type: 'figma',
       url:
-        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BMyCrypto%5D-GAU-Master?node-id=5137%3A5310'
+        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BCeloWallet%5D-GAU-Master?node-id=5137%3A5310'
     }
   });
 
@@ -163,7 +163,7 @@ const cryptoScamAddressVerifiedReport = {
     entries: [
       {
         id: '635b2f',
-        name: 'MyCrypto',
+        name: 'CeloWallet',
         type: 'verified',
         url: 'https://mycrypto.com',
         hostname: 'mycrypto.com',
@@ -172,7 +172,7 @@ const cryptoScamAddressVerifiedReport = {
         category: null,
         subcategory: null,
         description:
-          'MyCrypto is a free, open-source interface for interacting with the blockchain',
+          'CeloWallet is a free, open-source interface for interacting with the blockchain',
         reporter: null,
         ip: null,
         severity: null,
@@ -200,6 +200,6 @@ storiesOf('ProtectTransaction', module)
     design: {
       type: 'figma',
       url:
-        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BMyCrypto%5D-GAU-Master?node-id=5137%3A5310'
+        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BCeloWallet%5D-GAU-Master?node-id=5137%3A5310'
     }
   });

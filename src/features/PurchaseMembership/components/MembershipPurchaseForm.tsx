@@ -9,11 +9,11 @@ import { SPACING } from '@theme';
 import { IAccount, Network, StoreAccount, Asset, TSymbol, TUuid } from '@types';
 import { AccountDropdown, InlineMessage, AmountInput, Button } from '@components';
 import { validateAmountField } from '@features/SendAssets/components/validators/validators';
-import { isEthereumAccount } from '@services/Store/Account/helpers';
+import { isCeloAccount } from '@services/Store/Account/helpers';
 import { StoreContext, AssetContext, NetworkContext } from '@services/Store';
 import { fetchGasPriceEstimates } from '@services/ApiService';
 import { getNonce } from '@services/EthService';
-import { ETHUUID, noOp } from '@utils';
+import { noOp, CGLDUUID } from '@utils';
 import { getAccountsWithAssetBalance } from '@features/SwapAssets/helpers';
 
 import MembershipDropdown from './MembershipDropdown';
@@ -57,8 +57,8 @@ const FormFieldSubmitButton = styled(Button)`
 const MembershipForm = ({ isSubmitting, onComplete }: Props) => {
   const { accounts } = useContext(StoreContext);
   const { networks } = useContext(NetworkContext);
-  const network = networks.find((n) => n.baseAsset === ETHUUID) as Network;
-  const relevantAccounts = accounts.filter(isEthereumAccount);
+  const network = networks.find((n) => n.baseAsset === CGLDUUID) as Network;
+  const relevantAccounts = accounts.filter(isCeloAccount);
 
   return (
     <MembershipFormUI

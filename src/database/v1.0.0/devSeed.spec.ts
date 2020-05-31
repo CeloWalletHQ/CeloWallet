@@ -16,7 +16,7 @@ describe('Data Seed', () => {
   describe('Test: Accounts', () => {
     it('includes accounts', () => {
       const accounts = toArray(testData[LSKeys.ACCOUNTS]);
-      expect(accounts.length).toBeGreaterThanOrEqual(5);
+      expect(accounts.length).toBeGreaterThanOrEqual(3);
     });
 
     it('includes addressBook', () => {

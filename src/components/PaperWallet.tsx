@@ -66,7 +66,7 @@ const Resources = styled.p`
   font-weight: normal;
 `;
 
-const MyCryptoImage = styled.img`
+const CeloWalletImage = styled.img`
   width: 360px;
   height: auto;
 `;
@@ -237,7 +237,7 @@ export default class PaperWallet extends React.Component<Props, {}> {
         <PartWrapper>
           <Part hasRightBorder={true} hasTopBorder={true}>
             <div>
-              <MyCryptoImage src={myCryptoIcon} />
+              <CeloWalletImage src={myCryptoIcon} />
               <LogoText>{translateRaw('PAPER_WALLET')}</LogoText>
             </div>
           </Part>

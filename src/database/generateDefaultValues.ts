@@ -157,13 +157,18 @@ const addTokensToAssets = add(LSKeys.ASSETS)(
       type: 'erc20',
       isCustom: a.isCustom
     });
-
     // From { ETH: { tokens: [ {<tokens>} ] }}
     // to   { <asset_uuid>: {<asset>} }
     return pipe(
       map(({ id, tokens }) => ({ id, tokens })),
       filter(({ tokens }) => tokens),
-      chain(({ id, tokens }): ExtendedAsset[] => tokens.map(formatToken(id))),
+      chain(({ id, tokens }): ExtendedAsset[] =>
+        tokens.map((token: AssetLegacy) => {
+          const z = formatToken(id)(token);
+          console.debug(z);
+          return z;
+        })
+      ),
       reduce(toObject('uuid'), {} as any),
       mergeRight(store.assets)
     )(toArray(networks));

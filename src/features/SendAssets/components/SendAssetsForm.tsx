@@ -67,7 +67,7 @@ import {
 } from '@config';
 import { RatesContext } from '@services/RatesProvider';
 import TransactionFeeDisplay from '@components/TransactionFlow/displays/TransactionFeeDisplay';
-import { formatSupportEmail, isFormValid as checkFormValid, ETHUUID } from '@utils';
+import { formatSupportEmail, isFormValid as checkFormValid, CGLDUUID } from '@utils';
 import { ProtectTxUtils } from '@features/ProtectTransaction';
 import { ProtectTxShowError } from '@features/ProtectTransaction/components/ProtectTxShowError';
 import { ProtectTxButton } from '@features/ProtectTransaction/components/ProtectTxButton';
@@ -271,7 +271,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
   });
 
   const validAccounts = accounts.filter((account) => account.wallet !== WalletId.VIEW_ONLY);
-  const userAccountEthAsset = userAssets.find((a) => a.uuid === ETHUUID);
+  const userAccountCGLD = userAssets.find((a) => a.uuid === CGLDUUID);
 
   return (
     <div
@@ -280,7 +280,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
       }`}
     >
       <Formik
-        initialValues={getInitialFormikValues(txConfig, userAccountEthAsset, defaultNetwork)}
+        initialValues={getInitialFormikValues(txConfig, userAccountCGLD, defaultNetwork)}
         validationSchema={SendAssetsSchema}
         onSubmit={(fields) => {
           onComplete(fields);

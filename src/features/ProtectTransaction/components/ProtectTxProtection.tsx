@@ -137,7 +137,7 @@ interface Props {
 
 export const ProtectTxProtection: FC<Props> = ({ sendAssetsValues, handleProtectTxSubmit }) => {
   const { getAssetRate } = useContext(RatesContext);
-  const { isMyCryptoMember } = useContext(StoreContext);
+  const { isCeloWalletMember } = useContext(StoreContext);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -270,7 +270,7 @@ export const ProtectTxProtection: FC<Props> = ({ sendAssetsValues, handleProtect
       {!web3Wallet && (
         <p className="description-text">{translateRaw('PROTECTED_TX_NOT_WEB3_WALLET_DESC')}</p>
       )}
-      {!hasMissingInfoError && !isMyCryptoMember && (
+      {!hasMissingInfoError && !isCeloWalletMember && (
         <>
           <hr />
           <h4 className="send-with-confidence">

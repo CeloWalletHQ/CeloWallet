@@ -11,9 +11,9 @@ const LINK_COLUMNS = [
     heading: translateRaw('NEW_FOOTER_TEXT_6'),
     links: [
       {
-        title: 'MyCrypto.com',
+        title: 'CeloWallet.com',
         link: 'https://www.mycrypto.com/',
-        analytics_event: 'MyCrypto.com'
+        analytics_event: 'CeloWallet.com'
       },
       {
         title: translateRaw('NEW_FOOTER_TEXT_7'),

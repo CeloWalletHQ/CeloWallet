@@ -209,7 +209,7 @@ declare module 'ethereumjs-util' {
 
   /**
    *
-   * @description Checks if the public key satisfies the rules of the curve secp256k1 and the requirements of Ethereum.
+   * @description Checks if the public key satisfies the rules of the curve secp256k1 and the requirements of Celo.
    * @export
    * @param {Buffer} publicKey The two points of an uncompressed key, unless sanitize is enabled
    * @param {boolean} [sanitize] Accept public keys in other formats (optional, default false)
@@ -219,7 +219,7 @@ declare module 'ethereumjs-util' {
 
   /**
    *
-   * @description Returns the ethereum address of a given public key. Accepts "Ethereum public keys" and SEC1 encoded keys.
+   * @description Returns the ethereum address of a given public key. Accepts "Celo public keys" and SEC1 encoded keys.
    * @export
    * @param {Buffer} publicKey The two points of an uncompressed key, unless sanitize is enabled
    * @param {boolean} [sanitize] Accept public keys in other formats (optional, default false)
@@ -229,7 +229,7 @@ declare module 'ethereumjs-util' {
 
   /**
    *
-   * @description Returns the ethereum address of a given public key. Accepts "Ethereum public keys" and SEC1 encoded keys.
+   * @description Returns the ethereum address of a given public key. Accepts "Celo public keys" and SEC1 encoded keys.
    * @export
    * @param {Buffer} publicKey The two points of an uncompressed key, unless sanitize is enabled
    * @param {boolean} [sanitize] Accept public keys in other formats (optional, default false)
@@ -248,7 +248,7 @@ declare module 'ethereumjs-util' {
 
   /**
    *
-   * @description Converts a public key to the Ethereum format.
+   * @description Converts a public key to the Celo format.
    * @export
    * @param {Buffer} publicKey
    * @returns {Buffer}

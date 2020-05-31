@@ -262,7 +262,7 @@ export default function GetStartedPanel() {
             description={translate('HOME_GET_STARTED_USED_DESCRIPTION')}
             icon={signInIcon}
             link={ROUTE_PATHS.DASHBOARD.path}
-            eventAction="I've used MyCrypto"
+            eventAction="I've used CeloWallet"
           />
         </ActionCardsWrapper>
       </ActionsWrapper>

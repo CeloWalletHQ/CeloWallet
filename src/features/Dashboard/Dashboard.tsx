@@ -30,7 +30,7 @@ const DashboardWrapper = styled.div`
 `;
 
 export default function Dashboard() {
-  const { isMyCryptoMember, currentAccounts } = useContext(StoreContext);
+  const { isCeloWalletMember, currentAccounts } = useContext(StoreContext);
   const { accounts } = useContext(AccountContext);
   return (
     <DashboardWrapper>
@@ -72,7 +72,7 @@ export default function Dashboard() {
             <DashboardZapCTA className="Dashboard-mobile-modifiedPanel" />
           </div>
         )}
-        {!isMyCryptoMember && <BannerAd />}
+        {!isCeloWalletMember && <BannerAd />}
         <div className="Dashboard-mobile-section">
           <RecentTransactionList accountsList={currentAccounts} />
         </div>
@@ -118,7 +118,7 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-        {!isMyCryptoMember && <BannerAd />}
+        {!isCeloWalletMember && <BannerAd />}
         <div className="Dashboard-desktop-bottom">
           <RecentTransactionList
             accountsList={currentAccounts}

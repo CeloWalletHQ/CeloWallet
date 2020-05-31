@@ -2,7 +2,7 @@ import React from 'react';
 
 import { fTxConfigs, fAccount, fNetwork, fTxParcels } from '@fixtures';
 import { ITxType, TSymbol, ITxConfig, TUuid } from '@types';
-import { noOp, bigify, DAIUUID, ETHUUID } from '@utils';
+import { noOp, bigify, DAIUUID, CGLDUUID } from '@utils';
 
 import MultiTxReceipt from './MultiTxReceipt';
 import { SwapDisplayData, ISwapAsset } from '@features/SwapAssets/types';
@@ -14,7 +14,7 @@ const DAI: ISwapAsset = {
   symbol: 'DAI' as TSymbol,
   uuid: DAIUUID as TUuid
 };
-const ETH: ISwapAsset = { name: 'Ethereum', symbol: 'ETH' as TSymbol, uuid: ETHUUID as TUuid };
+const ETH: ISwapAsset = { name: 'Celo', symbol: 'CGLD' as TSymbol, uuid: CGLDUUID as TUuid };
 const swapDisplay: SwapDisplayData = {
   fromAsset: DAI,
   toAsset: ETH,

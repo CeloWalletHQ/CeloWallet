@@ -1,16 +1,17 @@
 {
-  "name": "MyCrypto",
-  "author": "MyCryptoHQ",
+  "name": "CeloWallet",
+  "author": "CeloWallet",
   "version": "1.7.3",
   "main": "main.js",
-  "description": "MyCrypto is a free, open-source interface for interacting with the blockchain",
-  "repository": "https://github.com/MyCryptoHQ/MyCrypto",
+  "description": "CeloWallet is a free, open-source interface for interacting with the blockchain",
+  "repository": "https://github.com/CeloWallet/CeloWallet",
   "engines": {
     "node": "12.14.1",
     "npm": ">= 6.4.1",
     "yarn": ">= 1.19.1"
   },
   "dependencies": {
+    "@celo/contractkit": "0.4.5",
     "@hot-loader/react-dom": "16.11.0",
     "@ledgerhq/hw-app-eth": "4.48.0",
     "@ledgerhq/hw-transport-node-hid-noevents": "4.48.0",
@@ -37,6 +38,7 @@
     "ethers": "4.0.44",
     "font-awesome": "4.7.0",
     "formik": "2.1.4",
+    "fs": "0.0.1-security",
     "graphql": "15.0.0",
     "hdkey": "1.1.1",
     "html2canvas": "1.0.0-alpha.12",
@@ -46,6 +48,7 @@
     "jspdf": "1.5.3",
     "lodash": "4.17.15",
     "moment": "2.22.1",
+    "net": "1.0.2",
     "qrcode": "1.4.4",
     "query-string": "6.0.0",
     "ramda": "0.26.1",
@@ -214,7 +217,8 @@
     "worker-loader": "2.0.0"
   },
   "resolutions": {
-    "node-fetch": "2.6.0"
+    "node-fetch": "2.6.0",
+    "@babel/preset-env": "7.5.5"
   },
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack --config webpack_config/production.js",

@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import { ANALYTICS_CATEGORIES } from '@services';
 import { donationAddressMap } from '@config';
 import translate from '@translations';
-import ether from '@assets/images/ether.png';
+import celo from '@assets/images/celo.svg';
 import bitcoin from '@assets/images/bitcoin.png';
 import Subscribe from './Subscribe';
 import './DonateAndSubscribe.scss';
@@ -74,13 +74,13 @@ const Donate: FC = () => {
       <h2>{translate('NEW_FOOTER_TEXT_1')}</h2>
       <section className="Donate-buttons">
         <CopyToClipboard
-          text={donationAddressMap.ETH}
+          text={donationAddressMap.CELO}
           onCopy={() => {
             displayMessage();
-            trackDonationClicked('Ethereum');
+            trackDonationClicked('Celo');
           }}
         >
-          <DonationButton icon={ether} title="Ethereum" />
+          <DonationButton icon={celo} title="Celo" />
         </CopyToClipboard>
         <CopyToClipboard
           text={donationAddressMap.BTC}

@@ -2,7 +2,7 @@ import { getParsedQueryString } from './utils';
 
 describe('it parses guery string', () => {
   it("checks if parsed object's values are the same as inputs", () => {
-    const network = 'Ropsten';
+    const network = 'Baklava';
     const address = '0xbb4AAaF8cAA1A575B43E7673e5b155C1c5A8BC13';
     const functionName = 'etherBalances';
     const queryString = `network=${network}&address=${address}&function=${functionName}`;

@@ -39,13 +39,13 @@ storiesOf('UndoDeleteOverlay', module)
     design: {
       type: 'figma',
       url:
-        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/MyCrypto-GAU-Master?node-id=4494%3A135'
+        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/CeloWallet-GAU-Master?node-id=4494%3A135'
     }
   })
   .add('Desktop', (_) => undoDeleteOverlayDesktop(), {
     design: {
       type: 'figma',
       url:
-        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/MyCrypto-GAU-Master?node-id=4494%3A135'
+        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/CeloWallet-GAU-Master?node-id=4494%3A135'
     }
   });

@@ -24,7 +24,7 @@ export const AssetContext = createContext({} as IAssetContext);
 export const AssetProvider: React.FC = ({ children }) => {
   const { createActions, assets } = useContext(DataContext);
   const model = createActions(LSKeys.ASSETS);
-
+  console.debug('Assets: ', assets);
   const state: IAssetContext = {
     assets,
     createAssetWithID: model.createWithID,

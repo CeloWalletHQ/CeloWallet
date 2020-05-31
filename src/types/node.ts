@@ -4,6 +4,7 @@ export enum NodeType {
   ETHERSCAN = 'etherscan',
   INFURA = 'infura',
   WEB3 = 'web3',
+  HTTP = 'http',
   MYC_CUSTOM = 'myccustom'
 }
 
@@ -34,7 +35,7 @@ export interface CustomNodeConfig extends NodeBase {
 
 export interface StaticNodeConfig extends NodeBase {
   isCustom?: false;
-  type: NodeType.ETHERSCAN | NodeType.INFURA | NodeType.RPC | NodeType.WEB3;
+  type: NodeType.ETHERSCAN | NodeType.INFURA | NodeType.RPC | NodeType.WEB3 | NodeType.HTTP;
 }
 
 export type NodeOptions = StaticNodeConfig | CustomNodeConfig;

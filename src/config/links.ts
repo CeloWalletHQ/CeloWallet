@@ -32,7 +32,7 @@ export const socialMediaLinks: Link[] = [
     text: 'linkedin'
   },
   {
-    link: 'https://github.com/MyCryptoHQ',
+    link: 'https://github.com/CeloWalletHQ',
     text: 'github'
   },
   {

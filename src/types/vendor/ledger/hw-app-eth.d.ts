@@ -7,7 +7,7 @@ declare module '@ledgerhq/hw-app-eth' {
 
     /**
      *
-     * @description get Ethereum address for a given BIP 32 path.
+     * @description get Celo address for a given BIP 32 path.
      * @param {string} path a path in BIP 32 format
      * @param {boolean} [boolDisplay]  enable or not the display
      * @param {boolean} [boolChaincode]  enable or not the chaincode request

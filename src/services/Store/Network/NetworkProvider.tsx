@@ -6,8 +6,8 @@ import { Network, NetworkId, NodeOptions, LSKeys } from '@types';
 
 import { DataContext } from '../DataManager';
 import { NetworkUtils } from './utils';
-import { EthersJS } from '../../EthService/network/ethersJsProvider';
 import { getNetworkById } from './helpers';
+import { ContractKitProvider } from '@services/EthService/network/ethersJsProvider';
 
 export interface INetworkContext {
   networks: Network[];
@@ -61,7 +61,7 @@ export const NetworkProvider: React.FC = ({ children }) => {
       };
 
       state.updateNetwork(networkToAdd.id, n);
-      EthersJS.updateEthersInstance(n);
+      ContractKitProvider.updateContractKitInstance(n);
     },
     updateNode: (node: NodeOptions, network: Network | NetworkId, nodeName: string) => {
       let networkToEdit: Network = network as Network;
@@ -78,7 +78,7 @@ export const NetworkProvider: React.FC = ({ children }) => {
       };
 
       state.updateNetwork(networkToEdit.id, networkUpdate);
-      EthersJS.updateEthersInstance(networkUpdate);
+      ContractKitProvider.updateContractKitInstance(networkUpdate);
     },
     deleteNode: (nodeName: string, network: Network | NetworkId) => {
       let networkToEdit: Network = network as Network;
@@ -98,7 +98,7 @@ export const NetworkProvider: React.FC = ({ children }) => {
       };
 
       state.updateNetwork(networkToEdit.id, networkUpdate);
-      EthersJS.updateEthersInstance(networkUpdate);
+      ContractKitProvider.updateContractKitInstance(networkUpdate);
     },
     setNetworkSelectedNode: (networkId: NetworkId, selectedNode: string) => {
       const foundNetwork = networks.find((n: Network) => n.id === networkId);
@@ -110,7 +110,7 @@ export const NetworkProvider: React.FC = ({ children }) => {
       const network = { ...foundNetwork, selectedNode };
 
       state.updateNetwork(networkId, network);
-      EthersJS.updateEthersInstance(network);
+      ContractKitProvider.updateContractKitInstance(network);
     },
     isNodeNameAvailable: (networkId: NetworkId, nodeName: string, ignoreNames: string[] = []) => {
       if (isEmpty(networkId) || isEmpty(nodeName)) return false;

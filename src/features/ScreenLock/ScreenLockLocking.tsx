@@ -82,7 +82,7 @@ export default function ScreenLockLocking({
   const handleKeepUsingDashboardClicked = () => {
     onCancelLockCountdown();
     trackScreenLock({
-      actionName: 'Keep Using MyCrypto button clicked'
+      actionName: 'Keep Using CeloWallet button clicked'
     });
   };
 

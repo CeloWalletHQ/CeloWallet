@@ -8,7 +8,7 @@ import { DashboardPanel } from '@components';
 import { translateRaw } from '@translations';
 import { BREAK_POINTS, SPACING } from '@theme';
 import { useEffectOnce, usePromise } from '@vendor/react-use';
-import { isEthereumAccount } from '@services/Store/Account/helpers';
+import { isCeloAccount } from '@services/Store/Account/helpers';
 
 import { DomainNameRecord } from './types';
 import EnsLogo from './EnsLogo';
@@ -49,18 +49,16 @@ export default function EnsDashboard() {
   const [ensOwnershipRecords, setEnsOwnershipRecords] = useState(defaultData);
   const mounted = usePromise();
 
-  // Only use the accounts on the Ethereum mainnet network
-  const accountsEthereumNetwork = accounts.filter(isEthereumAccount);
+  // Only use the accounts on the Celo mainnet network
+  const accountsCeloNetwork = accounts.filter(isCeloAccount);
 
   useEffectOnce(() => {
     (async () => {
       const ownershipRecords: MyDomainsData = await mounted(
-        EnsService.fetchOwnershipRecords(accountsEthereumNetwork).then(
-          (data: DomainNameRecord[]) => ({
-            records: data,
-            isFetched: true
-          })
-        )
+        EnsService.fetchOwnershipRecords(accountsCeloNetwork).then((data: DomainNameRecord[]) => ({
+          records: data,
+          isFetched: true
+        }))
       );
       setEnsOwnershipRecords(ownershipRecords);
     })();

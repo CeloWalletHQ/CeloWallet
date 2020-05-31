@@ -5,12 +5,10 @@ import {
   getTokensBalances,
   BalanceMap as EthScanBalanceMap
 } from '@mycrypto/eth-scan';
-import partition from 'lodash/partition';
 import { default as BN } from 'bignumber.js';
 import { bigNumberify } from 'ethers/utils/bignumber';
 import { BigNumber as EthScanBN } from '@ethersproject/bignumber';
 
-import { ETHSCAN_NETWORKS } from '@config';
 import { TAddress, StoreAccount, StoreAsset, Asset, Network, TBN } from '@types';
 import { ProviderHandler } from '@services/EthService';
 
@@ -67,16 +65,17 @@ const addBalancesToAccount = (account: StoreAccount) => ([baseBalance, tokenBala
     .map((asset) => ({ ...asset, balance: bigNumberify(asset.balance) }))
 });
 
-const getAccountAssetsBalancesWithEthScan = async (account: StoreAccount) => {
-  const list = getAssetAddresses(account.assets) as string[];
-  const provider = ProviderHandler.fetchProvider(account.network);
-  return Promise.all([
-    getEtherBalances(provider, [account.address]).then(toBigNumberJS),
-    getTokensBalance(provider, account.address, list).then(toBigNumberJS)
-  ])
-    .then(addBalancesToAccount(account))
-    .catch((_) => account);
-};
+// @todo: figure this ethscan stuff out
+// const getAccountAssetsBalancesWithEthScan = async (account: StoreAccount) => {
+//   const list = getAssetAddresses(account.assets) as string[];
+//   const provider = ProviderHandler.fetchProvider(account.network);
+//   return Promise.all([
+//     getEtherBalances(provider, [account.address]).then(toBigNumberJS),
+//     getTokensBalance(provider, account.address, list).then(toBigNumberJS)
+//   ])
+//     .then(addBalancesToAccount(account))
+//     .catch((_) => account);
+// };
 
 export const getBaseAssetBalances = async (addresses: string[], network: Network | undefined) => {
   if (!network) {
@@ -111,14 +110,15 @@ const getAccountAssetsBalancesWithJsonRPC = async (
   const { address, assets, network } = account;
   const provider = new ProviderHandler(network);
   const tokens = assets.filter((a: StoreAsset) => a.type === 'erc20');
-
+  console.debug('here?', account);
   return Promise.all([
     provider
       .getRawBalance(account.address)
-      // @ts-ignore The types mismatch due to versioning of ethersjs
+      // @ts-ignore The types mismatch due to versioning of ContractKitProvider
       .then(convertBNToBigNumberJS)
-      // @ts-ignore The types mismatch due to versioning of ethersjs
-      .then((balance) => ({ [address]: balance })),
+      // @ts-ignore The types mismatch due to versioning of ContractKitProvider
+      .then((balance) => ({ [address]: balance }))
+      .catch((err: any) => console.debug('[err fetching balance]: ', err)),
     getTokenBalances(provider, address, tokens)
   ])
     .then(addBalancesToAccount(account))
@@ -126,18 +126,21 @@ const getAccountAssetsBalancesWithJsonRPC = async (
 };
 
 export const getAccountsAssetsBalances = async (accounts: StoreAccount[]) => {
-  // for the moment EthScan is only deployed on Ethereum, so we use JSON_RPC to get the
+  // for the moment EthScan is only deployed on Celo, so we use JSON_RPC to get the
   // balance for the accounts on the other networks.
-  const [ethScanCompatibleAccounts, jsonRPCAccounts] = partition(accounts, (account) =>
-    ETHSCAN_NETWORKS.some((supportedNetwork) => account && account.networkId === supportedNetwork)
-  );
-
+  console.debug('here1');
+  /* @todo: figure this ethscan stuff out */
+  // const [ethScanCompatibleAccounts, jsonRPCAccounts] = partition(accounts, (account) =>
+  //   ETHSCAN_NETWORKS.some((supportedNetwork) => account && account.networkId === supportedNetwork)
+  // );
+  console.debug('here2');
+  // ...ethScanCompatibleAccounts.map(getAccountAssetsBalancesWithEthScan),
   const updatedAccounts = await Promise.all(
-    [
-      ...ethScanCompatibleAccounts.map(getAccountAssetsBalancesWithEthScan),
-      ...jsonRPCAccounts.map(getAccountAssetsBalancesWithJsonRPC)
-    ].map((p) => p.catch((e) => console.debug(e))) // convert Promise.all ie. into allSettled https://dev.to/vitalets/what-s-wrong-with-promise-allsettled-and-promise-any-5e6o
+    accounts
+      .map(getAccountAssetsBalancesWithJsonRPC)
+      .map((p) => p.catch((e) => console.debug('[error fetching balances]: ', e))) // convert Promise.all ie. into allSettled https://dev.to/vitalets/what-s-wrong-with-promise-allsettled-and-promise-any-5e6o
   );
+  console.debug('Updated Accounts: ', updatedAccounts);
 
   const filterZeroBN = (n: TBN) => n.isZero();
 

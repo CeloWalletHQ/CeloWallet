@@ -8,6 +8,11 @@ const ETH_TREZOR: DPath = {
   value: "m/44'/60'/0'/0"
 };
 
+const CELO_LEDGER: DPath = {
+  label: 'Ledger (Celo)',
+  value: "m/44'/52752'/0'/0"
+};
+
 const ETH_LEDGER: DPath = {
   label: 'Ledger (ETH)',
   value: "m/44'/60'/0'"
@@ -173,6 +178,7 @@ const ERE_DEFAULT: DPath = {
 };
 
 export const DPathsList = {
+  CELO_LEDGER,
   ETH_DEFAULT,
   ETH_TREZOR,
   ETH_LEDGER,

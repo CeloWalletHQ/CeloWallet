@@ -30,7 +30,7 @@ export const getLabelByAddressAndNetwork = (
 / The idea is that when a user adds their account,
 / it’s created with this default label
 / that they can change later which differentiates between accounts.
-/ `New Ethereum Account 1` vs `New Ethereum Account 2` vs `New Ethereum Classic Account 1`
+/ `New Celo Account 1` vs `New Celo Account 2` vs `New Celo Classic Account 1`
 */
 
 const getUnusedLabel = (contacts: AddressBook[], generateLabel: (index: number) => string) => {

@@ -126,7 +126,7 @@ declare module 'trezor.js' {
     message: T;
   }
 
-  export interface EthereumSignature {
+  export interface CeloSignature {
     v: number;
     r: string;
     s: string;
@@ -169,7 +169,7 @@ declare module 'trezor.js' {
       value: string,
       data?: string,
       chainId?: number
-    ): Promise<EthereumSignature>;
+    ): Promise<CeloSignature>;
     public getPublicKey(
       path: number[],
       coin?: string | CoinType

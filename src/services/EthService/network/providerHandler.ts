@@ -1,5 +1,5 @@
+import ethers from 'ethers';
 import { TransactionReceipt, TransactionResponse, Block } from 'ethers/providers/abstract-provider';
-import { FallbackProvider } from 'ethers/providers/fallback-provider';
 import { BaseProvider } from 'ethers/providers/base-provider';
 
 import { formatEther } from 'ethers/utils/units';
@@ -8,17 +8,25 @@ import { BigNumber } from 'ethers/utils/bignumber';
 import { Asset, Network, IHexStrTransaction, TxObj, ITxSigned } from '@types';
 import { RPCRequests, baseToConvertedUnit, ERC20 } from '@services/EthService';
 import { DEFAULT_ASSET_DECIMAL } from '@config';
-import { EthersJS } from './ethersJsProvider';
 import { createCustomNodeProvider } from './helpers';
+import { ContractKitProvider } from './ethersJsProvider';
 
 export class ProviderHandler {
   /* TODO: Needs handling for web3 providers. */
-  public static fetchProvider(network: Network): FallbackProvider {
-    return EthersJS.getEthersInstance(network);
+  public static fetchProvider(network: Network): BaseProvider {
+    const contractKitProvider = ContractKitProvider.getContractKitInstance(network);
+    const web3Provider = contractKitProvider.web3.currentProvider;
+    const ethersJsProvider = new ethers.providers.Web3Provider(web3Provider as any);
+    console.debug(ethersJsProvider);
+    return ethersJsProvider;
   }
 
   public static fetchSingleProvider(network: Network): BaseProvider {
-    return createCustomNodeProvider(network);
+    const contractKitProvider = createCustomNodeProvider(network);
+    const web3Provider = contractKitProvider.web3.currentProvider;
+    const ethersJsProvider = new ethers.providers.Web3Provider(web3Provider as any);
+    console.debug(ethersJsProvider);
+    return ethersJsProvider;
   }
 
   public network: Network;
@@ -43,7 +51,12 @@ export class ProviderHandler {
   }
 
   public getRawBalance(address: string): Promise<BigNumber> {
-    return this.injectClient((client) => client.getBalance(address));
+    return this.injectClient((client) => {
+      const z = client.getBalance(address);
+      console.debug('[address to fetch rawbalance]: ', address);
+      console.debug(client);
+      return z;
+    });
   }
 
   /* Tested*/
@@ -108,7 +121,7 @@ export class ProviderHandler {
     return this.injectClient((client) => client.waitForTransaction(txHash, confirmations));
   }
 
-  protected injectClient(clientInjectCb: (client: FallbackProvider | BaseProvider) => any) {
+  protected injectClient(clientInjectCb: (client: BaseProvider) => any) {
     if (clientInjectCb) {
       if (this.isFallbackProvider) {
         return clientInjectCb(ProviderHandler.fetchProvider(this.network));

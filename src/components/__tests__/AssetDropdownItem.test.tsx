@@ -3,12 +3,12 @@ import React from 'react';
 import { simpleRender, fireEvent } from 'test-utils';
 import { TSymbol, TUuid } from '@types';
 import AssetDropdownItem, { Props } from '../AssetDropdownItem';
-import { ETHUUID } from '@utils';
+import { CGLDUUID } from '@utils';
 
 const defaultProps: Props = {
-  symbol: 'ETH' as TSymbol,
-  name: 'Ether',
-  uuid: ETHUUID as TUuid,
+  symbol: 'CGLD' as TSymbol,
+  name: 'Celo Gold',
+  uuid: CGLDUUID as TUuid,
   onClick: jest.fn()
 };
 

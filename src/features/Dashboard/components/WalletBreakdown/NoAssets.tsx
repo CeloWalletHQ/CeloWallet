@@ -50,7 +50,7 @@ const NoAssetsDescription = styled.div`
   }
 `;
 
-const openLinkBuyMyCrypto = (trackCallback: ReturnType<typeof useAnalytics>) => {
+const openLinkBuyCeloWallet = (trackCallback: ReturnType<typeof useAnalytics>) => {
   openLink(BUY_MYCRYPTO_WEBSITE);
   trackCallback({
     actionName: `Link ${BUY_MYCRYPTO_WEBSITE} clicked`
@@ -64,7 +64,7 @@ export default function NoAssets() {
 
   return (
     <NoAssetsWrapper>
-      <NoAssetsCenter onClick={() => openLinkBuyMyCrypto(trackLinkClicked)}>
+      <NoAssetsCenter onClick={() => openLinkBuyCeloWallet(trackLinkClicked)}>
         <PlusIcon src={addIcon} />
         <NoAssetsHeading>{translate('WALLET_BREAKDOWN_NO_ASSETS')}</NoAssetsHeading>
         <NoAssetsDescription>{translate('WALLET_BREAKDOWN_NO_ASSETS_MORE')}</NoAssetsDescription>

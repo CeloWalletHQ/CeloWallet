@@ -133,12 +133,12 @@ const PATHS: IRoutePath[] = [
   },
   {
     name: 'MYC_MEMBERSHIP_BUY',
-    title: 'MyCrypto Membership',
+    title: 'CeloWallet Membership',
     path: '/membership/buy'
   },
   {
     name: 'ENS',
-    title: 'Ethereum Name Service',
+    title: 'Celo Name Service',
     path: '/ens'
   }
 ];

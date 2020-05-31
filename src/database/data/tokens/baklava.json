@@ -1,0 +1,47 @@
+{
+	"7855d9fb-49c6-5dca-b0b3-db2de3733d9e": {
+		"uuid": "7855d9fb-49c6-5dca-b0b3-db2de3733d9e",
+		"ticker": "Baklava CGLD",
+		"name": "Baklava Gold",
+		"decimal": 18,
+		"website": "https://celo.org",
+		"support": {
+			"email": "",
+			"url": ""
+		},
+		"social": {
+			"youtube": "https://youtube.com/channel/UCCZgos_YAJSXm5QX5D5Wkcw",
+			"instagram": "https://www.instagram.com/celoorg/",
+			"blog": "https://blog.qiibee.com",
+			"github": "https://github.com/celo-org",
+			"twitter": "https://twitter.com/CeloOrg",
+			"medium": "https://medium.com/celoOrg"
+		},
+		"networkId": "Baklava",
+		"type": "base",
+		"mappings": {}
+	},
+	"ff1c4905-3db6-5967-9b40-549209576702": {
+		"uuid": "ff1c4905-3db6-5967-9b40-549209576702",
+		"ticker": "Baklava CUSD",
+		"name": "Baklava Celo USD",
+		"decimal": 18,
+		"contractAddress": "0x4b84c2EF94A274DbF83E2F1Ec1608456c9B62D96",
+		"website": "https://celo.org",
+		"support": {
+			"email": "",
+			"url": ""
+		},
+		"social": {
+			"youtube": "https://youtube.com/channel/UCCZgos_YAJSXm5QX5D5Wkcw",
+			"instagram": "https://www.instagram.com/celoorg/",
+			"blog": "https://blog.qiibee.com",
+			"github": "https://github.com/celo-org",
+			"twitter": "https://twitter.com/CeloOrg",
+			"medium": "https://medium.com/celoOrg"
+		},
+		"networkId": "Baklava",
+		"type": "erc20",
+		"mappings": {}
+	}
+}

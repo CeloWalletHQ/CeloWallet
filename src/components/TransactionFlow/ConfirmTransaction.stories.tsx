@@ -61,7 +61,7 @@ export const confirmTransactionZap = () => (
     design: {
       type: 'figma',
       url:
-        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/MyCrypto-GAU-Master?node-id=325%3A79384'
+        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/CeloWallet-GAU-Master?node-id=325%3A79384'
     }
   }
 };
@@ -72,7 +72,7 @@ export const confirmTransactionZap = () => (
     design: {
       type: 'figma',
       url:
-        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/MyCrypto-GAU-Master?node-id=325%3A79384'
+        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/CeloWallet-GAU-Master?node-id=325%3A79384'
     }
   }
 };
