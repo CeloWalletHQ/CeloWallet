@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { DonateAndSubscribe, Linkset, LogoBox, SocialsAndLegal } from './components';
+import { DonateAndSubscribe, Linkset, SocialsAndLegal } from './components';
 import './Footer.scss';
 
 const HorizontalRule = () => (
@@ -14,11 +14,11 @@ const VerticalRule = () => (
     <section className="VerticalRule-line" />
   </section>
 );
-
+// @todo - logoBox
 const MobileFooter = () => (
   <section className="mobile-only">
     <section className="Footer">
-      <LogoBox />
+      {/* <LogoBox /> */}
       <HorizontalRule />
       <DonateAndSubscribe />
       <HorizontalRule />
@@ -27,11 +27,11 @@ const MobileFooter = () => (
     </section>
   </section>
 );
-
+// @todo - logoBox
 const TabletFooter = () => (
   <section className="tablet-only">
     <section className="Footer">
-      <LogoBox />
+      {/* <LogoBox /> */}
       <VerticalRule />
       <section style={{ display: 'flex', flexDirection: 'column', flex: 5 }}>
         <Linkset />
@@ -40,12 +40,12 @@ const TabletFooter = () => (
     </section>
   </section>
 );
-
+// @todo - logoBox
 const DesktopFooter = () => (
   <section className="desktop-only">
     <section className="NewFooter-wrapper">
       <section className="Footer">
-        <LogoBox />
+        {/* <LogoBox /> */}
         <VerticalRule />
         <Linkset />
         <VerticalRule />

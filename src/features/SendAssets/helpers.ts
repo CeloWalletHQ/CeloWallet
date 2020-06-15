@@ -1,13 +1,7 @@
 import BN from 'bn.js';
 import { bufferToHex } from 'ethereumjs-util';
 
-import {
-  IFormikFields,
-  ITxObject,
-  IHexStrTransaction,
-  Asset,
-  IHexStrWeb3Transaction
-} from '@types';
+import { IFormikFields, ITxObject, Asset, IHexStrWeb3Transaction, TAddress } from '@types';
 
 import {
   Address,
@@ -19,8 +13,9 @@ import {
   inputGasLimitToHex,
   encodeTransfer
 } from '@services/EthService';
+import { donationAddressMap } from '@config';
 
-const createBaseTxObject = (formData: IFormikFields): IHexStrTransaction | ITxObject => {
+const createBaseTxObject = (formData: IFormikFields): ITxObject => {
   const { network } = formData;
   return {
     to: formData.address.value,
@@ -31,11 +26,15 @@ const createBaseTxObject = (formData: IFormikFields): IHexStrTransaction | ITxOb
       ? inputGasPriceToHex(formData.gasPriceField)
       : inputGasPriceToHex(formData.gasPriceSlider),
     nonce: inputNonceToHex(formData.nonceField),
-    chainId: network.chainId ? network.chainId : 1
+    chainId: network.chainId ? network.chainId : 1,
+    from: formData.account.address,
+    feeCurrency: '0xF194afDf50B03e69Bd7D057c1Aa9e10c9954E4C9' as TAddress,
+    gatewayFeeRecipient: donationAddressMap.CELO as TAddress,
+    gatewayFee: '0x38d7ea4c68000'
   };
 };
 
-const createERC20TxObject = (formData: IFormikFields): IHexStrTransaction => {
+const createERC20TxObject = (formData: IFormikFields): ITxObject => {
   const { asset, network } = formData;
   return {
     to: asset.contractAddress!,
@@ -51,7 +50,11 @@ const createERC20TxObject = (formData: IFormikFields): IHexStrTransaction => {
       ? inputGasPriceToHex(formData.gasPriceField)
       : inputGasPriceToHex(formData.gasPriceSlider),
     nonce: inputNonceToHex(formData.nonceField),
-    chainId: network.chainId ? network.chainId : 1
+    chainId: network.chainId ? network.chainId : 1,
+    from: formData.account.address,
+    feeCurrency: '0xF194afDf50B03e69Bd7D057c1Aa9e10c9954E4C9' as TAddress,
+    gatewayFeeRecipient: donationAddressMap.CELO as TAddress,
+    gatewayFee: '0x38d7ea4c68000'
   };
 };
 
@@ -59,7 +62,7 @@ export const isERC20Tx = (asset: Asset): boolean => {
   return !!(asset.type === 'erc20' && asset.contractAddress && asset.decimal);
 };
 
-export const processFormDataToTx = (formData: IFormikFields): IHexStrTransaction | ITxObject => {
+export const processFormDataToTx = (formData: IFormikFields): ITxObject => {
   const transform = isERC20Tx(formData.asset) ? createERC20TxObject : createBaseTxObject;
   return transform(formData);
 };

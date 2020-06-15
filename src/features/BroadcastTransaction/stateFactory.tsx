@@ -4,8 +4,8 @@ import { TUseStateReducerFactory, fromTxReceiptObj, makeTxConfigFromSignedTx } f
 import { ITxReceipt, ITxConfig, ISignedTx, NetworkId } from '@types';
 import { DEFAULT_NETWORK } from '@config';
 import { NetworkContext, AssetContext, StoreContext } from '@services/Store';
-import { ProviderHandler } from '@services/EthService';
 import { ToastContext } from '@features/Toasts';
+import { CeloProviderHandler } from '@services/EthService/network';
 
 const broadcastTxInitialState: State = {
   network: DEFAULT_NETWORK,
@@ -51,10 +51,9 @@ const BroadcastTxConfigFactory: TUseStateReducerFactory<State> = ({ state, setSt
 
   const handleConfirmClick = async (cb: any) => {
     const { txConfig, signedTx } = state;
-    const provider = new ProviderHandler(txConfig!.network);
-
+    const celoProvider = new CeloProviderHandler(txConfig!.network);
     try {
-      const response = await provider.sendRawTx(signedTx);
+      const response = await celoProvider.sendRawTx(signedTx);
       const txReceipt = fromTxReceiptObj(response)(assets, networks) || {};
       setState((prevState: State) => ({
         ...prevState,

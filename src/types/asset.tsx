@@ -29,17 +29,18 @@ export interface Asset {
   readonly contractAddress?: string;
   readonly decimal?: number;
   readonly isCustom?: boolean;
+  readonly celoIdentifier?: string;
+  readonly mappings?: {
+    coinGeckoId?: string;
+    cryptoCompareId?: string;
+    coinCapId?: string;
+  };
 }
 
 export interface ExtendedAsset extends Asset {
   website?: string;
   whitepaper?: string;
   social?: AssetSocial;
-  mappings?: {
-    coinGeckoId?: string;
-    cryptoCompareId?: string;
-    coinCapId?: string;
-  };
 }
 
 export interface ReserveAsset extends Asset {

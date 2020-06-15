@@ -7,7 +7,7 @@ import { Network, IReceiverAddress, ErrorObject, InlineMessageType } from '@type
 import {
   AddressBookContext,
   findNextRecipientLabel,
-  getBaseAssetByNetwork,
+  getBaseAssetsByNetwork,
   AssetContext
 } from '@services/Store';
 import { isValidETHAddress, isValidENSName } from '@services/EthService';
@@ -143,7 +143,7 @@ const ContactDropdownField = ({
     try {
       const unstoppableAddress = await UnstoppableResolution.getResolvedAddress(
         domain,
-        getBaseAssetByNetwork({ network, assets })!.ticker
+        getBaseAssetsByNetwork({ network, assets })[0].ticker
       );
       return unstoppableAddress;
     } catch (err) {

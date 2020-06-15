@@ -23,7 +23,7 @@ import {
 } from '@components';
 import {
   getNetworkById,
-  getBaseAssetByNetwork,
+  getBaseAssetsByNetwork,
   getAccountsByAsset,
   StoreContext,
   getAccountBalance,
@@ -40,7 +40,8 @@ import {
   ITxConfig,
   ErrorObject,
   StoreAccount,
-  InlineMessageType
+  InlineMessageType,
+  ExtendedAsset
 } from '@types';
 import {
   getNonce,
@@ -170,11 +171,14 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
   const [isEstimatingNonce, setIsEstimatingNonce] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isResolvingName, setIsResolvingDomain] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
   const defaultNetwork = networks.find((n) => n.id === DEFAULT_NETWORK);
-  const [baseAsset, setBaseAsset] = useState(
+  console.debug('[defaultNetwork]: ', defaultNetwork);
+  const bases =
     (txConfig.network &&
-      getBaseAssetByNetwork({ network: txConfig.network, assets: userAssets })) ||
-      (defaultNetwork && getBaseAssetByNetwork({ network: defaultNetwork, assets: userAssets })) ||
-      ({} as Asset)
+      getBaseAssetsByNetwork({ network: txConfig.network, assets: userAssets })) ||
+    (defaultNetwork && getBaseAssetsByNetwork({ network: defaultNetwork, assets: userAssets }));
+  console.debug('[bases]: ', bases);
+  const [baseAsset, setBaseAsset] = useState(
+    bases.find((asset) => asset.celoIdentifier && asset.celoIdentifier === 'gold') || bases[0]
   );
 
   const protectTxContext = useContext(ProtectTxContext);
@@ -416,8 +420,9 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                           form.setFieldValue('network', network || {});
                           if (network) {
                             setBaseAsset(
-                              getBaseAssetByNetwork({ network, assets: userAssets }) ||
-                                ({} as Asset)
+                              getBaseAssetsByNetwork({ network, assets: userAssets }).find(
+                                ({ celoIdentifier }) => celoIdentifier && celoIdentifier === 'gold'
+                              ) as ExtendedAsset
                             );
                           }
                         }
@@ -519,7 +524,7 @@ const SendAssetsForm = ({ txConfig, onComplete }: IStepComponentProps) => {
                 <label htmlFor="transactionFee" className="SendAssetsForm-fieldset-transactionFee">
                   <div>{translate('CONFIRM_TX_FEE')}</div>
                   <TransactionFeeDisplay
-                    baseAsset={baseAsset}
+                    baseAsset={baseAsset as Asset}
                     gasLimitToUse={values.gasLimitField}
                     gasPriceToUse={
                       values.advancedTransaction ? values.gasPriceField : values.gasPriceSlider

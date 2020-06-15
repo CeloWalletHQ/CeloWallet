@@ -1,6 +1,22 @@
-import { TransactionReceipt } from 'ethers/providers/abstract-provider';
-
 import { Network, ITxStatus, StoreAccount, ITxObject, ITxHash, TUuid } from '@types';
+
+export interface TransactionReceipt {
+  status: boolean;
+  transactionHash: string;
+  transactionIndex: number;
+  blockHash: string;
+  blockNumber: number;
+  from: string;
+  to: string;
+  contractAddress?: string;
+  cumulativeGasUsed: number;
+  gasUsed: number;
+  logs: any[];
+  logsBloom: string;
+  events?: {
+    [eventName: string]: any;
+  };
+}
 
 export interface TxParcel {
   readonly _uuid: TUuid;

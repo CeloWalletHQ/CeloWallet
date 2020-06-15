@@ -1,6 +1,6 @@
 import { TURL } from '@types';
 
-const KB_URL = 'https://support.mycrypto.com';
+const KB_URL = 'https://support.cellowallet.io';
 
 export enum KB_HELP_ARTICLE {
   HOME = '',
@@ -21,8 +21,7 @@ export enum KB_HELP_ARTICLE {
   WALLETCONNECT = 'general-knowledge/ethereum-blockchain/what-is-walletconnect',
   STAYING_SAFE = 'staying-safe',
   BUY_CRYPTO = 'how-to/getting-started/how-to-buy-ether-with-usd',
-  MEMBERSHIP_INFO = 'general-knowledge/about-mycrypto/membership-information',
-  HOW_TO_USE_ZAPPER = 'how-to/defi/how-to-use-zapper'
+  MEMBERSHIP_INFO = 'general-knowledge/about-mycrypto/membership-information'
 }
 
 export enum HELP_ARTICLE {

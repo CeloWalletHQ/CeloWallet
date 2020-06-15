@@ -18,7 +18,7 @@ import {
 import { truncate } from '@utils';
 import { Network } from '@types';
 import {
-  getBaseAssetByNetwork,
+  getBaseAssetsByNetwork,
   AddressBookContext,
   getLabelByAddressAndNetwork,
   isValidPath,
@@ -27,7 +27,7 @@ import {
 import { AssetContext } from '@services/Store';
 import { HELP_ARTICLE } from '@config';
 import { DeterministicWalletData, getDeterministicWallets } from '@services/WalletService';
-import { getBaseAssetBalances, BalanceMap } from '@services/Store/BalanceService';
+import { getBaseAssetBalances, BaseAssetsBalanceMap } from '@services/Store/BalanceService';
 import { COLORS, monospace, SPACING, FONT_SIZE, BREAK_POINTS } from '@theme';
 
 import { Table } from '../Table';
@@ -120,14 +120,12 @@ const DWTable = styled(Table)<{ selected: number; page: number; disabled: boolea
       ${({ selected, page }) =>
         Math.trunc(selected / WALLETS_PER_PAGE) === page &&
         `:nth-child(${(selected % WALLETS_PER_PAGE) + 1}) {
-      background: ${BLUE_LIGHTEST};
-    }`};
+          background: ${BLUE_LIGHTEST};
+        };`}
 
       /* On hover don't highlight selected row */
       :not(:nth-child(${({ selected, page }) =>
-              Math.trunc(selected / WALLETS_PER_PAGE) === page
-                ? (selected % WALLETS_PER_PAGE) + 1
-                : 0}))
+        Math.trunc(selected / WALLETS_PER_PAGE) === page ? (selected % WALLETS_PER_PAGE) + 1 : 0}))
         :hover {
         background-color: ${GREY_LIGHTEST};
       }
@@ -276,18 +274,21 @@ export function DeterministicWalletsClass({
   const getBaseBalances = () => {
     const addressesToLookup = wallets.map((wallet) => wallet.address);
     try {
-      return getBaseAssetBalances(addressesToLookup, network).then((balanceMapData: BalanceMap) => {
-        const walletsWithBalances: DeterministicWalletData[] = wallets.map((wallet) => {
-          const balance = balanceMapData[wallet.address] || 0;
-          const value = new BN(balance.toString());
-          return {
-            ...wallet,
-            value
-          };
-        });
-        setRequestingBalanceCheck(false);
-        setWallets(walletsWithBalances);
-      });
+      return getBaseAssetBalances(addressesToLookup, network).then(
+        (balanceMapData: BaseAssetsBalanceMap) => {
+          const walletsWithBalances: DeterministicWalletData[] = wallets.map((wallet) => {
+            const balance = balanceMapData[wallet.address].gold || 0;
+            console.debug('balance: ', balance);
+            const value = new BN(balance.toString());
+            return {
+              ...wallet,
+              value
+            };
+          });
+          setRequestingBalanceCheck(false);
+          setWallets(walletsWithBalances);
+        }
+      );
     } catch (err) {
       console.error('getBaseBalance err ', err);
     }
@@ -389,7 +390,7 @@ export function DeterministicWalletsClass({
 
   let baseAssetSymbol: string | undefined;
   if (network) {
-    baseAssetSymbol = getBaseAssetByNetwork({ network, assets })!.ticker;
+    baseAssetSymbol = getBaseAssetsByNetwork({ network, assets })[0].ticker;
   }
   const symbol: string = baseAssetSymbol ? baseAssetSymbol : 'ETH';
   const isCustom = currentDPath.label === customDPath.label;

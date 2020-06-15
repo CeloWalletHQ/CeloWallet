@@ -21,6 +21,7 @@ import {
 
 import { DeployContractsState } from './types';
 import { makeTxConfigFromTransaction, constructGasCallProps } from './helpers';
+import { CeloProviderHandler } from '@services/EthService/network';
 
 const deployContractsInitialState = {
   account: undefined,
@@ -128,7 +129,8 @@ const DeployContractsFactory: TUseStateReducerFactory<DeployContractsState> = ({
       after();
     } else {
       const provider = new ProviderHandler(account.network);
-      provider
+      const celoProvider = new CeloProviderHandler(account.network);
+      celoProvider
         .sendRawTx(signResponse)
         .then((retrievedTxReceipt) => retrievedTxReceipt)
         .catch((hash) => provider.getTransactionByHash(hash))

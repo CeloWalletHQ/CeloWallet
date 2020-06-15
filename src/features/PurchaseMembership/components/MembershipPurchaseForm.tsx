@@ -57,7 +57,7 @@ const FormFieldSubmitButton = styled(Button)`
 const MembershipForm = ({ isSubmitting, onComplete }: Props) => {
   const { accounts } = useContext(StoreContext);
   const { networks } = useContext(NetworkContext);
-  const network = networks.find((n) => n.baseAsset === CGLDUUID) as Network;
+  const network = networks.find((n) => n.baseAssets[0] === CGLDUUID) as Network;
   const relevantAccounts = accounts.filter(isCeloAccount);
 
   return (

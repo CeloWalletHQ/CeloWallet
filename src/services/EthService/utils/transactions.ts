@@ -13,7 +13,10 @@ import {
 } from '@services/EthService';
 import { fetchGasPriceEstimates, getGasEstimate } from '@services/ApiService';
 
-type TxBeforeSender = Pick<ITxObject, 'to' | 'value' | 'data' | 'chainId'>;
+type TxBeforeSender = Pick<
+  ITxObject,
+  'to' | 'value' | 'data' | 'chainId' | 'gatewayFee' | 'gatewayFeeRecipient' | 'feeCurrency'
+>;
 type TxBeforeGasPrice = Optional<ITxObject, 'nonce' | 'gasLimit' | 'gasPrice'>;
 type TxBeforeGasLimit = Optional<ITxObject, 'nonce' | 'gasLimit'>;
 type TxBeforeNonce = Optional<ITxObject, 'nonce'>;

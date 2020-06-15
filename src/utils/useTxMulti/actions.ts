@@ -1,12 +1,13 @@
 import { Dispatch } from 'react';
-import { TransactionResponse } from 'ethers/providers/abstract-provider';
 
 import { ITxSigned, ITxObject, TStateGetter, StoreAccount, Network, ITxHash } from '@types';
 import { isWeb3Wallet, isTxSigned, isTxHash } from '@utils';
 import { ProviderHandler } from '@services';
 import { appendGasLimit, appendNonce } from '@services/EthService';
+import { CeloProviderHandler } from '@services/EthService/network';
+import { TransactionResult } from '@celo/contractkit/lib/utils/tx-result';
 
-import { TxMultiState, TxMultiAction, ActionTypes } from './types';
+import { TxMultiState, TxMultiAction, ActionTypes, TransactionReceipt } from './types';
 
 export const init = (dispatch: Dispatch<TxMultiAction>) => async (
   txs: ITxObject[],
@@ -66,25 +67,32 @@ export const sendTx = (
 ) => async (walletResponse: ITxHash | ITxSigned) => {
   const { account } = getState();
   dispatch({ type: ActionTypes.SEND_TX_REQUEST });
-
+  const celoProvider = new CeloProviderHandler(account!.network);
   if (isTxHash(walletResponse) && isWeb3Wallet(account!.wallet)) {
     dispatch({
       type: ActionTypes.SEND_TX_SUCCESS,
       payload: { txHash: walletResponse }
     });
-    waitForConfirmation(dispatch, getState)(walletResponse);
+    celoProvider
+      .getTxReceipt(walletResponse)
+      .then((txReceipt: TransactionReceipt) => waitForConfirmation(dispatch, getState)(txReceipt));
   } else if (isTxHash(walletResponse) || isTxSigned(walletResponse)) {
-    const provider = new ProviderHandler(account!.network);
-    provider
+    celoProvider
       .sendRawTx(walletResponse)
-      .then((txResponse: TransactionResponse) => {
-        dispatch({
-          type: ActionTypes.SEND_TX_SUCCESS,
-          payload: { txHash: txResponse.hash as ITxHash }
+      .then((txResult: TransactionResult) => {
+        txResult.getHash().then((txHash) => {
+          dispatch({
+            type: ActionTypes.SEND_TX_SUCCESS,
+            payload: { txHash: txHash as ITxHash }
+          });
         });
-        return txResponse.hash;
+        return txResult;
       })
-      .then((txHash: ITxHash) => waitForConfirmation(dispatch, getState)(txHash))
+      .then((txRes: TransactionResult) => {
+        txRes.waitReceipt().then((txReceipt) => {
+          waitForConfirmation(dispatch, getState)(txReceipt);
+        });
+      })
       .catch((err: Error) => {
         dispatch({ type: ActionTypes.SEND_TX_FAILURE, error: true, payload: err });
       });
@@ -96,14 +104,13 @@ export const sendTx = (
 const waitForConfirmation = (
   dispatch: Dispatch<TxMultiAction>,
   getState: TStateGetter<TxMultiState>
-) => async (txHash: ITxHash) => {
+) => async (txReceipt: TransactionReceipt) => {
   const { account } = getState();
   dispatch({ type: ActionTypes.CONFIRM_TX_REQUEST });
   const provider = new ProviderHandler(account!.network);
   try {
-    const txReceipt = await provider.waitForTransaction(txHash);
     const minedAt = await provider
-      .getBlockByNumber(txReceipt.blockNumber!)
+      .getBlockByNumber(txReceipt.blockNumber)
       .then((block) => block.timestamp);
     dispatch({ type: ActionTypes.CONFIRM_TX_SUCCESS, payload: { txReceipt, minedAt } });
   } catch (err) {

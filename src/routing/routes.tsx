@@ -73,9 +73,7 @@ const DeployContractsFlow = lazy(() =>
     /* webpackChunkName: "DeployContractsFlow" */ '@features/DeployContracts/DeployContractsFlow'
   )
 );
-const DeFiZapFlow = lazy(() =>
-  import(/* webpackChunkName: "DeFiZapFlow" */ '@features/DeFiZap/DeFiZapFlow')
-);
+
 const PurchaseMembershipStepper = lazy(() =>
   import(
     /* webpackChunkName: "PurchaseMembershipStepper" */ '@features/PurchaseMembership/PurchaseMembershipStepper'
@@ -277,15 +275,6 @@ export const STATIC_APP_ROUTES: IAppRoute[] = [
     path: ROUTE_PATHS.DEPLOY_CONTRACTS.path,
     enabled: IS_ACTIVE_FEATURE.CONTRACT_DEPLOY,
     component: DeployContractsFlow
-  },
-  {
-    name: ROUTE_PATHS.DEFIZAP.name,
-    title: ROUTE_PATHS.DEFIZAP.title,
-    path: `${ROUTE_PATHS.DEFIZAP.path}/:zapName?`,
-    exact: true,
-    requireAccounts: true,
-    enabled: IS_ACTIVE_FEATURE.DEFIZAP,
-    component: DeFiZapFlow
   },
   {
     name: ROUTE_PATHS.MYC_MEMBERSHIP.name,

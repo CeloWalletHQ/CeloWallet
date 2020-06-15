@@ -15,17 +15,17 @@ const paths = {
 
 module.exports = {
   // Configuration
-  port: 3000,
-  title: 'MyCrypto',
+  port: 5000,
+  title: 'CeloWallet',
   // description < 200 characters
-  description: 'MyCrypto is a free, open-source interface for interacting with the blockchain.',
-  url: 'https://mycrypto.com/',
+  description: 'CeloWallet is a free, open-source interface for interacting with the blockchain.',
+  url: 'https://cellowallet.io/',
   type: 'website',
   // img < 5MB
   // image needs to be an absolute URL
-  img: 'https://beta.mycrypto.com/link-preview.png',
+  img: 'https://beta.cellowallet.io/link-preview.png',
   twitter: {
-    creator: '@MyCrypto'
+    creator: '@CeloWallet'
   },
   path: paths,
 

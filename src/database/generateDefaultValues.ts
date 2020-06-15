@@ -5,9 +5,10 @@ import filter from 'ramda/src/filter';
 import chain from 'ramda/src/chain';
 import reduce from 'ramda/src/reduce';
 import mergeRight from 'ramda/src/mergeRight';
+import flatten from 'ramda/src/flatten';
 
 import { generateAssetUUID, generateContractUUID } from '@utils';
-import { Fiats, DEFAULT_ASSET_DECIMAL } from '@config';
+import { DEFAULT_ASSET_DECIMAL } from '@config';
 import {
   Asset,
   ExtendedAsset,
@@ -17,7 +18,6 @@ import {
   NetworkLegacy,
   WalletId,
   Network,
-  Fiat,
   ContractLegacy,
   AssetLegacy,
   LSKeys,
@@ -27,6 +27,7 @@ import {
 import { NODES_CONFIG, NETWORKS_CONFIG, NetworkConfig } from './data';
 import { SeedData, StoreAction } from './types';
 import { toArray, toObject, add } from './helpers';
+import uniq from 'ramda/src/uniq';
 
 /* Transducers */
 const addNetworks = add(LSKeys.NETWORKS)((networks: SeedData) => {
@@ -55,7 +56,7 @@ const addNetworks = add(LSKeys.NETWORKS)((networks: SeedData) => {
         tokenExplorer: n.tokenExplorer,
         contracts: [],
         assets: [],
-        baseAsset: baseAssetUuid, // Set baseAssetUuid
+        baseAssets: [baseAssetUuid], // Set baseAssetUuid
         baseUnit: n.unit,
         nodes
       },
@@ -107,42 +108,29 @@ const addContractsToNetworks = add(LSKeys.NETWORKS)((_, store: LocalStorage) => 
 });
 
 const addBaseAssetsToAssets = add(LSKeys.ASSETS)((_, store: LocalStorage) => {
-  const formatAsset = (n: Network): Asset => ({
-    uuid: n.baseAsset,
-    ticker: n.baseUnit,
-    name: n.name,
-    networkId: n.id,
-    type: 'base',
-    decimal: DEFAULT_ASSET_DECIMAL
-  });
+  const formatAsset = (n: Network): ExtendedAsset[] =>
+    n.baseAssets.map((baseAsset) => ({
+      uuid: baseAsset,
+      ticker: n.baseUnit,
+      name: n.name,
+      networkId: n.id,
+      type: 'base',
+      contractAddress: '0xF194afDf50B03e69Bd7D057c1Aa9e10c9954E4C9',
+      celoIdentifier: 'gold',
+      decimal: DEFAULT_ASSET_DECIMAL,
+      mappings: n.mappings
+    }));
 
   // From { <networkId>: { baseAsset: <asset_uui> } }
   // To   { <asset_uuid>: <asset> }
-  return pipe(
+  const z = pipe(
     toArray,
     map(formatAsset),
+    flatten,
     reduce((acc, curr) => ({ ...acc, [curr.uuid]: curr }), {}),
     mergeRight(store.assets) // Ensure we return an object with existing assets as well
   )(store.networks);
-});
-
-const addFiatsToAssets = add(LSKeys.ASSETS)((fiats: Fiat[], store: LocalStorage) => {
-  const formatFiat = ({ code, name }: Fiat): ExtendedAsset => ({
-    uuid: generateAssetUUID(code, name),
-    name,
-    ticker: code,
-    networkId: undefined,
-    type: 'fiat',
-    decimal: 0
-  });
-
-  // From { <fiat_key>: <fiat_asset> }
-  // To   { <asset_uuid>: <asset> }
-  return pipe(
-    map(formatFiat),
-    reduce((acc, curr) => ({ ...acc, [curr.uuid]: curr }), {}),
-    mergeRight(store.assets)
-  )(fiats);
+  return z;
 });
 
 const addTokensToAssets = add(LSKeys.ASSETS)(
@@ -153,8 +141,9 @@ const addTokensToAssets = add(LSKeys.ASSETS)(
       decimal: a.decimal,
       ticker: a.symbol || a.ticker,
       networkId: id,
-      contractAddress: a.address,
-      type: 'erc20',
+      contractAddress: a.contractAddress,
+      celoIdentifier: a.celoIdentifier,
+      type: a.type,
       isCustom: a.isCustom
     });
     // From { ETH: { tokens: [ {<tokens>} ] }}
@@ -179,13 +168,21 @@ const updateNetworkAssets = add(LSKeys.NETWORKS)((_, store: LocalStorage) => {
       .filter(Boolean)
       .map((a) => a.uuid);
 
-  return mapObjIndexed(
-    (n: Network) => ({
+  const getBaseAssetUuids = (n: Network) =>
+    findNetworkAssets(n.id)
+      .filter(({ type }) => type === 'base')
+      .map((a) => a.uuid);
+
+  return mapObjIndexed((n: Network) => {
+    const baseAssetUUIDs = getBaseAssetUuids(n);
+    const baseAssetsToUse = uniq([...n.baseAssets, ...baseAssetUUIDs]);
+    const outputNetwork = {
       ...n,
+      baseAssets: baseAssetsToUse,
       assets: [...n.assets, ...getAssetUuid(n)]
-    }),
-    store.networks
-  );
+    };
+    return outputNetwork;
+  }, store.networks);
 });
 
 /* Define flow order */
@@ -194,7 +191,6 @@ const getDefaultTransducers = (networkConfig: NetworkConfig): StoreAction[] => [
   addContracts(networkConfig),
   addContractsToNetworks(),
   addBaseAssetsToAssets(),
-  addFiatsToAssets(toArray(Fiats)),
   addTokensToAssets(networkConfig),
   updateNetworkAssets()
 ];

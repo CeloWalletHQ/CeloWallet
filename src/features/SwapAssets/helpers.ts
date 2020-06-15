@@ -2,7 +2,7 @@ import BN from 'bn.js';
 import { addHexPrefix } from 'ethereumjs-util';
 
 import { Asset, StoreAccount, ITxConfig, IHexStrTransaction, ITxObject } from '@types';
-import { getAssetByUUID, getAssetByTicker, DexService } from '@services';
+import { getAssetByTicker, DexService, getBaseAssetsByNetwork } from '@services';
 import { hexToString, appendGasPrice, appendSender } from '@services/EthService';
 import { WALLET_STEPS } from '@components';
 import { weiToFloat } from '@utils';
@@ -35,7 +35,7 @@ export const makeTxConfigFromTransaction = (assets: Asset[]) => (
 ): ITxConfig => {
   const { gasPrice, gasLimit, nonce, data } = transaction;
   const { address, network } = account;
-  const baseAsset = getAssetByUUID(assets)(network.baseAsset)!;
+  const baseAsset = getBaseAssetsByNetwork({ assets, network })[0];
   const asset = getAssetByTicker(assets)(fromAsset.symbol) || baseAsset;
 
   const txConfig: ITxConfig = {

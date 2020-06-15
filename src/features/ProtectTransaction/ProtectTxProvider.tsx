@@ -9,7 +9,7 @@ import {
   CryptoScamDBService,
   EtherscanService
 } from '@services/ApiService';
-import { AssetContext, getAssetByUUID, StoreContext } from '@services/Store';
+import { AssetContext, StoreContext, getBaseAssetsByNetwork } from '@services/Store';
 import { useScreenSize } from '@utils';
 
 import { SendFormCallbackType } from './types';
@@ -187,7 +187,7 @@ const ProtectTxProvider: React.FC = ({ children }) => {
         return Promise.reject();
       }
 
-      const asset = getAssetByUUID(assets)(network.baseAsset)!;
+      const asset = getBaseAssetsByNetwork({ assets, network })[0];
 
       setState((prevState) => ({
         ...prevState,

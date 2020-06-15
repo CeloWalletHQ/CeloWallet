@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { ANALYTICS_CATEGORIES } from '@services';
-import { CRYPTOSCAMDB, getKBHelpArticle, KB_HELP_ARTICLE, EXT_URLS } from '@config';
+import { getKBHelpArticle, KB_HELP_ARTICLE, EXT_URLS } from '@config';
 import { translateRaw } from '@translations';
 import './Linkset.scss';
 import useAnalytics from '@utils/useAnalytics';
@@ -11,30 +11,30 @@ const LINK_COLUMNS = [
     heading: translateRaw('NEW_FOOTER_TEXT_6'),
     links: [
       {
-        title: 'CeloWallet.com',
-        link: 'https://www.mycrypto.com/',
-        analytics_event: 'CeloWallet.com'
+        title: 'CeloWallet.io',
+        link: 'https://www.cellowallet.io/',
+        analytics_event: 'CeloWallet.io'
       },
       {
         title: translateRaw('NEW_FOOTER_TEXT_7'),
         link: getKBHelpArticle(KB_HELP_ARTICLE.HOME),
         analytics_event: 'Help & Support'
-      },
-      {
-        title: translateRaw('NEW_FOOTER_TEXT_8'),
-        link: 'https://about.mycrypto.com/',
-        analytics_event: 'Our Team'
-      },
-      {
-        title: translateRaw('NEW_FOOTER_TEXT_9'),
-        link: 'mailto://press@mycrypto.com',
-        analytics_event: 'Press'
-      },
-      {
-        title: translateRaw('NEW_FOOTER_TEXT_10'),
-        link: 'https://about.mycrypto.com/privacy/',
-        analytics_event: 'Privacy Policy'
       }
+      // {
+      //   title: translateRaw('NEW_FOOTER_TEXT_8'),
+      //   link: 'https://about.cellowallet.io/',
+      //   analytics_event: 'Our Team'
+      // },
+      // {
+      //   title: translateRaw('NEW_FOOTER_TEXT_9'),
+      //   link: 'mailto://press@cellowallet.io',
+      //   analytics_event: 'Press'
+      // },
+      // {
+      //   title: translateRaw('NEW_FOOTER_TEXT_10'),
+      //   link: 'https://about.cellowallet.io/privacy/',
+      //   analytics_event: 'Privacy Policy'
+      // }
     ]
   },
   {
@@ -66,33 +66,33 @@ const LINK_COLUMNS = [
         analytics_event: 'UnstoppableDomains'
       }
     ]
-  },
-  {
-    heading: translateRaw('NEW_FOOTER_TEXT_12'),
-    links: [
-      {
-        title: 'EtherAddressLookup',
-        link:
-          'https://chrome.google.com/webstore/detail/etheraddresslookup/pdknmigbbbhmllnmgdfalmedcmcefdfn',
-        analytics_event: 'EtherAddressLookup'
-      },
-      {
-        title: 'CryptoScamDB',
-        link: CRYPTOSCAMDB,
-        analytics_event: 'CryptoScamDB'
-      },
-      {
-        title: 'MoneroVision',
-        link: 'https://monerovision.com/',
-        analytics_event: 'MoneroVision'
-      },
-      {
-        title: 'FindETH',
-        link: 'https://findeth.io',
-        analytics_event: 'FindETH'
-      }
-    ]
   }
+  // { // @todo - fix footer products
+  //   heading: translateRaw('NEW_FOOTER_TEXT_12'),
+  //   links: [
+  //     {
+  //       title: 'EtherAddressLookup',
+  //       link:
+  //         'https://chrome.google.com/webstore/detail/etheraddresslookup/pdknmigbbbhmllnmgdfalmedcmcefdfn',
+  //       analytics_event: 'EtherAddressLookup'
+  //     },
+  //     {
+  //       title: 'CryptoScamDB',
+  //       link: CRYPTOSCAMDB,
+  //       analytics_event: 'CryptoScamDB'
+  //     },
+  //     {
+  //       title: 'MoneroVision',
+  //       link: 'https://monerovision.com/',
+  //       analytics_event: 'MoneroVision'
+  //     },
+  //     {
+  //       title: 'FindETH',
+  //       link: 'https://findeth.io',
+  //       analytics_event: 'FindETH'
+  //     }
+  //   ]
+  // }
 ];
 
 export default function Linkset() {

@@ -15,15 +15,12 @@ import {
 import { TimeElapsedCounter, LinkOut } from '@components';
 import { ROUTE_PATHS } from '@config';
 import { SwapDisplayData } from '@features/SwapAssets/types';
-import translate, { translateRaw } from '@translations';
+import translate from '@translations';
 import { truncate } from '@utils';
 import { COLORS, SPACING } from '@theme';
-import ProtocolTagsList from '@features/DeFiZap/components/ProtocolTagsList';
 import MembershipReceiptBanner from '@features/PurchaseMembership/components/MembershipReceiptBanner';
 
 import { SwapFromToDiagram, TransactionDetailsDisplay } from './displays';
-import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
-import zapperLogo from '@assets/images/defizap/zapperLogo.svg';
 import './TxReceipt.scss';
 import Typography from '../Typography';
 
@@ -41,11 +38,6 @@ interface Props {
   swapDisplay?: SwapDisplayData;
 }
 
-const SImg = styled('img')`
-  height: ${(p: { size: string }) => p.size};
-  width: ${(p: { size: string }) => p.size};
-`;
-
 const TxLabel = styled(Typography)`
   color: ${COLORS.BLUE_DARK_SLATE};
   text-transform: uppercase;
@@ -58,7 +50,6 @@ export default function MultiTxReceipt({
   swapDisplay,
   transactions,
   transactionsConfigs,
-  zapSelected,
   membershipSelected,
   pendingButton,
   resetFlow,
@@ -89,38 +80,12 @@ export default function MultiTxReceipt({
         </div>
       )}
 
-      {txType === ITxType.DEFIZAP && zapSelected && (
-        <>
-          <div className="TransactionReceipt-row">
-            <TxIntermediaryDisplay
-              address={zapSelected.contractAddress}
-              contractName={'DeFi Zap'}
-            />
-          </div>
-          <div className="TransactionReceipt-row">
-            <div className="TransactionReceipt-row-column">
-              <SImg src={zapperLogo} size="24px" />
-              {translateRaw('ZAP_NAME')}
-            </div>
-            <div className="TransactionReceipt-row-column rightAligned">{zapSelected.name}</div>
-          </div>
-          <div className="TransactionReceipt-row">
-            <div className="TransactionReceipt-row-column">{translateRaw('PLATFORMS')}</div>
-            <div className="TransactionReceipt-row-column rightAligned">
-              <ProtocolTagsList platformsUsed={zapSelected.platformsUsed} />
-            </div>
-          </div>
-          <div className="TransactionReceipt-divider" />
-        </>
-      )}
-
       {txType === ITxType.PURCHASE_MEMBERSHIP && membershipSelected && (
         <div className="TransactionReceipt-row">
           <MembershipReceiptBanner membershipSelected={membershipSelected} />
         </div>
       )}
 
-      {txType !== ITxType.DEFIZAP && <div className="TransactionReceipt-divider" />}
       {transactions.map((transaction, idx) => {
         const { asset, baseAsset } = transactionsConfigs[idx];
         const { gasPrice, gasLimit, data, nonce } = transaction.txRaw;

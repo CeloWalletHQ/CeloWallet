@@ -5,7 +5,7 @@ import { Web3Provider } from 'ethers/providers/web3-provider';
 import { formatEther } from 'ethers/utils/units';
 import { BigNumber } from 'ethers/utils/bignumber';
 
-import { Asset, Network, IHexStrTransaction, TxObj, ITxSigned } from '@types';
+import { Asset, Network, IHexStrTransaction, TxObj } from '@types';
 import { RPCRequests, baseToConvertedUnit, ERC20 } from '@services/EthService';
 import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { createCustomNodeProvider } from './helpers';
@@ -104,14 +104,6 @@ export class ProviderHandler {
   /* Tested */
   public getCurrentBlock(): Promise<string> {
     return this.injectClient((client) => client.getBlockNumber().then((data) => data.toString()));
-  }
-
-  public sendRawTx(signedTx: string | ITxSigned): Promise<TransactionResponse> {
-    return this.injectClient((client) => client.sendTransaction(signedTx as string));
-  }
-
-  public waitForTransaction(txHash: string, confirmations = 1): Promise<TransactionReceipt> {
-    return this.injectClient((client) => client.waitForTransaction(txHash, confirmations));
   }
 
   protected injectClient(clientInjectCb: (client: BaseProvider) => any) {

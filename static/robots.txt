@@ -1,2 +1,2 @@
 User-agent: *
-Sitemap: https://mycrypto.com/sitemap.xml
+Sitemap: https://cellowallet.io/sitemap.xml

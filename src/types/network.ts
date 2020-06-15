@@ -21,7 +21,7 @@ export type ContractLegacy = Omit<Contract, 'networkId'> & { uuid?: TUuid };
 export interface Network {
   id: NetworkId;
   name: string;
-  baseAsset: TUuid;
+  baseAssets: TUuid[];
   baseUnit: TSymbol;
   chainId: number;
   isCustom: boolean;
@@ -40,12 +40,17 @@ export interface Network {
   nodes: NodeOptions[];
   selectedNode?: string;
   autoNode?: string;
+  mappings?: {
+    coinGeckoId?: string;
+    cryptoCompareId?: string;
+    coinCapId?: string;
+  };
 }
 
 interface NetworkPropsMissingInLegacy {
   nodes: NodeOptions[];
   assets: string[];
-  baseAsset: TUuid;
+  baseAssets: TUuid[];
   baseUnit: TSymbol;
 }
 

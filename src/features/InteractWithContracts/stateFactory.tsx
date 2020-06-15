@@ -24,6 +24,7 @@ import { translateRaw } from '@translations';
 import { customContract, CUSTOM_CONTRACT_ADDRESS } from './constants';
 import { ABIItem, InteractWithContractState } from './types';
 import { makeTxConfigFromTransaction, reduceInputParams, constructGasCallProps } from './helpers';
+import { CeloProviderHandler } from '@services/EthService/network';
 
 const interactWithContractsInitialState = {
   network: {},
@@ -345,7 +346,8 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
       after();
     } else {
       const provider = new ProviderHandler(account.network);
-      provider
+      const celoProvider = new CeloProviderHandler(account.network);
+      celoProvider
         .sendRawTx(signResponse)
         .then((retrievedTxReceipt) => retrievedTxReceipt)
         .catch((hash) => provider.getTransactionByHash(hash))

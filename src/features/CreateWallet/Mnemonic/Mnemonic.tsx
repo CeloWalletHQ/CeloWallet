@@ -16,7 +16,7 @@ import {
   AssetContext,
   IAssetContext,
   INetworkContext,
-  getNewDefaultAssetTemplateByNetwork
+  getNewDefaultAssetTemplatesByNetwork
 } from '@services/Store';
 import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';
 
@@ -146,13 +146,18 @@ class CreateMnemonic extends Component<Props & IAssetContext & INetworkContext> 
     const accountNetwork = getNetworkById(network);
     if (!accountNetwork) return;
 
-    const newAsset = getNewDefaultAssetTemplateByNetwork(this.props.assets)(accountNetwork);
+    const newAssets = getNewDefaultAssetTemplatesByNetwork(this.props.assets)(accountNetwork);
+
     const account: IRawAccount = {
       address: toChecksumAddress(addHexPrefix(address)) as TAddress,
       networkId: network,
       wallet: accountType,
       dPath,
-      assets: [{ uuid: newAsset.uuid, balance: '0', mtime: Date.now() }],
+      assets: newAssets.map((newAsset) => ({
+        uuid: newAsset.uuid,
+        balance: '0',
+        mtime: Date.now()
+      })),
       transactions: [],
       favorite: false,
       mtime: Date.now()
@@ -160,7 +165,9 @@ class CreateMnemonic extends Component<Props & IAssetContext & INetworkContext> 
     const accountUUID = generateAccountUUID(network, account.address);
     createAccountWithID(account, accountUUID);
     updateSettingsAccounts([...settings.dashboardAccounts, accountUUID]);
-    createAssetWithID(newAsset, newAsset.uuid);
+    newAssets.map((newAsset) => {
+      createAssetWithID(newAsset, newAsset.uuid);
+    });
 
     displayNotification(NotificationTemplates.walletCreated, {
       address: account.address

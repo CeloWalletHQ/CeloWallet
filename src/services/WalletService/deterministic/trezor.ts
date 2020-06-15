@@ -9,8 +9,8 @@ import { HardwareWallet, ChainCodeResponse } from './hardware';
 
 // read more: https://github.com/trezor/connect/blob/develop/docs/index.md#trezor-connect-manifest
 TrezorConnect.manifest({
-  email: 'support@mycrypto.com',
-  appUrl: 'https://mycrypto.com/'
+  email: 'support@cellowallet.io',
+  appUrl: 'https://cellowallet.io/'
 });
 
 export class TrezorWallet extends HardwareWallet {

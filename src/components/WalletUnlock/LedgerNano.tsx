@@ -61,7 +61,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
               id="UNLOCKING_LEDGER_ONLY_POSSIBLE_ON_OVER_HTTPS"
               variables={{
                 $newTabLink: () => (
-                  <NewTabLink href="https://mycrypto.com">CeloWallet.com</NewTabLink>
+                  <NewTabLink href="https://cellowallet.io">CeloWallet.io</NewTabLink>
                 )
               }}
             />

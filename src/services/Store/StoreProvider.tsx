@@ -54,7 +54,7 @@ import {
   AssetContext,
   getTotalByAsset,
   getAssetByTicker,
-  getNewDefaultAssetTemplateByNetwork
+  getNewDefaultAssetTemplatesByNetwork
 } from './Asset';
 import { AccountContext, getDashboardAccounts } from './Account';
 import { SettingsContext } from './Settings';
@@ -295,9 +295,7 @@ export const StoreProvider: React.FC = ({ children }) => {
               timestamp: txTimestamp,
               stage: txStatus
             });
-            if (pendingTransactionObject.txType === ITxType.DEFIZAP) {
-              state.scanAccountTokens(senderAccount);
-            } else if (pendingTransactionObject.txType === ITxType.PURCHASE_MEMBERSHIP) {
+            if (pendingTransactionObject.txType === ITxType.PURCHASE_MEMBERSHIP) {
               scanForMemberships([senderAccount]);
             }
           });
@@ -386,14 +384,18 @@ export const StoreProvider: React.FC = ({ children }) => {
       if (!network || !address || !!getAccountByAddressAndNetworkName(address, networkId)) return;
       const walletType =
         accountType! === WalletId.WEB3 ? WalletId[getWeb3Config().id] : accountType!;
-      const newAsset: Asset = getNewDefaultAssetTemplateByNetwork(assets)(network);
+      const newAssets: ExtendedAsset[] = getNewDefaultAssetTemplatesByNetwork(assets)(network);
       const accountUUID = generateAccountUUID(networkId, address);
       const account: IRawAccount = {
         address,
         networkId,
         wallet: walletType,
         dPath,
-        assets: [{ uuid: newAsset.uuid, balance: '0', mtime: Date.now() }],
+        assets: newAssets.map((newAsset) => ({
+          uuid: newAsset.uuid,
+          balance: '0',
+          mtime: Date.now()
+        })),
         transactions: [],
         favorite: false,
         mtime: 0

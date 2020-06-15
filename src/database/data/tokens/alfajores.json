@@ -1,26 +1,4 @@
 {
-	"a86df8c9-a98e-5905-88dc-28772525f2e7": {
-		"uuid": "a86df8c9-a98e-5905-88dc-28772525f2e7",
-		"ticker": "Alfajores CGLD",
-		"name": "Alfajores Gold",
-		"decimal": 18,
-		"website": "https://celo.org",
-		"support": {
-			"email": "",
-			"url": ""
-		},
-		"social": {
-			"youtube": "https://youtube.com/channel/UCCZgos_YAJSXm5QX5D5Wkcw",
-			"instagram": "https://www.instagram.com/celoorg/",
-			"blog": "https://blog.qiibee.com",
-			"github": "https://github.com/celo-org",
-			"twitter": "https://twitter.com/CeloOrg",
-			"medium": "https://medium.com/celoOrg"
-		},
-		"networkId": "Alfajores",
-		"type": "base",
-		"mappings": {}
-	},
 	"683df285-02d1-512a-8831-7bd73da95f91": {
 		"uuid": "683df285-02d1-512a-8831-7bd73da95f91",
 		"ticker": "Alfajores CUSD",
@@ -41,7 +19,8 @@
 			"medium": "https://medium.com/celoOrg"
 		},
 		"networkId": "Alfajores",
-		"type": "erc20",
+		"type": "base",
+		"celoIdentifier": "usd",
 		"mappings": {}
 	}
 }

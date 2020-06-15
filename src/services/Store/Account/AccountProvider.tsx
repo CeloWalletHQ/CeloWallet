@@ -1,7 +1,6 @@
 import React, { createContext, useContext } from 'react';
 import unionBy from 'lodash/unionBy';
 import property from 'lodash/property';
-import BigNumber from 'bignumber.js';
 import unionWith from 'ramda/src/unionWith';
 import isEmpty from 'ramda/src/isEmpty';
 import eqBy from 'ramda/src/eqBy';
@@ -25,7 +24,7 @@ import {
 import { DataContext } from '../DataManager';
 import { SettingsContext } from '../Settings';
 import { getAccountByAddressAndNetworkName } from './helpers';
-import { getAllTokensBalancesOfAccount } from '../BalanceService';
+import { getAccountsTokenBalances } from '../BalanceService';
 import { useAnalytics } from '@utils';
 
 export interface IAccountContext {
@@ -85,24 +84,25 @@ export const AccountProvider: React.FC = ({ children }) => {
     getAccountByAddressAndNetworkName: getAccountByAddressAndNetworkName(accounts),
     updateAccountAssets: async (storeAccount, assets) => {
       // Find all tokens with a positive balance for given account, and add those tokens to the assets array of the account
-      return getAllTokensBalancesOfAccount(storeAccount, assets).then((assetBalances) => {
-        const positiveAssetBalances = Object.entries(assetBalances).filter(
-          ([_, value]) => !value.isZero()
-        );
+      const relevantAssets = assets.filter(
+        ({ networkId, type }) => networkId === storeAccount.networkId && type === 'erc20'
+      );
+      return getAccountsTokenBalances(storeAccount, relevantAssets).then((assetBalances) => {
+        const positiveAssetBalances = assetBalances.filter(({ balance }) => !balance.isZero());
 
         const existingAccount = accounts.find((x) => x.uuid === storeAccount.uuid);
 
         if (existingAccount) {
           const newAssets: AssetBalanceObject[] = positiveAssetBalances.reduce(
-            (tempAssets: AssetBalanceObject[], [contractAddress, balance]: [string, BigNumber]) => {
-              const tempAsset = assets.find((x) => x.contractAddress === contractAddress);
+            (tempAssets: AssetBalanceObject[], item) => {
+              const tempAsset = assets.find((x) => x.contractAddress === item.contractAddress);
               return [
                 ...tempAssets,
                 ...(tempAsset
                   ? [
                       {
                         uuid: tempAsset.uuid,
-                        balance: balance.toString(10),
+                        balance: item.balance.toString(10),
                         mtime: Date.now()
                       }
                     ]
@@ -121,27 +121,25 @@ export const AccountProvider: React.FC = ({ children }) => {
       Promise.all(
         storeAccounts.map(async (storeAccount) => {
           // Find all tokens with a positive balance for given account, and add those tokens to the assets array of the account
-          return getAllTokensBalancesOfAccount(storeAccount, assets).then((assetBalances) => {
-            const positiveAssetBalances = Object.entries(assetBalances).filter(
-              ([_, value]) => !value.isZero()
-            );
+          const relevantAssets = assets.filter(
+            ({ networkId, type }) => networkId === storeAccount.networkId && type === 'erc20'
+          );
+          return getAccountsTokenBalances(storeAccount, relevantAssets).then((assetBalances) => {
+            const positiveAssetBalances = assetBalances.filter(({ balance }) => !balance.isZero());
 
             const existingAccount = accounts.find((x) => x.uuid === storeAccount.uuid);
             if (!existingAccount) return {} as IAccount; // no existing account found
 
             const newAssets: AssetBalanceObject[] = positiveAssetBalances.reduce(
-              (
-                tempAssets: AssetBalanceObject[],
-                [contractAddress, balance]: [string, BigNumber]
-              ) => {
-                const tempAsset = assets.find((x) => x.contractAddress === contractAddress);
+              (tempAssets: AssetBalanceObject[], item) => {
+                const tempAsset = assets.find((x) => x.contractAddress === item.contractAddress);
                 return [
                   ...tempAssets,
                   ...(tempAsset
                     ? [
                         {
                           uuid: tempAsset.uuid,
-                          balance: balance.toString(10),
+                          balance: item.balance.toString(10),
                           mtime: Date.now()
                         }
                       ]

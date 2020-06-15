@@ -3,7 +3,7 @@ import { parse as parseTransaction } from 'ethers/utils/transaction';
 
 import {
   getNetworkByChainId,
-  getBaseAssetByNetwork,
+  getBaseAssetsByNetwork,
   getAssetByContractAndNetwork,
   getStoreAccount
 } from '@services/Store';
@@ -31,7 +31,7 @@ export const fromTxReceiptObj = (txReceipt: ITxReceipt) => (
   const networkDetected = getNetworkByChainId(chainId, networks);
   if (networkDetected) {
     const contractAsset = getAssetByContractAndNetwork(txReceipt.to, networkDetected)(assets);
-    const baseAsset = getBaseAssetByNetwork({ network: networkDetected, assets });
+    const baseAsset = getBaseAssetsByNetwork({ network: networkDetected, assets });
     return {
       blockNumber: txReceipt.blockNumber,
       network: networkDetected,
@@ -83,10 +83,10 @@ export const makeTxConfigFromSignedTx = (
     decodedTx.to || undefined,
     networkDetected
   )(assets);
-  const baseAsset = getBaseAssetByNetwork({
+  const baseAsset = getBaseAssetsByNetwork({
     network: networkDetected || ({} as Network),
     assets
-  });
+  })[0];
 
   const txConfig = {
     rawTransaction: oldTxConfig.rawTransaction,

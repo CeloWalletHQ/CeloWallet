@@ -6,7 +6,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const common = require('./common');
 const config = require('./config');
 
-const HTTP_PORT = 3000;
+const HTTP_PORT = 5000;
 const IS_ELECTRON = !!process.env.BUILD_ELECTRON;
 
 module.exports =  merge.smart(common, {

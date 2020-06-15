@@ -40,7 +40,7 @@ function getComponent(props: any, contacts: AddressBook[] = [], output: FormValu
     <AssetContext.Provider
       value={
         ({
-          assets: [{ uuid: fNetwork.baseAsset }]
+          assets: [{ uuid: fNetwork.baseAssets }]
         } as unknown) as any
       }
     >

@@ -7,8 +7,8 @@ import { useHistory } from 'react-router-dom';
 
 import translate, { translateRaw } from '@translations';
 import { SPACING, COLORS, FONT_SIZE } from '@theme';
-import { IAccount, StoreAccount, Asset, TURL } from '@types';
-import { ETHUUID, MOONPAY_ASSET_UUIDS, openLink } from '@utils';
+import { IAccount, StoreAccount, Asset, TURL, TUuid } from '@types';
+import { MOONPAY_ASSET_UUIDS, openLink, CGLDUUID } from '@utils';
 import { ROUTE_PATHS, MOONPAY_API_QUERYSTRING, BUY_MYCRYPTO_WEBSITE } from '@config';
 import { AccountDropdown, AssetDropdown, InlineMessage, ContentPanel } from '@components';
 import { isAccountInNetwork } from '@services/Store/Account/helpers';
@@ -68,7 +68,7 @@ export const BuyAssetsForm = () => {
   const history = useHistory();
   const { accounts } = useContext(StoreContext);
   const { assets } = useContext(AssetContext);
-  const ethAsset = getAssetByUUID(assets)(ETHUUID) as Asset;
+  const ethAsset = getAssetByUUID(assets)(CGLDUUID as TUuid) as Asset;
 
   const initialFormikValues: IBuyFormState = {
     account: {} as StoreAccount,

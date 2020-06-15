@@ -1,10 +1,9 @@
 import React from 'react';
 
 import { fTxConfig, fAccount, fSettings } from '@fixtures';
-import { ExtendedAddressBook, ITxType } from '@types';
+import { ExtendedAddressBook } from '@types';
 import { noOp } from '@utils';
 import { devContacts } from '@database/seed';
-import { IZapConfig, ZAPS_CONFIG, IZapId } from '@features/DeFiZap/config';
 
 import { ConfirmTransactionUI } from './ConfirmTransaction';
 import { constructSenderFromTxConfig } from './helpers';
@@ -33,41 +32,10 @@ export const confirmTransaction = () => (
   </div>
 );
 
-const defaultZap = IZapId.unipoolseth;
-const zapSelected: IZapConfig = ZAPS_CONFIG[defaultZap];
-
-export const confirmTransactionZap = () => (
-  <div className="sb-container" style={{ maxWidth: '620px' }}>
-    <ConfirmTransactionUI
-      settings={fSettings}
-      assetRate={assetRate}
-      baseAssetRate={baseAssetRate}
-      senderContact={senderContact}
-      recipientContact={recipientContact}
-      txType={ITxType.DEFIZAP}
-      zapSelected={zapSelected}
-      onComplete={onComplete}
-      txConfig={fTxConfig}
-      sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
-    />
-  </div>
-);
-
 // Uncomment this for Figma support:
 
 (confirmTransaction as any).story = {
   name: 'ConfirmTransaction',
-  parameters: {
-    design: {
-      type: 'figma',
-      url:
-        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/CeloWallet-GAU-Master?node-id=325%3A79384'
-    }
-  }
-};
-
-(confirmTransactionZap as any).story = {
-  name: 'ConfirmTransaction-DeFiZap',
   parameters: {
     design: {
       type: 'figma',

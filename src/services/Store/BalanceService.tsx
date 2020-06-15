@@ -1,18 +1,27 @@
 import {
-  getEtherBalances,
   getTokensBalance,
   getTokenBalances as getTokenBalancesFromEthScan,
-  getTokensBalances,
   BalanceMap as EthScanBalanceMap
 } from '@mycrypto/eth-scan';
 import { default as BN } from 'bignumber.js';
-import { bigNumberify } from 'ethers/utils/bignumber';
+import { bigNumberify, BigNumber } from 'ethers/utils/bignumber';
 import { BigNumber as EthScanBN } from '@ethersproject/bignumber';
 
 import { TAddress, StoreAccount, StoreAsset, Asset, Network, TBN } from '@types';
 import { ProviderHandler } from '@services/EthService';
+import { CeloProviderHandler } from '@services/EthService/network';
+import { AccountBalance } from '@services/EthService/network/celoProviderHandler';
+import { bigify } from '@utils';
+
+export interface ExtendedAccountBalance extends AccountBalance {
+  address: string;
+}
 
 export type BalanceMap<T = BN> = EthScanBalanceMap<T>;
+
+export interface BaseAssetsBalanceMap {
+  [key: string]: AccountBalance;
+}
 
 const getAssetAddresses = (assets: Asset[] = []): (string | undefined)[] => {
   return assets.map((a) => a.contractAddress).filter((a) => a);
@@ -36,8 +45,20 @@ export const nestedToBigNumberJS = (
   );
 };
 
+interface BaseAssetBalanceMap {
+  [address: string]: TotalAccountBalanceMap;
+}
+
+interface TotalAccountBalanceMap {
+  usd: BigNumber;
+  gold: BigNumber;
+  total: BigNumber;
+  pending: BigNumber;
+  lockedGold: BigNumber;
+}
+
 const addBalancesToAccount = (account: StoreAccount) => ([baseBalance, tokenBalances]: [
-  BalanceMap,
+  BaseAssetBalanceMap,
   BalanceMap
 ]) => ({
   ...account,
@@ -45,10 +66,14 @@ const addBalancesToAccount = (account: StoreAccount) => ([baseBalance, tokenBala
     .map((asset) => {
       switch (asset.type) {
         case 'base': {
-          const balance = baseBalance[account.address];
+          const balances = baseBalance[account.address];
           return {
             ...asset,
-            balance: balance ? balance.toString(10) : asset.balance
+            balance: balances
+              ? balances[
+                  asset.celoIdentifier! as 'usd' | 'gold' | 'lockedGold' | 'pending' | 'total'
+                ].toString()
+              : asset.balance
           };
         }
         case 'erc20': {
@@ -77,17 +102,17 @@ const addBalancesToAccount = (account: StoreAccount) => ([baseBalance, tokenBala
 //     .catch((_) => account);
 // };
 
-export const getBaseAssetBalances = async (addresses: string[], network: Network | undefined) => {
-  if (!network) {
-    return ([] as unknown) as BalanceMap;
-  }
-  const provider = ProviderHandler.fetchProvider(network);
-  return getEtherBalances(provider, addresses)
-    .then((data) => {
-      return data;
-    })
-    .catch((_) => ([] as unknown) as BalanceMap);
-};
+// export const getBaseAssetBalances = async (addresses: string[], network: Network | undefined) => {
+//   if (!network) {
+//     return ([] as unknown) as BalanceMap;
+//   }
+//   const provider = ProviderHandler.fetchProvider(network);
+//   return getEtherBalances(provider, addresses)
+//     .then((data) => {
+//       return data;
+//     })
+//     .catch((_) => ([] as unknown) as BalanceMap);
+// };
 
 const getTokenBalances = (
   provider: ProviderHandler,
@@ -109,12 +134,19 @@ const getAccountAssetsBalancesWithJsonRPC = async (
 ): Promise<StoreAccount> => {
   const { address, assets, network } = account;
   const provider = new ProviderHandler(network);
+  const celoProvider = new CeloProviderHandler(network);
   const tokens = assets.filter((a: StoreAsset) => a.type === 'erc20');
   return Promise.all([
-    provider
-      .getRawBalance(account.address)
+    celoProvider
+      .getTotalBalance(account.address)
       // @ts-ignore The types mismatch due to versioning of ContractKitProvider
-      .then(convertBNToBigNumberJS)
+      .then((accountBalance) => ({
+        gold: new BigNumber(accountBalance.gold.toString()),
+        usd: new BigNumber(accountBalance.usd.toString()),
+        lockedGold: new BigNumber(accountBalance.lockedGold.toString()),
+        pending: new BigNumber(accountBalance.pending.toString()),
+        total: new BigNumber(accountBalance.total.toString())
+      }))
       // @ts-ignore The types mismatch due to versioning of ContractKitProvider
       .then((balance) => ({ [address]: balance })),
     getTokenBalances(provider, address, tokens)
@@ -153,19 +185,44 @@ export const getAccountsAssetsBalances = async (accounts: StoreAccount[]) => {
   return filteredUpdatedAccounts;
 };
 
-export const getAllTokensBalancesOfAccount = async (account: StoreAccount, assets: Asset[]) => {
+export const getAllTokensBalancesOfAccountFromEthScan = async (
+  account: StoreAccount,
+  assets: Asset[]
+) => {
   const provider = account.network.nodes[0];
   const assetsInNetwork = assets.filter((x) => x.networkId === account.network.id);
   const assetAddresses = getAssetAddresses(assetsInNetwork) as string[];
+  return getTokensBalance(provider, account.address, assetAddresses).then(toBigNumberJS);
+};
 
+export const getBaseAssetBalances = async (
+  addresses: string[],
+  network: Network | undefined
+): Promise<BaseAssetsBalanceMap> => {
+  if (!network) {
+    return ([] as never) as Promise<BaseAssetsBalanceMap>;
+  }
+  const celoProvider = new CeloProviderHandler(network);
   try {
-    return getTokensBalance(provider, account.address, assetAddresses).then(toBigNumberJS);
+    return Promise.all(
+      addresses.map((address) => {
+        const z = celoProvider.getTotalBalance(address);
+        console.debug('z');
+        return { ...z, address };
+      })
+    ).then((accountBalances: ExtendedAccountBalance[]) => {
+      const z = accountBalances.reduce((acc, item) => ({ ...acc, [item.address]: item }), {});
+      return z;
+    });
   } catch (err) {
     throw new Error(err);
   }
 };
 
-export const getAccountsTokenBalance = async (accounts: StoreAccount[], tokenContract: string) => {
+export const getAccountsTokenBalanceFromEthScan = async (
+  accounts: StoreAccount[],
+  tokenContract: string
+) => {
   const provider = accounts[0].network.nodes[0];
   try {
     return getTokenBalancesFromEthScan(
@@ -178,11 +235,19 @@ export const getAccountsTokenBalance = async (accounts: StoreAccount[], tokenCon
   }
 };
 
-export const getAccountsTokenBalances = (accounts: StoreAccount[], tokenContracts: string[]) => {
-  const provider = accounts[0].network.nodes[0];
-  return getTokensBalances(
-    provider,
-    accounts.map((account) => account.address),
-    tokenContracts
-  ).then(nestedToBigNumberJS);
+export const getAccountsTokenBalances = (account: StoreAccount, tokenAssets: Asset[]) => {
+  const provider = new ProviderHandler(account.network);
+  return Promise.all(
+    tokenAssets.map((token) => {
+      return provider.getTokenBalance(account.address, token).then((balance) => ({
+        ...token,
+        balance: bigify(balance)
+      }));
+    })
+  );
+  // return getTokensBalances(
+  //   provider,
+  //   accounts.map((account) => account.address),
+  //   tokenContracts
+  // ).then(nestedToBigNumberJS);
 };

@@ -9,7 +9,7 @@ import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
 import { Trans, translateRaw } from '@translations';
 
 import walletIcon from '@assets/images/icn-hardware-wallet.svg';
-import myCryptoIcon from '@assets/images/logo-mycrypto-transparent.png';
+//import myCryptoIcon from '@assets/images/logo-mycrypto-transparent.png';
 
 interface PaperWalletWrapperProps {
   isHidden?: boolean;
@@ -66,17 +66,17 @@ const Resources = styled.p`
   font-weight: normal;
 `;
 
-const CeloWalletImage = styled.img`
-  width: 360px;
-  height: auto;
-`;
+// const CeloWalletImage = styled.img`
+//   width: 360px;
+//   height: auto;
+// `;
 
-const LogoText = styled.p`
-  text-align: right;
-  font-size: 30px;
-  font-weight: normal;
-  margin-top: -14px;
-`;
+// const LogoText = styled.p`
+//   text-align: right;
+//   font-size: 30px;
+//   font-weight: normal;
+//   margin-top: -14px;
+// `;
 
 const Notes = styled.p`
   text-align: left;
@@ -236,10 +236,10 @@ export default class PaperWallet extends React.Component<Props, {}> {
         </PartWrapper>
         <PartWrapper>
           <Part hasRightBorder={true} hasTopBorder={true}>
-            <div>
+            {/* <div> // @todo - mycrypto icon
               <CeloWalletImage src={myCryptoIcon} />
               <LogoText>{translateRaw('PAPER_WALLET')}</LogoText>
-            </div>
+            </div> */}
           </Part>
           <Part hasRightBorder={true} hasTopBorder={true}>
             <WalletImage src={walletIcon} />

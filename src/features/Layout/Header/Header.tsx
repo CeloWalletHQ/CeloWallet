@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Transition } from 'react-spring/renderprops-universal.cjs';
 import { Icon } from '@mycrypto/ui';
 import styled from 'styled-components';
@@ -7,12 +7,9 @@ import styled from 'styled-components';
 import { SelectLanguage } from '@features/Drawer/screens';
 import { links } from './constants';
 import { BREAK_POINTS, COLORS, MIN_CONTENT_PADDING } from '@theme';
-import { ANALYTICS_CATEGORIES, SettingsContext } from '@services';
-import { ROUTE_PATHS, LATEST_NEWS_URL, getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
+import { SettingsContext } from '@services';
 import translate, { languages } from '@translations';
-import { openLink, useAnalytics } from '@utils';
 
-import logo from '@assets/images/logo-mycrypto.svg';
 import { ScreenLockContext } from '@features/ScreenLock/ScreenLockProvider';
 
 const { BLUE_BRIGHT } = COLORS;
@@ -208,10 +205,10 @@ const MobileTopLeft = styled.div`
   }
 `;
 
-const CenterImg = styled.img`
-  width: 160px;
-  height: 39px;
-`;
+// const CenterImg = styled.img`
+//   width: 160px;
+//   height: 39px;
+// `;
 
 const Lock = styled.li`
   display: flex;
@@ -280,9 +277,9 @@ type Props = OwnProps & RouteComponentProps;
 export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, history }: Props) {
   const { language: languageSelection } = useContext(SettingsContext);
   const { startLockCountdown } = useContext(ScreenLockContext);
-  const trackHeader = useAnalytics({
-    category: ANALYTICS_CATEGORIES.HEADER
-  });
+  // const trackHeader = useAnalytics({
+  //   category: ANALYTICS_CATEGORIES.HEADER
+  // });
 
   const initVisibleMenuDropdowns: DropdownType = {
     'Manage Assets': false,
@@ -326,19 +323,20 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
       [dropdown]: !visibleDropdowns[dropdown]
     });
 
-  const openLatestNews = (): void => {
-    trackHeader({
-      actionName: 'Latest news clicked'
-    });
-    openLink(LATEST_NEWS_URL);
-  };
+  // @todo - fix
+  // const openLatestNews = (): void => {
+  //   trackHeader({
+  //     actionName: 'Latest news clicked'
+  //   });
+  //   openLink(LATEST_NEWS_URL);
+  // };
 
-  const openHelpSupportPage = (): void => {
-    trackHeader({
-      actionName: 'Help & Support clicked'
-    });
-    openLink(getKBHelpArticle(KB_HELP_ARTICLE.HOME));
-  };
+  // const openHelpSupportPage = (): void => {
+  //   trackHeader({
+  //     actionName: 'Help & Support clicked'
+  //   });
+  //   openLink(getKBHelpArticle(KB_HELP_ARTICLE.HOME));
+  // };
 
   return (
     <Navbar>
@@ -400,10 +398,10 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
                 {languages[languageSelection]} <IconWrapper subItems={true} icon="navDownCaret" />
               </MenuMid>
               <MenuLinks>
-                <li onClick={openHelpSupportPage}>
+                {/* <li onClick={openHelpSupportPage}>
                   {translate('NEW_HEADER_TEXT_1')}
                   <IconWrapper subItems={true} icon="navDownCaret" />
-                </li>
+                </li> */}
                 <li>
                   {translate('NEW_HEADER_TEXT_2')}
                   <IconWrapper subItems={true} icon="navDownCaret" />
@@ -419,15 +417,15 @@ export function Header({ drawerVisible, toggleDrawerVisible, setDrawerScreen, hi
           <Icon icon={menuOpen ? 'exit' : 'combinedShape'} />
         </MobileTopLeft>
         {/* Desktop Left */}
-        <HeaderTopLeft>
+        {/* <HeaderTopLeft> // @todo - fix
           <li onClick={openHelpSupportPage}>{translate('NEW_HEADER_TEXT_1')}</li>
           <li onClick={openLatestNews}>{translate('NEW_HEADER_TEXT_2')}</li>
-        </HeaderTopLeft>
-        <div>
+        </HeaderTopLeft> */}
+        {/* <div> // @todo - replace logo
           <Link to={ROUTE_PATHS.ROOT.path}>
             <CenterImg src={logo} alt="Our logo" />
           </Link>
-        </div>
+        </div> */}
         {/* Mobile Right */}
         <MobileTopLeft onClick={onLockClick}>
           <Icon icon={drawerVisible ? 'exit' : 'lock'} />

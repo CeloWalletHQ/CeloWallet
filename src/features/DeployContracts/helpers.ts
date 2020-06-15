@@ -1,6 +1,6 @@
 import { StoreAccount, NetworkId, ITxConfig, ITxObject } from '@types';
 import { WALLET_STEPS } from '@components';
-import { getAssetByUUID, hexToString, hexWeiToString } from '@services';
+import { hexToString, hexWeiToString, getBaseAssetsByNetwork } from '@services';
 
 export const getAccountsInNetwork = (accounts: StoreAccount[], networkId: NetworkId) =>
   accounts.filter((acc) => acc.networkId === networkId && WALLET_STEPS[acc.wallet]);
@@ -12,8 +12,7 @@ export const makeTxConfigFromTransaction = (
 ): ITxConfig => {
   const { gasPrice, gasLimit, nonce, data, to, value } = rawTransaction;
   const { address, network } = account;
-  const baseAsset = getAssetByUUID(account.assets)(network.baseAsset)!;
-
+  const baseAsset = getBaseAssetsByNetwork({ assets: account.assets, network })[0];
   const txConfig: ITxConfig = {
     from: address,
     amount,

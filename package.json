@@ -4,7 +4,7 @@
   "version": "1.7.3",
   "main": "main.js",
   "description": "CeloWallet is a free, open-source interface for interacting with the blockchain",
-  "repository": "https://github.com/CeloWallet/CeloWallet",
+  "repository": "https://github.com/CeloWalletHQ/CeloWallet",
   "engines": {
     "node": "12.14.1",
     "npm": ">= 6.4.1",

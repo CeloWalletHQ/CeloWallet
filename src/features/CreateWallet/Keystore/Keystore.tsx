@@ -11,12 +11,20 @@ import {
   NetworkContext,
   AssetContext,
   IAssetContext,
-  getNewDefaultAssetTemplateByNetwork
+  getNewDefaultAssetTemplatesByNetwork
 } from '@services/Store';
 import { stripHexPrefix } from '@services/EthService';
 import { WalletFactory } from '@services/WalletService';
 import { NotificationTemplates } from '@features/NotificationsPanel';
-import { TAddress, IRawAccount, Asset, ISettings, NetworkId, WalletId } from '@types';
+import {
+  TAddress,
+  IRawAccount,
+  Asset,
+  ISettings,
+  NetworkId,
+  WalletId,
+  ExtendedAsset
+} from '@types';
 import { ROUTE_PATHS, N_FACTOR, DEFAULT_NETWORK } from '@config';
 
 import { KeystoreStages, keystoreStageToComponentHash, keystoreFlow } from './constants';
@@ -115,13 +123,17 @@ class CreateKeystore extends Component<Props & INetworkContext & IAssetContext, 
     if (!keystore || !accountNetwork) {
       return;
     }
-    const newAsset = getNewDefaultAssetTemplateByNetwork(assets)(accountNetwork);
+    const newAssets: ExtendedAsset[] = getNewDefaultAssetTemplatesByNetwork(assets)(accountNetwork);
     const account: IRawAccount = {
       address: toChecksumAddress(addHexPrefix(keystore.address)) as TAddress,
       networkId: network,
       wallet: accountType,
       dPath: '',
-      assets: [{ uuid: newAsset.uuid, balance: '0', mtime: Date.now() }],
+      assets: newAssets.map((newAsset) => ({
+        uuid: newAsset.uuid,
+        balance: '0',
+        mtime: Date.now()
+      })),
       transactions: [],
       favorite: false,
       mtime: 0
@@ -129,7 +141,9 @@ class CreateKeystore extends Component<Props & INetworkContext & IAssetContext, 
     const accountUUID = generateAccountUUID(network, account.address);
     createAccountWithID(account, accountUUID);
     updateSettingsAccounts([...settings.dashboardAccounts, accountUUID]);
-    createAssetWithID(newAsset, newAsset.uuid);
+    newAssets.map((newAsset) => {
+      createAssetWithID(newAsset, newAsset.uuid);
+    });
 
     displayNotification(NotificationTemplates.walletCreated, {
       address: account.address

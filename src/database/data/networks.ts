@@ -1,7 +1,7 @@
 // @TODO Used for unsupportedTabs. update to unsupportedPaths
 // import { TAB } from 'components/Header/components/constants';
 
-import { WalletId, NetworkId, TSymbol, NetworkLegacy } from '@types';
+import { WalletId, NetworkId, TSymbol, NetworkLegacy, AssetLegacy } from '@types';
 import { makeExplorer } from '@services/EthService/utils/makeExplorer';
 import {
   DPathsList as DPaths,
@@ -14,6 +14,7 @@ import {
 } from '@config';
 
 import { Contracts } from './contracts';
+import { Assets } from './tokens';
 
 // Temporay type to bridge the difference between v1 and v2 network definitions.
 export type NetworkConfig = {
@@ -36,14 +37,17 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: ethPlorer,
       address: ETHTokenExplorer
     },
-    tokens: [], //Assets.Celo as AssetLegacy[],
+    tokens: Assets.Celo as AssetLegacy[],
     contracts: Contracts.Celo,
     dPaths: {
       [WalletId.LEDGER_NANO_S]: DPaths.CELO_LEDGER,
       [WalletId.MNEMONIC_PHRASE]: DPaths.CELO_LEDGER
     },
     gasPriceSettings: GAS_PRICE_DEFAULT,
-    shouldEstimateGasPrice: true
+    shouldEstimateGasPrice: true,
+    mappings: {
+      coinGeckoId: 'celo-gold'
+    }
   },
   Baklava: {
     id: 'Baklava',
@@ -56,7 +60,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'BlockScout - Baklava',
       origin: 'https://baklava-blockscout.celo-testnet.org/'
     }),
-    tokens: [],
+    tokens: Assets.Baklava as AssetLegacy[],
     contracts: Contracts.Baklava,
     isTestnet: true,
     dPaths: {
@@ -76,7 +80,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       name: 'Blockscout - Alfajores',
       origin: 'https://alfajores-blockscout.celo-testnet.org/'
     }),
-    tokens: [], //Assets.Alfajores as AssetLegacy[],
+    tokens: Assets.Alfajores as AssetLegacy[],
     contracts: Contracts.Alfajores,
     isTestnet: true,
     dPaths: {

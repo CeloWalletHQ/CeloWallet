@@ -4,6 +4,7 @@ interface DonationAddressHash {
 
 export const donationAddressHash: DonationAddressHash = {
   BTC: '32oirLEzZRhi33RCXDF9WHJjEb8RsrSss3',
+  CELO: '0xd36A0c82c511fb86d0f183db458e6eD85333FB22',
   ETH: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
   REP: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
   XMR:

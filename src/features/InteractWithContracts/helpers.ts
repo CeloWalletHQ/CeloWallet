@@ -4,7 +4,7 @@ import { bufferToHex } from 'ethereumjs-util';
 
 import { StoreAccount, NetworkId, ITxConfig, ITxObject } from '@types';
 import { WALLET_STEPS } from '@components';
-import { getAssetByUUID, hexToString, hexWeiToString, inputValueToHex } from '@services';
+import { hexToString, hexWeiToString, inputValueToHex, getBaseAssetsByNetwork } from '@services';
 import { AbiFunction } from '@services/EthService/contracts/ABIFunction';
 
 import { StateMutabilityType, ABIItem, ABIItemType } from './types';
@@ -90,8 +90,7 @@ export const makeTxConfigFromTransaction = (
 ): ITxConfig => {
   const { gasPrice, gasLimit, nonce, data, to, value } = rawTransaction;
   const { address, network } = account;
-  const baseAsset = getAssetByUUID(account.assets)(network.baseAsset)!;
-
+  const baseAsset = getBaseAssetsByNetwork({ assets: account.assets, network })[0];
   const txConfig: ITxConfig = {
     from: address,
     amount,

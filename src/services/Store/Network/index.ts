@@ -3,6 +3,6 @@ export {
   getNetworkByChainId,
   getNetworkById,
   isWalletFormatSupportedOnNetwork,
-  getBaseAssetByNetwork
+  getBaseAssetsByNetwork
 } from './helpers';
 export { NetworkUtils } from './utils';

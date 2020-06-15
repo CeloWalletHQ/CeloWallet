@@ -50,7 +50,7 @@ export const gasEstimateCacheTime = 60000;
 
 export const MINIMUM_PASSWORD_LENGTH = 12;
 
-export const SUPPORT_EMAIL = 'support@mycrypto.com';
+export const SUPPORT_EMAIL = 'support@cellowallet.io';
 export const LATEST_NEWS_URL = 'https://medium.com/@mycrypto' as TURL;
 export const CRYPTOSCAMDB = 'https://cryptoscamdb.org';
 
@@ -63,7 +63,7 @@ export const DEX_BASE_URL = 'https://api-v2.dex.ag/';
 
 export const MOONPAY_PUBLIC_API_KEY = 'pk_live_Fi1kufUL8EflbE49vbZRKa71S2a4Y1D';
 export const MOONPAY_API_QUERYSTRING = `?apiKey=${MOONPAY_PUBLIC_API_KEY}&colorCode=%23163150`;
-export const BUY_MYCRYPTO_WEBSITE = 'https://buy.mycrypto.com' as TURL;
+export const BUY_MYCRYPTO_WEBSITE = 'https://buy.cellowallet.io' as TURL;
 export const MOONPAY_SIGNER_API = 'https://moonpay.mycryptoapi.com/sign';
 
 export const LETS_ENCRYPT_URL = 'https://letsencrypt.org/';

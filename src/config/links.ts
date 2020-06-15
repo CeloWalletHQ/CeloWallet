@@ -12,7 +12,7 @@ interface IExtUrl {
   name: string;
 }
 
-export const DOWNLOAD_MYCRYPTO_LINK = 'https://download.mycrypto.com';
+export const DOWNLOAD_MYCRYPTO_LINK = 'https://download.cellowallet.io';
 
 export const socialMediaLinks: Link[] = [
   {
@@ -47,10 +47,6 @@ export const socialMediaLinks: Link[] = [
 
 export const productLinks: Link[] = [
   {
-    link: 'https://legacy.mycrypto.com/',
-    text: translateRaw('OLD_MYCRYPTO')
-  },
-  {
     link:
       'https://chrome.google.com/webstore/detail/etheraddresslookup/pdknmigbbbhmllnmgdfalmedcmcefdfn',
     text: translateRaw('ETHER_ADDRESS_LOOKUP')
@@ -65,7 +61,7 @@ export const productLinks: Link[] = [
     text: translateRaw('CRYPTOSCAMDB')
   },
   {
-    link: 'https://legacy.mycrypto.com/helpers.html',
+    link: 'https://legacy.cellowallet.io/helpers.html',
     text: translateRaw('FOOTER_HELP_AND_DEBUGGING')
   },
   {

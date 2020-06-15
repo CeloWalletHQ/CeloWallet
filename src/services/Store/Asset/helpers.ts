@@ -1,38 +1,26 @@
-import { Asset, ExtendedAsset, Network, StoreAsset } from '@types';
-import { generateAssetUUID } from '@utils';
-import { DEFAULT_ASSET_DECIMAL } from '@config';
+import { Asset, ExtendedAsset, Network, StoreAsset, TUuid } from '@types';
+import { getBaseAssetsByNetwork } from '../Network';
 
 export const getAssetByTicker = (assets: Asset[]) => (symbol: string): Asset | undefined => {
   return assets.find((asset) => asset.ticker.toLowerCase() === symbol.toLowerCase());
 };
 
-export const getNewDefaultAssetTemplateByNetwork = (assets: Asset[]) => (
+export const getNewDefaultAssetTemplatesByNetwork = (assets: ExtendedAsset[]) => (
   network: Network
-): Asset => {
-  const baseAssetOfNetwork: Asset | undefined = getAssetByUUID(assets)(network.baseAsset);
-  if (!baseAssetOfNetwork) {
-    return {
-      uuid: generateAssetUUID(network.chainId),
-      name: network.name,
-      networkId: network.id,
-      type: 'base',
-      ticker: network.id,
-      decimal: DEFAULT_ASSET_DECIMAL
-    };
-  } else {
-    return {
-      uuid: baseAssetOfNetwork.uuid,
-      name: baseAssetOfNetwork.name,
-      networkId: baseAssetOfNetwork.networkId,
-      type: 'base',
-      ticker: baseAssetOfNetwork.ticker,
-      decimal: baseAssetOfNetwork.decimal
-    };
-  }
+): ExtendedAsset[] => {
+  const baseAssetsOfNetwork: Asset[] = getBaseAssetsByNetwork({ assets, network });
+  return baseAssetsOfNetwork.map((baseAsset) => ({
+    uuid: baseAsset.uuid,
+    name: baseAsset.name,
+    networkId: baseAsset.networkId,
+    type: 'base',
+    ticker: baseAsset.ticker,
+    decimal: baseAsset.decimal
+  }));
 };
 
 export const getAssetByUUID = (assets: ExtendedAsset[]) => (
-  uuid: string
+  uuid: TUuid
 ): ExtendedAsset | undefined => {
   return assets.find((asset) => asset.uuid === uuid);
 };

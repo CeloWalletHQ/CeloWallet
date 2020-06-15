@@ -15,7 +15,7 @@ import {
 } from '@types';
 import {
   hexWeiToString,
-  getBaseAssetByNetwork,
+  getBaseAssetsByNetwork,
   AccountContext,
   AssetContext,
   NetworkContext,
@@ -29,6 +29,7 @@ import {
 
 import { TStepAction } from './types';
 import { processFormDataToTx } from './helpers';
+import { CeloProviderHandler } from '@services/EthService/network';
 
 const txConfigInitialState = {
   tx: {
@@ -59,10 +60,10 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
 
   const handleFormSubmit: TStepAction = (payload: IFormikFields, cb: any) => {
     const rawTransaction: ITxObject = processFormDataToTx(payload);
-    const baseAsset: Asset | undefined = getBaseAssetByNetwork({
+    const baseAsset: Asset | undefined = getBaseAssetsByNetwork({
       network: payload.network,
       assets
-    });
+    })[0];
     setState((prevState: State) => ({
       ...prevState,
       txConfig: {
@@ -106,8 +107,8 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
     }
 
     const provider = new ProviderHandler(state.txConfig.network);
-
-    provider
+    const celoProvider = new CeloProviderHandler(state.txConfig.network);
+    celoProvider
       .sendRawTx(signedTx)
       .then((retrievedTxReceipt) => retrievedTxReceipt)
       .catch((txHash) => provider.getTransactionByHash(txHash))

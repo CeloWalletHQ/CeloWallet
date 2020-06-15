@@ -9,7 +9,8 @@ import {
   ITxType,
   ITxHash,
   ITxStatus,
-  ITxSigned
+  ITxSigned,
+  TUuid
 } from '@types';
 import {
   inputValueToHex,
@@ -20,7 +21,7 @@ import {
 } from '@services/EthService';
 import { DEFAULT_NETWORK_CHAINID, DEFAULT_ASSET_DECIMAL } from '@config';
 import { UnlockToken, ERC20 } from '@services/EthService/contracts';
-import { getAssetByUUID } from '@services';
+import { getAssetByUUID, getBaseAssetsByNetwork } from '@services';
 
 import { MembershipSimpleTxFormFull } from './types';
 import { isERC20Tx } from '../SendAssets';
@@ -71,8 +72,8 @@ export const makeTxConfigFromTransaction = (
 ): ITxConfig => {
   const { gasPrice, gasLimit, nonce, data, to, value } = rawTransaction;
   const { address, network } = account;
-  const baseAsset = getAssetByUUID(account.assets)(network.baseAsset)!;
-  const asset = getAssetByUUID(account.assets)(membershipSelected.assetUUID)!;
+  const baseAsset = getBaseAssetsByNetwork({ assets: account.assets, network })[0];
+  const asset = getAssetByUUID(account.assets)(membershipSelected.assetUUID as TUuid)!;
 
   const txConfig: ITxConfig = {
     from: address,

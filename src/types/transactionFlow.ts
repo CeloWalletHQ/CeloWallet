@@ -7,7 +7,6 @@ import {
   StoreAccount,
   TAddress
 } from '@types';
-import { IZapConfig } from '@features/DeFiZap/config';
 import { IMembershipConfig } from '@features/PurchaseMembership/config';
 
 export type ISignedTx = string;
@@ -21,7 +20,10 @@ export interface ITxObject {
   readonly gasPrice: string;
   readonly nonce: string;
   readonly chainId: number;
-  readonly from?: TAddress;
+  readonly feeCurrency: TAddress;
+  readonly gatewayFeeRecipient: TAddress;
+  readonly gatewayFee: string;
+  readonly from: TAddress;
 }
 
 export interface ITxConfig {
@@ -69,7 +71,6 @@ export interface IStepComponentProps {
   txReceipt?: ITxReceipt;
   signedTx?: string;
   txType?: ITxType;
-  zapSelected?: IZapConfig;
   membershipSelected?: IMembershipConfig;
   children?: never;
   completeButtonText?: string;
@@ -104,7 +105,6 @@ export enum ITxType {
   UNKNOWN = 'UNKNOWN',
   STANDARD = 'STANDARD',
   SWAP = 'SWAP',
-  DEFIZAP = 'DEFIZAP',
   CONTRACT_INTERACT = 'CONTRACT_INTERACT',
   DEPLOY_CONTRACT = 'DEPLOY_CONTRACT',
   PURCHASE_MEMBERSHIP = 'PURCHASE_MEMBERSHIP',

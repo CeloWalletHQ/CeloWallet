@@ -1,5 +1,5 @@
 import { getAssetByUUID } from '@services/Store';
-import { Asset, DPathFormat, Network, NetworkId, WalletId } from '@types';
+import { DPathFormat, Network, NetworkId, WalletId, ExtendedAsset } from '@types';
 import { HD_WALLETS } from '@config';
 
 export const getNetworkByChainId = (
@@ -30,12 +30,15 @@ export const isWalletFormatSupportedOnNetwork = (network: Network, format: Walle
   return true;
 };
 
-export const getBaseAssetByNetwork = ({
+export const getBaseAssetsByNetwork = ({
   network,
   assets
 }: {
   network: Network;
-  assets: Asset[];
-}): Asset | undefined => {
-  return getAssetByUUID(assets)(network.baseAsset);
+  assets: ExtendedAsset[];
+}): ExtendedAsset[] => {
+  const baseAssetUUIDs = network.baseAssets;
+  const baseAssets = baseAssetUUIDs.map((baseAssetUUID) => getAssetByUUID(assets)(baseAssetUUID));
+  const relevantBaseAssets = baseAssets.filter((asset) => asset !== undefined);
+  return relevantBaseAssets as ExtendedAsset[];
 };

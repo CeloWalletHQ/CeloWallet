@@ -4,7 +4,6 @@ import { fTxConfig, fTxReceipt, fAccount, fSettings } from '@fixtures';
 import { ITxStatus, ExtendedAddressBook, ITxType } from '@types';
 import { noOp } from '@utils';
 import { devContacts } from '@database/seed';
-import { IZapConfig, ZAPS_CONFIG, defaultZapId } from '@features/DeFiZap/config';
 import { MEMBERSHIP_CONFIG, IMembershipId } from '@features/PurchaseMembership/config';
 
 import { TxReceiptUI } from './TxReceipt';
@@ -25,27 +24,6 @@ export const transactionReceipt = () => (
     <TxReceiptUI
       settings={fSettings}
       txStatus={txStatus}
-      displayTxReceipt={fTxReceipt}
-      timestamp={timestamp}
-      resetFlow={resetFlow}
-      assetRate={assetRate}
-      senderContact={senderContact}
-      recipientContact={recipientContact}
-      txConfig={fTxConfig}
-      sender={constructSenderFromTxConfig(fTxConfig, [fAccount])}
-    />
-  </div>
-);
-
-const zapSelected: IZapConfig = ZAPS_CONFIG[defaultZapId];
-
-export const transactionReceiptDeFiZap = () => (
-  <div className="sb-container" style={{ maxWidth: '620px' }}>
-    <TxReceiptUI
-      settings={fSettings}
-      txStatus={txStatus}
-      txType={ITxType.DEFIZAP}
-      zapSelected={zapSelected}
       displayTxReceipt={fTxReceipt}
       timestamp={timestamp}
       resetFlow={resetFlow}
@@ -87,17 +65,6 @@ export const transactionReceiptMembership = () => (
       type: 'figma',
       url:
         'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BCeloWallet%5D-GAU-Master?node-id=8544%3A116927'
-    }
-  }
-};
-
-(transactionReceiptDeFiZap as any).story = {
-  name: 'TransactionReceipt-DeFiZap',
-  parameters: {
-    design: {
-      type: 'figma',
-      url:
-        'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BCeloWallet%5D-GAU-Master?node-id=8544%3A117793'
     }
   }
 };

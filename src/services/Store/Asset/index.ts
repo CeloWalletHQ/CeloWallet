@@ -2,7 +2,7 @@ export { IAssetContext, AssetContext, AssetProvider } from './AssetProvider';
 export {
   getTotalByAsset,
   getAssetByTicker,
-  getNewDefaultAssetTemplateByNetwork,
+  getNewDefaultAssetTemplatesByNetwork,
   getAssetByUUID,
   getAssetByContractAndNetwork
 } from './helpers';

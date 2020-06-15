@@ -9,7 +9,6 @@ import { AccountContext, StoreContext } from '@services/Store';
 import { translateRaw } from '@translations';
 
 import { NotificationsPanel } from '../NotificationsPanel';
-import { DashboardZapCTA } from '../DeFiZap';
 import {
   ActionTile,
   TokenPanel,
@@ -67,11 +66,6 @@ export default function Dashboard() {
             dashboard={true}
           />
         </div>
-        {IS_ACTIVE_FEATURE.DEFIZAP && (
-          <div className="Dashboard-mobile-section">
-            <DashboardZapCTA className="Dashboard-mobile-modifiedPanel" />
-          </div>
-        )}
         {!isCeloWalletMember && <BannerAd />}
         <div className="Dashboard-mobile-section">
           <RecentTransactionList accountsList={currentAccounts} />
@@ -103,11 +97,6 @@ export default function Dashboard() {
             <div>
               <WalletBreakdown />
             </div>
-            {IS_ACTIVE_FEATURE.DEFIZAP && (
-              <div>
-                <DashboardZapCTA className="Dashboard-desktop-modifiedPanel" />
-              </div>
-            )}
             <div>
               <AccountList
                 accounts={currentAccounts}

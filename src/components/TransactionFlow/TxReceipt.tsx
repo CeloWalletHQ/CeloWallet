@@ -8,7 +8,6 @@ import React, {
 } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@mycrypto/ui';
-import styled from 'styled-components';
 import R_path from 'ramda/src/path';
 
 import {
@@ -40,11 +39,9 @@ import { SwapDisplayData } from '@features/SwapAssets/types';
 import translate, { translateRaw } from '@translations';
 import { convertToFiat, truncate, fromTxReceiptObj } from '@utils';
 import { isWeb3Wallet } from '@utils/web3';
-import ProtocolTagsList from '@features/DeFiZap/components/ProtocolTagsList';
 import { ProtectTxUtils } from '@features/ProtectTransaction';
 import { ProtectTxAbort } from '@features/ProtectTransaction/components/ProtectTxAbort';
 import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
-import { DeFiZapLogo } from '@features/DeFiZap';
 import MembershipReceiptBanner from '@features/PurchaseMembership/components/MembershipReceiptBanner';
 import { getFiat } from '@config/fiats';
 
@@ -55,7 +52,6 @@ import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
 import { PendingTransaction } from './PendingLoader';
 
 import sentIcon from '@assets/images/icn-sent.svg';
-import zapperLogo from '@assets/images/defizap/zapperLogo.svg';
 import './TxReceipt.scss';
 
 interface PendingBtnAction {
@@ -68,11 +64,6 @@ interface Props {
   protectTxButton?(): JSX.Element;
 }
 
-const SImg = styled('img')`
-  height: ${(p: { size: string }) => p.size};
-  width: ${(p: { size: string }) => p.size};
-`;
-
 export default function TxReceipt({
   txReceipt,
   txConfig,
@@ -81,7 +72,6 @@ export default function TxReceipt({
   pendingButton,
   txType = ITxType.STANDARD,
   membershipSelected,
-  zapSelected,
   swapDisplay,
   protectTxButton
 }: IStepComponentProps & Props) {
@@ -176,7 +166,6 @@ export default function TxReceipt({
       txReceipt={txReceipt}
       txType={txType}
       assetRate={assetRate}
-      zapSelected={zapSelected}
       membershipSelected={membershipSelected}
       swapDisplay={swapDisplay}
       txStatus={txStatus}
@@ -224,7 +213,6 @@ export const TxReceiptUI = ({
   assetRate,
   displayTxReceipt,
   setDisplayTxReceipt,
-  zapSelected,
   membershipSelected,
   senderContact,
   sender,
@@ -319,30 +307,6 @@ export const TxReceiptUI = ({
           />
         </div>
       )}
-      {txType === ITxType.DEFIZAP && zapSelected && (
-        <>
-          <div className="TransactionReceipt-row">
-            <TxIntermediaryDisplay
-              address={zapSelected.contractAddress}
-              contractName={'DeFi Zap'}
-            />
-          </div>
-          <div className="TransactionReceipt-row">
-            <div className="TransactionReceipt-row-column">
-              <SImg src={zapperLogo} size="24px" />
-              {translateRaw('ZAP_NAME')}
-            </div>
-            <div className="TransactionReceipt-row-column rightAligned">{zapSelected.title}</div>
-          </div>
-          <div className="TransactionReceipt-row">
-            <div className="TransactionReceipt-row-column">{translateRaw('PLATFORMS')}</div>
-            <div className="TransactionReceipt-row-column rightAligned">
-              <ProtocolTagsList platformsUsed={zapSelected.platformsUsed} />
-            </div>
-          </div>
-          <div className="TransactionReceipt-divider" />
-        </>
-      )}
 
       {txType !== ITxType.SWAP && (
         <div className="TransactionReceipt-row">
@@ -363,7 +327,6 @@ export const TxReceiptUI = ({
           </div>
         </div>
       )}
-      {txType !== ITxType.DEFIZAP && <div className="TransactionReceipt-divider" />}
       <div className="TransactionReceipt-details">
         <div className="TransactionReceipt-details-row">
           <div className="TransactionReceipt-details-row-column">
@@ -439,7 +402,6 @@ export const TxReceiptUI = ({
           {translate('TRANSACTION_BROADCASTED_BACK_TO_DASHBOARD')}
         </Button>
       </Link>
-      {txType === ITxType.DEFIZAP && <DeFiZapLogo />}
     </div>
   );
 };
