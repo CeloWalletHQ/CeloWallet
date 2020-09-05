@@ -1,13 +1,8 @@
 import React, { useState, useContext, useMemo, createContext, useEffect } from 'react';
-import flatten from 'ramda/src/flatten';
 import prop from 'ramda/src/prop';
 import uniqBy from 'ramda/src/uniqBy';
 import sortBy from 'ramda/src/sortBy';
 import isEmpty from 'lodash/isEmpty';
-import unionBy from 'lodash/unionBy';
-import property from 'lodash/property';
-import { getUnlockTimestamps } from '@mycrypto/unlock-scan';
-import { BigNumber } from 'bignumber.js';
 
 import {
   TAddress,
@@ -22,7 +17,6 @@ import {
   Asset,
   NetworkId,
   Contact,
-  ITxType,
   TUuid,
   ReserveAsset,
   IPendingTxReceipt,
@@ -41,17 +35,10 @@ import {
   sortByLabel
 } from '@utils';
 import { ProviderHandler, getTxStatus, getTimestampFromBlockNum } from '@services/EthService';
-import {
-  MembershipStatus,
-  MEMBERSHIP_CONFIG,
-  MembershipState,
-  MEMBERSHIP_CONTRACTS
-} from '@features/PurchaseMembership/config';
-import { DEFAULT_NETWORK } from '@config';
-import { useEffectOnce, isEmpty as isVoid } from '@vendor';
+import { isEmpty as isVoid } from '@vendor';
 import { makeFinishedTxReceipt } from '@utils/transaction';
 
-import { getAccountsAssetsBalances, nestedToBigNumberJS } from './BalanceService';
+import { getAccountsAssetsBalances } from './BalanceService';
 import {
   getStoreAccounts,
   getPendingTransactionsFromAccounts,
@@ -84,10 +71,6 @@ export interface State {
   readonly defaultAccount: StoreAccount;
   readonly accounts: StoreAccount[];
   readonly networks: Network[];
-  readonly isMyCryptoMember: boolean;
-  readonly membershipState: MembershipState;
-  readonly memberships?: MembershipStatus[];
-  readonly membershipExpirations: BigNumber[];
   readonly currentAccounts: StoreAccount[];
   readonly userAssets: Asset[];
   readonly coinGeckoAssetManifest: CoinGeckoManifest;
@@ -123,7 +106,6 @@ export interface State {
   ): (
     getPoolAssetReserveRate: (poolTokenUUID: string, assets: Asset[]) => ReserveAsset[]
   ) => StoreAsset[];
-  scanForMemberships(accounts: StoreAccount[]): void;
 }
 export const StoreContext = createContext({} as State);
 
@@ -164,32 +146,6 @@ export const StoreProvider: React.FC = ({ children }) => {
     [rawAccounts, settings.dashboardAccounts, assets]
   );
 
-  const [memberships, setMemberships] = useState<MembershipStatus[] | undefined>([]);
-
-  const membershipExpirations = memberships
-    ? flatten(
-        Object.values(memberships).map((m) => Object.values(m.memberships).map((e) => e.expiry))
-      )
-    : [];
-
-  const membershipState = (() => {
-    if (!memberships) {
-      return MembershipState.ERROR;
-    } else if (Object.values(memberships).length === 0) {
-      return MembershipState.NOTMEMBER;
-    } else {
-      const currentTime = new BigNumber(Math.round(Date.now() / 1000));
-      if (
-        membershipExpirations.some((expirationTime) => expirationTime.isGreaterThan(currentTime))
-      ) {
-        return MembershipState.MEMBER;
-      } else {
-        return MembershipState.EXPIRED;
-      }
-    }
-  })();
-  const isMyCryptoMember = membershipState === MembershipState.MEMBER;
-
   // Naive polling to get the Balances of baseAsset and tokens for each account.
   useInterval(
     () => {
@@ -214,43 +170,6 @@ export const StoreProvider: React.FC = ({ children }) => {
     [currentAccounts]
   );
 
-  // Utility method to scan and populate memberships list
-  const scanForMemberships = (accountToScan?: StoreAccount[]) => {
-    const relevantAccounts = (accountToScan ? accountToScan : currentAccounts)
-      .filter((account) => account.networkId === DEFAULT_NETWORK)
-      .filter((account) => account.wallet !== WalletId.VIEW_ONLY);
-    const network = networks.find(({ id }) => DEFAULT_NETWORK === id);
-    if (!network || relevantAccounts.length === 0) return;
-    const provider = new ProviderHandler(network);
-    getUnlockTimestamps(
-      provider,
-      relevantAccounts.map((account) => account.address),
-      {
-        contracts: Object.values(MEMBERSHIP_CONFIG).map((membership) => membership.contractAddress)
-      }
-    )
-      .catch((_) => {
-        setMemberships(undefined);
-      })
-      .then(nestedToBigNumberJS)
-      .then((expiries) => {
-        const newMemberships = Object.keys(expiries)
-          .map((address: TAddress) => ({
-            address,
-            memberships: Object.keys(expiries[address])
-              .filter((contract) => expiries[address][contract].isGreaterThan(new BigNumber(0)))
-              .map((contract) => ({
-                type: MEMBERSHIP_CONTRACTS[contract],
-                expiry: expiries[address][contract]
-              }))
-          }))
-          .filter((m) => m.memberships.length > 0);
-        setMemberships(
-          unionBy(newMemberships, memberships ? memberships : [], property('address'))
-        );
-      });
-  };
-
   useAnalytics({
     category: ANALYTICS_CATEGORIES.ROOT,
     actionName: accounts.length === 0 ? 'New User' : 'Returning User',
@@ -258,10 +177,6 @@ export const StoreProvider: React.FC = ({ children }) => {
       visitStartAccountNumber: accounts.length
     },
     triggerOnMount: true
-  });
-
-  useEffectOnce(() => {
-    scanForMemberships();
   });
 
   useEffect(() => {
@@ -311,14 +226,6 @@ export const StoreProvider: React.FC = ({ children }) => {
               txResponse.blockNumber
             );
             addNewTxToAccount(senderAccount, finishedTxReceipt);
-            const storeAccount = accounts.find((acc) =>
-              isSameAddress(senderAccount.address, acc.address)
-            ) as StoreAccount;
-            if (finishedTxReceipt.txType === ITxType.DEFIZAP) {
-              state.scanAccountTokens(storeAccount);
-            } else if (finishedTxReceipt.txType === ITxType.PURCHASE_MEMBERSHIP) {
-              scanForMemberships([storeAccount]);
-            }
           });
         });
       });
@@ -340,10 +247,6 @@ export const StoreProvider: React.FC = ({ children }) => {
   const state: State = {
     accounts,
     networks,
-    isMyCryptoMember,
-    membershipState,
-    memberships,
-    membershipExpirations,
     currentAccounts,
     accountRestore,
     coinGeckoAssetManifest,
@@ -395,7 +298,6 @@ export const StoreProvider: React.FC = ({ children }) => {
       updateSettingsAccounts(
         settings.dashboardAccounts.filter((dashboardUUID) => dashboardUUID !== account.uuid)
       );
-      setMemberships((prevState) => prevState?.filter((s) => s.address !== account.address));
     },
     restoreDeletedAccount: (accountId) => {
       const account = accountRestore[accountId];
@@ -512,8 +414,7 @@ export const StoreProvider: React.FC = ({ children }) => {
           reserveAsset.reserveExchangeRate
         ),
         mtime: Date.now()
-      })),
-    scanForMemberships
+      }))
   };
 
   return <StoreContext.Provider value={state}>{children}</StoreContext.Provider>;

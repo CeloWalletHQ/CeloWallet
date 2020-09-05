@@ -76,7 +76,6 @@ export { objToString } from './objToString';
 export * from './constants';
 export { bigify } from './bigify';
 export { useTxMulti, TxParcel } from './useTxMulti';
-export { withProtectTxProvider } from './withProtectTxProvider';
 export { default as useScreenSize } from './useScreenSize';
 export { sanitizeDecimalSeparator } from './sanitizeDecimalSeparator';
 export { trimEllipsis } from './trimEllipsis';

@@ -26,7 +26,6 @@ import whitepaper from '@assets/icons/whitepaper.svg';
 import nansenLogo from '@assets/images/credits/credits-nansen.svg';
 import ensLogo from '@assets/images/ens/ensIcon.svg';
 import coinGeckoLogo from '@assets/images/credits/credits-coingecko.svg';
-import zapperLogo from '@assets/images/defizap/zapperLogo.svg';
 import check from '@assets/images/icn-check.svg';
 
 const icons = {
@@ -50,7 +49,6 @@ const icons = {
   nansenLogo,
   ensLogo,
   coinGeckoLogo,
-  zapperLogo,
 
   /* Social Icons */
   coinmarketcap,

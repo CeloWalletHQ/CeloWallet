@@ -4,11 +4,9 @@ import { MemoryRouter as Router } from 'react-router-dom';
 
 import { fSettings, fTxConfig, fAccount, fTxReceipt } from '@fixtures';
 import { devContacts } from '@database/seed';
-import { ExtendedContact, ITxType, ITxStatus } from '@types';
+import { ExtendedContact, ITxStatus } from '@types';
 import { truncate, noOp } from '@utils';
 import { translateRaw } from '@translations';
-import { ZAPS_CONFIG } from '@features/DeFiZap/config';
-import { MEMBERSHIP_CONFIG } from '@features/PurchaseMembership/config';
 import { Fiats } from '@config';
 import { DataContext } from '@services';
 
@@ -86,38 +84,5 @@ describe('TxReceipt', () => {
       displayTxReceipt: undefined
     });
     expect(getAllByText(translateRaw('PENDING'))).toBeDefined();
-  });
-
-  test('it displays DeFiZap info', async () => {
-    const zap = ZAPS_CONFIG.compounddai;
-    const { getByText } = getComponent({
-      ...defaultProps,
-      zapSelected: zap,
-      txType: ITxType.DEFIZAP
-    });
-    expect(getByText(zap.title)).toBeDefined();
-    expect(getByText(zap.contractAddress)).toBeDefined();
-    expect(getByText(zap.platformsUsed[0], { exact: false })).toBeDefined();
-  });
-
-  test('it displays membership info', async () => {
-    const membership = MEMBERSHIP_CONFIG.lifetime;
-    const { getByText } = getComponent({
-      ...defaultProps,
-      membershipSelected: membership,
-      txType: ITxType.PURCHASE_MEMBERSHIP
-    });
-    expect(getByText(translateRaw('NEW_MEMBER'))).toBeDefined();
-    expect(getByText(membership.contractAddress)).toBeDefined();
-  });
-
-  test('it displays PTX info', async () => {
-    const { getByText } = getComponent({
-      ...defaultProps,
-      protectTxButton: () => <>PTXBUTTON</>,
-      protectTxEnabled: true
-    });
-    expect(getByText('PTXBUTTON')).toBeDefined();
-    expect(getByText(translateRaw('PROTECTED_TX_CANCEL'))).toBeDefined();
   });
 });

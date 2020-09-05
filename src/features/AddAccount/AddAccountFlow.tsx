@@ -42,13 +42,7 @@ export const isValidWalletId = (id: WalletId | string | undefined) => {
 const AddAccountFlow = withRouter(({ history, match }) => {
   const [step, setStep] = useState(0); // The current Step inside the Wallet Story.
   const [formData, updateFormState] = useReducer(formReducer, initialState); // The data that we want to save at the end.
-  const {
-    scanAccountTokens,
-    scanTokens,
-    scanForMemberships,
-    addMultipleAccounts,
-    accounts
-  } = useContext(StoreContext);
+  const { scanAccountTokens, scanTokens, addMultipleAccounts, accounts } = useContext(StoreContext);
   const { displayNotification } = useContext(NotificationsContext);
   const trackNewAccountAdded = useAnalytics({
     category: ANALYTICS_CATEGORIES.ADD_ACCOUNT,
@@ -98,12 +92,10 @@ const AddAccountFlow = withRouter(({ history, match }) => {
                 address: newAccounts[0].address
               });
               scanAccountTokens(newAccounts[0]);
-              scanForMemberships([newAccounts[0]]);
             }
           : () => {
               displayNotification(NotificationTemplates.walletsAdded, { accounts: newAccounts });
               scanTokens();
-              scanForMemberships([...newAccounts]);
             };
       handleAddition();
       history.push(ROUTE_PATHS.DASHBOARD.path);

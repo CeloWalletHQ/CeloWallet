@@ -9,8 +9,6 @@ import {
   StoreAccount,
   TAddress
 } from '@types';
-import { IZapConfig } from '@features/DeFiZap/config';
-import { IMembershipConfig } from '@features/PurchaseMembership/config';
 
 export type ISignedTx = string;
 
@@ -85,8 +83,6 @@ export interface IStepComponentProps extends IDefaultStepComponentProps {
   txReceipt?: ITxReceipt;
   signedTx?: string;
   txType?: ITxType;
-  zapSelected?: IZapConfig;
-  membershipSelected?: IMembershipConfig;
   children?: never;
 }
 
@@ -94,8 +90,6 @@ export interface ITxReceiptStepProps {
   txConfig: ITxConfig;
   txReceipt?: ITxReceipt;
   signedTx?: string;
-  zapSelected?: IZapConfig;
-  membershipSelected?: IMembershipConfig;
   children?: never;
   completeButtonText?: string;
   onComplete(data: IFormikFields | ITxReceipt | ISignedTx | null): void;
@@ -137,12 +131,9 @@ export enum ITxType {
   UNKNOWN = 'UNKNOWN',
   STANDARD = 'STANDARD',
   SWAP = 'SWAP',
-  DEFIZAP = 'DEFIZAP',
   CONTRACT_INTERACT = 'CONTRACT_INTERACT',
   DEPLOY_CONTRACT = 'DEPLOY_CONTRACT',
-  PURCHASE_MEMBERSHIP = 'PURCHASE_MEMBERSHIP',
-  APPROVAL = 'APPROVAL',
-  REP_TOKEN_MIGRATION = 'REP_TOKEN_MIGRATION'
+  APPROVAL = 'APPROVAL'
 }
 
 export interface ISimpleTxForm {

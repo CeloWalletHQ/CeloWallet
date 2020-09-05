@@ -76,10 +76,6 @@ import {
   bigify,
   sortByLabel
 } from '@utils';
-import { checkFormForProtectTxErrors } from '@features/ProtectTransaction';
-import { ProtectTxShowError } from '@features/ProtectTransaction/components/ProtectTxShowError';
-import { ProtectTxButton } from '@features/ProtectTransaction/components/ProtectTxButton';
-import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
 import { path } from '@vendor';
 import { getFiat, Fiats } from '@config/fiats';
 
@@ -290,14 +286,6 @@ const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {
       ({} as Asset)
   );
 
-  const {
-    protectTxFeatureFlag,
-    state: ptxState,
-    updateFormValues,
-    goToInitialStepOrFetchReport,
-    showHideProtectTx
-  } = useContext(ProtectTxContext);
-
   const SendAssetsSchema = Yup.object().shape({
     amount: Yup.string()
       .required(translateRaw('REQUIRED'))
@@ -420,12 +408,6 @@ const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {
   });
 
   useEffect(() => {
-    if (updateFormValues) {
-      updateFormValues(values);
-    }
-  }, [values]);
-
-  useEffect(() => {
     handleNonceEstimate(values.account);
   }, [values.account]);
 
@@ -456,15 +438,6 @@ const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {
       }
     }
   }, [values.asset]);
-
-  useEffect(() => {
-    if (ptxState.protectTxShow) {
-      if (goToInitialStepOrFetchReport && ptxState.receiverAddress !== values.address.value) {
-        const { address, network } = values;
-        goToInitialStepOrFetchReport(address.value, network);
-      }
-    }
-  }, [values.address.value]);
 
   const toggleIsAutoGasSet = () => {
     // save value because setFieldValue method is async and values are not yet updated
@@ -736,23 +709,6 @@ const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {
           </div>
         )}
       </div>
-      {protectTxFeatureFlag && (
-        <ProtectTxButton
-          reviewReport={ptxState.protectTxEnabled}
-          onClick={(e) => {
-            e.preventDefault();
-
-            if (goToInitialStepOrFetchReport) {
-              const { address, network } = values;
-              goToInitialStepOrFetchReport(address.value, network);
-            }
-
-            if (showHideProtectTx) {
-              showHideProtectTx(true);
-            }
-          }}
-        />
-      )}
       <Button
         type="submit"
         onClick={() => {
@@ -765,16 +721,6 @@ const SendAssetsForm = ({ txConfig, onComplete }: ISendFormProps) => {
       >
         {translate('ACTION_6')}
       </Button>
-      {protectTxFeatureFlag && (
-        <ProtectTxShowError
-          protectTxError={checkFormForProtectTxErrors(
-            values,
-            getAssetRate(values.asset),
-            ptxState.isPTXFree
-          )}
-          shown={!(isEstimatingGasLimit || isResolvingName || isEstimatingNonce || !isFormValid)}
-        />
-      )}
     </div>
   );
 };

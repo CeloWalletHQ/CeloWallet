@@ -73,31 +73,11 @@ const DeployContractsFlow = lazy(() =>
     /* webpackChunkName: "DeployContractsFlow" */ '@features/DeployContracts/DeployContractsFlow'
   )
 );
-const DeFiZapFlow = lazy(() =>
-  import(/* webpackChunkName: "DeFiZapFlow" */ '@features/DeFiZap/DeFiZapFlow')
-);
-const PurchaseMembershipStepper = lazy(() =>
-  import(
-    /* webpackChunkName: "PurchaseMembershipStepper" */ '@features/PurchaseMembership/PurchaseMembershipStepper'
-  )
-);
-const MembershipEducation = lazy(() =>
-  import(
-    /* webpackChunkName: "MembershipEducation" */ '@features/PurchaseMembership/components/MembershipEducation'
-  )
-);
 const BuyAssets = lazy(() =>
   import(/* webpackChunkName: "BuyAssetsForm" */ '@features/BuyAssets/BuyAssetsForm')
 );
-const EnsDashboard = lazy(() =>
-  import(/* webpackChunkName: "EnsDashboard" */ '@features/Ens/EnsDashboard')
-);
 const TxStatus = lazy(() =>
   import(/* webpackChunkName: "TxStatus" */ '@features/TxStatus/TxStatus')
-);
-
-const RepTokenMigration = lazy(() =>
-  import(/* webpackChunkName: "TokenMigration" */ '@features/TokenMigration/TokenMigrationStepper')
 );
 
 export interface IAppRoutes {
@@ -269,33 +249,6 @@ export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IIS_ACTIVE_FEATURE): IAppR
     component: DeployContractsFlow
   },
   {
-    name: ROUTE_PATHS.DEFIZAP.name,
-    title: ROUTE_PATHS.DEFIZAP.title,
-    path: `${ROUTE_PATHS.DEFIZAP.path}/:zapName?`,
-    exact: true,
-    requireAccounts: true,
-    enabled: IS_ACTIVE_FEATURE.DEFIZAP,
-    component: DeFiZapFlow
-  },
-  {
-    name: ROUTE_PATHS.MYC_MEMBERSHIP.name,
-    title: ROUTE_PATHS.MYC_MEMBERSHIP.title,
-    path: ROUTE_PATHS.MYC_MEMBERSHIP.path,
-    exact: true,
-    requireAccounts: false,
-    enabled: IS_ACTIVE_FEATURE.MYC_MEMBERSHIP,
-    component: MembershipEducation
-  },
-  {
-    name: ROUTE_PATHS.MYC_MEMBERSHIP_BUY.name,
-    title: ROUTE_PATHS.MYC_MEMBERSHIP_BUY.title,
-    path: `${ROUTE_PATHS.MYC_MEMBERSHIP_BUY.path}`,
-    exact: true,
-    requireAccounts: false,
-    enabled: IS_ACTIVE_FEATURE.MYC_MEMBERSHIP,
-    component: PurchaseMembershipStepper
-  },
-  {
     name: ROUTE_PATHS.BUY.name,
     title: ROUTE_PATHS.BUY.title,
     path: ROUTE_PATHS.BUY.path,
@@ -304,15 +257,7 @@ export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IIS_ACTIVE_FEATURE): IAppR
     enabled: IS_ACTIVE_FEATURE.BUY,
     component: BuyAssets
   },
-  {
-    name: ROUTE_PATHS.ENS.name,
-    title: ROUTE_PATHS.ENS.title,
-    path: ROUTE_PATHS.ENS.path,
-    exact: true,
-    requireAccounts: true,
-    enabled: IS_ACTIVE_FEATURE.ENS,
-    component: EnsDashboard
-  },
+
   {
     name: ROUTE_PATHS.TX_STATUS.name,
     title: ROUTE_PATHS.TX_STATUS.title,
@@ -320,15 +265,6 @@ export const getStaticAppRoutes = (IS_ACTIVE_FEATURE: IIS_ACTIVE_FEATURE): IAppR
     exact: true,
     enabled: IS_ACTIVE_FEATURE.TX_STATUS,
     component: TxStatus
-  },
-  {
-    name: ROUTE_PATHS.REP_TOKEN_MIGRATION.name,
-    title: ROUTE_PATHS.REP_TOKEN_MIGRATION.title,
-    path: ROUTE_PATHS.REP_TOKEN_MIGRATION.path,
-    exact: true,
-    requireAccounts: true,
-    enabled: IS_ACTIVE_FEATURE.REP_TOKEN_MIGRATION,
-    component: RepTokenMigration
   }
 ];
 

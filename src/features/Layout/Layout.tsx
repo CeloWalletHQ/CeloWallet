@@ -4,11 +4,7 @@ import styled from 'styled-components';
 import { BannerType } from '@types';
 import { Banner } from '@components';
 import { COLORS, BREAK_POINTS, MAX_CONTENT_WIDTH, MIN_CONTENT_PADDING, SPACING } from '@theme';
-import { DrawerContext, ErrorContext, MigrateLS } from '@features';
-import { pipe } from '@vendor';
-import { withContext, IS_E2E } from '@utils';
-import { useFeatureFlags } from '@services';
-import { StoreContext, SettingsContext } from '@services/Store';
+import { DrawerContext, ErrorContext } from '@features';
 
 import Header from './Header';
 import Footer from './Footer';
@@ -76,13 +72,10 @@ const SContainer = styled.div`
     `}
 `;
 
-const MigrateLSWithStore = pipe(withContext(StoreContext), withContext(SettingsContext))(MigrateLS);
-
 export default function Layout({ config = {}, className = '', children }: Props) {
   const { centered = true, fluid, fullW = false, bgColor, paddingV } = config;
   const { visible, toggleVisible, setScreen } = useContext(DrawerContext);
   const { error, shouldShowError, getErrorMessage } = useContext(ErrorContext);
-  const { IS_ACTIVE_FEATURE } = useFeatureFlags();
 
   const [topHeight, setTopHeight] = useState(0);
 
@@ -105,7 +98,6 @@ export default function Layout({ config = {}, className = '', children }: Props)
   return (
     <SMain className={className} bgColor={bgColor}>
       <STop ref={topRef}>
-        {!IS_E2E && IS_ACTIVE_FEATURE.MIGRATE_LS && <MigrateLSWithStore />}
         {shouldShowError() && error && (
           <Banner type={BannerType.ERROR} value={getErrorMessage(error)} />
         )}

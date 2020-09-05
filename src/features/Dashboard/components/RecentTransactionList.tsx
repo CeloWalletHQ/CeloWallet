@@ -44,8 +44,6 @@ import outbound from '@assets/images/transactions/outbound.svg';
 import approval from '@assets/images/transactions/approval.svg';
 import contractInteract from '@assets/images/transactions/contract-interact.svg';
 import contractDeploy from '@assets/images/transactions/contract-deploy.svg';
-import defizap from '@assets/images/transactions/defizap.svg';
-import membershipPurchase from '@assets/images/transactions/membership-purchase.svg';
 import swap from '@assets/images/transactions/swap.svg';
 
 interface Props {
@@ -90,18 +88,6 @@ const TxTypeConfig: ITxTypeConfig = {
         $ticker: asset.ticker || translateRaw('UNKNOWN')
       }),
     icon: transfer
-  },
-  [ITxHistoryType.REP_TOKEN_MIGRATION]: {
-    label: (_: Asset) => translateRaw('RECENT_TX_LIST_LABEL_REP_MIGRATION'),
-    icon: transfer
-  },
-  [ITxHistoryType.DEFIZAP]: {
-    label: (_: Asset) => translateRaw('RECENT_TX_LIST_LABEL_DEFIZAP_ADD'),
-    icon: defizap
-  },
-  [ITxHistoryType.PURCHASE_MEMBERSHIP]: {
-    label: (_: Asset) => translateRaw('RECENT_TX_LIST_LABEL_MEMBERSHIP_PURCHASED'),
-    icon: membershipPurchase
   },
   [ITxHistoryType.SWAP]: {
     label: (_: Asset) => translateRaw('RECENT_TX_LIST_LABEL_SWAP'),

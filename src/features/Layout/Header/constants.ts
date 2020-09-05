@@ -75,23 +75,9 @@ export const getLinks = (IS_ACTIVE_FEATURE: IIS_ACTIVE_FEATURE) => {
           title: 'Helpers'
         },
         {
-          to: APP_ROUTES_OBJECT.DEFIZAP.path,
-          title: 'DeFi Zap'
-        },
-        {
-          to: APP_ROUTES_OBJECT.ENS.path,
-          enabled: APP_ROUTES_OBJECT.ENS.enabled,
-          title: 'ENS'
-        },
-        {
           to: ROUTE_PATHS.TX_STATUS.path,
           enabled: APP_ROUTES_OBJECT.TX_STATUS.enabled,
           title: 'TX Status'
-        },
-        {
-          to: APP_ROUTES_OBJECT.REP_TOKEN_MIGRATION.path,
-          enabled: APP_ROUTES_OBJECT.REP_TOKEN_MIGRATION.enabled,
-          title: 'REP Token Migration'
         }
       ]
     },

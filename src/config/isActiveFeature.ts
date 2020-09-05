@@ -18,14 +18,8 @@ export enum FEATURE_LIST {
   SWAP = 'SWAP',
   DOWNLOAD_DESKTOP_APP = 'DOWNLOAD_DESKTOP_APP',
   PRIVATE_TAGS = 'PRIVATE_TAGS',
-  DEFIZAP = 'DEFIZAP',
-  MYC_MEMBERSHIP = 'MYC_MEMBERSHIP',
-  PROTECT_TX = 'PROTECT_TX',
-  ENS = 'ENS',
   CUSTOM_NETWORKS = 'CUSTOM_NETWORKS',
-  TX_STATUS = 'TX_STATUS',
-  REP_TOKEN_MIGRATION = 'REP_TOKEN_MIGRATION',
-  MIGRATE_LS = 'MIGRATE_LS'
+  TX_STATUS = 'TX_STATUS'
 }
 
 export type IIS_ACTIVE_FEATURE = {
@@ -50,15 +44,6 @@ export const IS_ACTIVE_FEATURE: IIS_ACTIVE_FEATURE = {
   SWAP: true,
   DOWNLOAD_DESKTOP_APP: true,
   PRIVATE_TAGS: true,
-  DEFIZAP: true,
-  MYC_MEMBERSHIP: true,
-  PROTECT_TX: true,
-  ENS: true,
   CUSTOM_NETWORKS: IS_DEV,
-  TX_STATUS: true,
-  REP_TOKEN_MIGRATION: true,
-  // This features requires a landing page, same root host to be running simultaneously.
-  // While this can be expected in staging and in production we SHOULD not expect every developper
-  // to run both projects while working. Deactivate feature in dev by default.
-  MIGRATE_LS: !IS_DEV
+  TX_STATUS: true
 };

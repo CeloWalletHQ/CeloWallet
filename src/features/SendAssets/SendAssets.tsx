@@ -1,13 +1,12 @@
 import React, { useContext, useReducer, useEffect } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import * as qs from 'query-string';
-import { GeneralStepper, TxReceiptWithProtectTx } from '@components';
-import { isWeb3Wallet, withProtectTxProvider } from '@utils';
+import { GeneralStepper, ConfirmTransaction, TxReceipt } from '@components';
+import { isWeb3Wallet } from '@utils';
 import { ITxReceipt, ISignedTx, IFormikFields, ITxConfig } from '@types';
 import { translateRaw } from '@translations';
 import { ROUTE_PATHS } from '@config';
 import { IStepperPath } from '@components/GeneralStepper/types';
-import { ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
 import {
   StoreContext,
   useFeatureFlags,
@@ -19,19 +18,12 @@ import {
 import { isEmpty } from '@vendor';
 
 import { sendAssetsReducer, initialState } from './SendAssets.reducer';
-import {
-  ConfirmTransactionWithProtectTx,
-  SendAssetsFormWithProtectTx,
-  SignTransactionWithProtectTx
-} from './components';
 import { parseQueryParams } from './helpers';
+import SignTransaction from './components/SignTransaction';
+import SendAssetsForm from './components/SendAssetsForm';
 
 function SendAssets({ location }: RouteComponentProps) {
   const [reducerState, dispatch] = useReducer(sendAssetsReducer, initialState);
-  const {
-    state: { protectTxEnabled, protectTxShow, isPTXFree },
-    setProtectTxTimeoutFunction
-  } = useContext(ProtectTxContext);
   const { accounts } = useContext(StoreContext);
   const { assets } = useAssets();
   const { networks } = useNetworks();
@@ -58,25 +50,22 @@ function SendAssets({ location }: RouteComponentProps) {
   const web3Steps: IStepperPath[] = [
     {
       label: 'Send Assets',
-      component: SendAssetsFormWithProtectTx,
+      component: SendAssetsForm,
       props: (({ txConfig }) => ({ txConfig }))(reducerState),
       actions: (form: IFormikFields, cb: any) => {
-        if (protectTxEnabled && !isPTXFree) {
-          form.nonceField = (parseInt(form.nonceField, 10) + 1).toString();
-        }
         dispatch({ type: sendAssetsReducer.actionTypes.FORM_SUBMIT, payload: { form, assets } });
         cb();
       }
     },
     {
       label: translateRaw('CONFIRM_TX_MODAL_TITLE'),
-      component: ConfirmTransactionWithProtectTx,
+      component: ConfirmTransaction,
       props: (({ txConfig }) => ({ txConfig }))(reducerState),
       actions: (_: ITxConfig, cb: any) => cb()
     },
     {
       label: '',
-      component: SignTransactionWithProtectTx,
+      component: SignTransaction,
       props: (({ txConfig }) => ({ txConfig }))(reducerState),
       actions: (payload: ITxReceipt | ISignedTx, cb: any) => {
         dispatch({ type: sendAssetsReducer.actionTypes.WEB3_SIGN_SUCCESS, payload });
@@ -85,7 +74,7 @@ function SendAssets({ location }: RouteComponentProps) {
     },
     {
       label: translateRaw('TRANSACTION_BROADCASTED'),
-      component: TxReceiptWithProtectTx,
+      component: TxReceipt,
       props: (({ txConfig, txReceipt }) => ({ txConfig, txReceipt }))(reducerState)
     }
   ];
@@ -93,19 +82,16 @@ function SendAssets({ location }: RouteComponentProps) {
   const defaultSteps: IStepperPath[] = [
     {
       label: 'Send Assets',
-      component: SendAssetsFormWithProtectTx,
+      component: SendAssetsForm,
       props: (({ txConfig }) => ({ txConfig }))(reducerState),
       actions: (form: IFormikFields, cb: any) => {
-        if (protectTxEnabled && !isPTXFree) {
-          form.nonceField = (parseInt(form.nonceField, 10) + 1).toString();
-        }
         dispatch({ type: sendAssetsReducer.actionTypes.FORM_SUBMIT, payload: { form, assets } });
         cb();
       }
     },
     {
       label: '',
-      component: SignTransactionWithProtectTx,
+      component: SignTransaction,
       props: (({ txConfig }) => ({ txConfig }))(reducerState),
       actions: (payload: ITxConfig | ISignedTx, cb: any) => {
         dispatch({
@@ -117,16 +103,10 @@ function SendAssets({ location }: RouteComponentProps) {
     },
     {
       label: translateRaw('CONFIRM_TX_MODAL_TITLE'),
-      component: ConfirmTransactionWithProtectTx,
+      component: ConfirmTransaction,
       props: (({ txConfig, signedTx }) => ({ txConfig, signedTx }))(reducerState),
       actions: (payload: ITxConfig | ISignedTx, cb: any) => {
-        if (setProtectTxTimeoutFunction) {
-          setProtectTxTimeoutFunction(() =>
-            dispatch({ type: sendAssetsReducer.actionTypes.REQUEST_SEND, payload })
-          );
-        } else {
-          dispatch({ type: sendAssetsReducer.actionTypes.REQUEST_SEND, payload });
-        }
+        dispatch({ type: sendAssetsReducer.actionTypes.REQUEST_SEND, payload });
         if (cb) {
           cb();
         }
@@ -134,7 +114,7 @@ function SendAssets({ location }: RouteComponentProps) {
     },
     {
       label: ' ',
-      component: TxReceiptWithProtectTx,
+      component: TxReceipt,
       props: (({ txConfig, txReceipt }) => ({
         txConfig,
         txReceipt,
@@ -190,10 +170,10 @@ function SendAssets({ location }: RouteComponentProps) {
       defaultBackPath={ROUTE_PATHS.DASHBOARD.path}
       defaultBackPathLabel={translateRaw('DASHBOARD')}
       completeBtnText={translateRaw('SEND_ASSETS_SEND_ANOTHER')}
-      wrapperClassName={`send-assets-stepper ${protectTxShow ? 'has-side-panel' : ''}`}
-      basic={IS_ACTIVE_FEATURE.PROTECT_TX}
+      wrapperClassName={`send-assets-stepper`}
+      basic={IS_ACTIVE_FEATURE.SEND_ASSETS}
     />
   );
 }
 
-export default withRouter(withProtectTxProvider(SendAssets));
+export default withRouter(SendAssets);
